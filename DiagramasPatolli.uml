@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<XPD:PROJECT xmlns:XPD="http://www.staruml.com" version="1">
+<XPD:HEADER>
+<XPD:SUBUNITS>
+</XPD:SUBUNITS>
+<XPD:PROFILES>
+<XPD:PROFILE>UMLStandard</XPD:PROFILE>
+</XPD:PROFILES>
+</XPD:HEADER>
+<XPD:BODY>
+<XPD:OBJ name="DocumentElement" type="UMLProject" guid="JMeCBv74ikWbUf6/oZfPfgAA">
+<XPD:ATTR name="Title" type="string">Patolli</XPD:ATTR>
+<XPD:ATTR name="#OwnedElements" type="integer">5</XPD:ATTR>
+<XPD:OBJ name="OwnedElements[0]" type="UMLModel" guid="MCpRlKOxFEmhlM7L+14QQgAA">
+<XPD:ATTR name="Name" type="string">Scenarios</XPD:ATTR>
+<XPD:REF name="Namespace">JMeCBv74ikWbUf6/oZfPfgAA</XPD:REF>
+<XPD:ATTR name="#OwnedElements" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="OwnedElements[0]" type="UMLPackage" guid="ZW4t6mKRgE2+HIqmqeGyXwAA">
+<XPD:ATTR name="Name" type="string">Diagrama de Casos de Uso</XPD:ATTR>
+<XPD:REF name="Namespace">MCpRlKOxFEmhlM7L+14QQgAA</XPD:REF>
+<XPD:ATTR name="#OwnedDiagrams" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="OwnedDiagrams[0]" type="UMLUseCaseDiagram" guid="W/k/0Vy0O0+A5mCC4sfY6QAA">
+<XPD:ATTR name="Name" type="string">Diagrama de Casos de Uso</XPD:ATTR>
+<XPD:REF name="DiagramOwner">ZW4t6mKRgE2+HIqmqeGyXwAA</XPD:REF>
+<XPD:OBJ name="DiagramView" type="UMLUseCaseDiagramView" guid="XcR/PqeJIUOD8ZQuiLOh4AAA">
+<XPD:REF name="Model">W/k/0Vy0O0+A5mCC4sfY6QAA</XPD:REF>
+<XPD:REF name="Diagram">W/k/0Vy0O0+A5mCC4sfY6QAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:ATTR name="#OwnedElements" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="OwnedElements[0]" type="UMLPackage" guid="ySPPSWd61kqMEAC2AoYB9wAA">
+<XPD:ATTR name="Name" type="string">Flujos</XPD:ATTR>
+<XPD:REF name="Namespace">ZW4t6mKRgE2+HIqmqeGyXwAA</XPD:REF>
+<XPD:ATTR name="#OwnedCollaborationInstanceSets" type="integer">2</XPD:ATTR>
+<XPD:OBJ name="OwnedCollaborationInstanceSets[0]" type="UMLCollaborationInstanceSet" guid="DArOlSU+S0GAadKK3UyYeAAA">
+<XPD:ATTR name="Name" type="string">Flujo Principal</XPD:ATTR>
+<XPD:REF name="RepresentedClassifier">ySPPSWd61kqMEAC2AoYB9wAA</XPD:REF>
+<XPD:ATTR name="#InteractionInstanceSets" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="InteractionInstanceSets[0]" type="UMLInteractionInstanceSet" guid="s3PpVo13eUyz95gkzzRXKAAA">
+<XPD:ATTR name="Name" type="string">Flujo Principal</XPD:ATTR>
+<XPD:REF name="Context">DArOlSU+S0GAadKK3UyYeAAA</XPD:REF>
+<XPD:ATTR name="#OwnedDiagrams" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="OwnedDiagrams[0]" type="UMLSequenceDiagram" guid="n5L2LpkF7kK8yZWQVK4ULAAA">
+<XPD:ATTR name="Name" type="string">Flujo Principal</XPD:ATTR>
+<XPD:REF name="DiagramOwner">s3PpVo13eUyz95gkzzRXKAAA</XPD:REF>
+<XPD:OBJ name="DiagramView" type="UMLSequenceDiagramView" guid="jlh7fE6d606fWxw+M4IgswAA">
+<XPD:REF name="Model">n5L2LpkF7kK8yZWQVK4ULAAA</XPD:REF>
+<XPD:REF name="Diagram">n5L2LpkF7kK8yZWQVK4ULAAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="OwnedCollaborationInstanceSets[1]" type="UMLCollaborationInstanceSet" guid="2cLn/J+NaUa/HOOSfdlb4wAA">
+<XPD:ATTR name="Name" type="string">Flujo Alternativo</XPD:ATTR>
+<XPD:REF name="RepresentedClassifier">ySPPSWd61kqMEAC2AoYB9wAA</XPD:REF>
+<XPD:ATTR name="#InteractionInstanceSets" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="InteractionInstanceSets[0]" type="UMLInteractionInstanceSet" guid="FepdeaSUFEmgdd6hGMRX4AAA">
+<XPD:ATTR name="Name" type="string">Flujo Alternativo</XPD:ATTR>
+<XPD:REF name="Context">2cLn/J+NaUa/HOOSfdlb4wAA</XPD:REF>
+<XPD:ATTR name="#OwnedDiagrams" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="OwnedDiagrams[0]" type="UMLSequenceDiagram" guid="Ubzeh4mlwEumfZxVXgH0gQAA">
+<XPD:ATTR name="Name" type="string">Flujo Alternativo</XPD:ATTR>
+<XPD:REF name="DiagramOwner">FepdeaSUFEmgdd6hGMRX4AAA</XPD:REF>
+<XPD:OBJ name="DiagramView" type="UMLSequenceDiagramView" guid="DyikoXG/sU2mXXZ+37W6lAAA">
+<XPD:REF name="Model">Ubzeh4mlwEumfZxVXgH0gQAA</XPD:REF>
+<XPD:REF name="Diagram">Ubzeh4mlwEumfZxVXgH0gQAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="OwnedElements[1]" type="UMLModel" guid="tk+eWXUaik+nc6tE8Jo3AgAA">
+<XPD:ATTR name="Name" type="string">Logical View</XPD:ATTR>
+<XPD:REF name="Namespace">JMeCBv74ikWbUf6/oZfPfgAA</XPD:REF>
+<XPD:ATTR name="#OwnedElements" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="OwnedElements[0]" type="UMLPackage" guid="sd9kpeWGIE+xGCX1MZHWiAAA">
+<XPD:ATTR name="Name" type="string">Diagrama de Clases</XPD:ATTR>
+<XPD:REF name="Namespace">tk+eWXUaik+nc6tE8Jo3AgAA</XPD:REF>
+<XPD:ATTR name="#OwnedDiagrams" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="OwnedDiagrams[0]" type="UMLClassDiagram" guid="It/XtzaUxEiXsxYDebZdFAAA">
+<XPD:ATTR name="Name" type="string">Dominio</XPD:ATTR>
+<XPD:REF name="DiagramOwner">sd9kpeWGIE+xGCX1MZHWiAAA</XPD:REF>
+<XPD:OBJ name="DiagramView" type="UMLClassDiagramView" guid="N7G1g0i5OkOLqqvfJyDfdQAA">
+<XPD:REF name="Model">It/XtzaUxEiXsxYDebZdFAAA</XPD:REF>
+<XPD:REF name="Diagram">It/XtzaUxEiXsxYDebZdFAAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="OwnedElements[2]" type="UMLModel" guid="sSiwS5xgB0yc01pTzHHj9AAA">
+<XPD:ATTR name="Name" type="string">Development View</XPD:ATTR>
+<XPD:REF name="Namespace">JMeCBv74ikWbUf6/oZfPfgAA</XPD:REF>
+<XPD:ATTR name="#OwnedDiagrams" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="OwnedDiagrams[0]" type="UMLComponentDiagram" guid="6IXJrPyrIUObI7xbGGN3pAAA">
+<XPD:ATTR name="Name" type="string">Main</XPD:ATTR>
+<XPD:REF name="DiagramOwner">sSiwS5xgB0yc01pTzHHj9AAA</XPD:REF>
+<XPD:OBJ name="DiagramView" type="UMLComponentDiagramView" guid="+N1dKy2y6kSrL0JzM3OfpAAA">
+<XPD:REF name="Model">6IXJrPyrIUObI7xbGGN3pAAA</XPD:REF>
+<XPD:REF name="Diagram">6IXJrPyrIUObI7xbGGN3pAAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="OwnedElements[3]" type="UMLModel" guid="+90T2dStXEuJ/EbHea3rmgAA">
+<XPD:ATTR name="Name" type="string">Process View</XPD:ATTR>
+<XPD:REF name="Namespace">JMeCBv74ikWbUf6/oZfPfgAA</XPD:REF>
+<XPD:ATTR name="#Behaviors" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="Behaviors[0]" type="UMLActivityGraph" guid="jvZfQ4tOoUCOid/YwV5oggAA">
+<XPD:ATTR name="Name" type="string">ActivityGraph1</XPD:ATTR>
+<XPD:REF name="Context">+90T2dStXEuJ/EbHea3rmgAA</XPD:REF>
+<XPD:OBJ name="Top" type="UMLCompositeState" guid="fG0K50rg+UCt2TsZ0bihSwAA">
+<XPD:ATTR name="Name" type="string">TOP</XPD:ATTR>
+<XPD:REF name="StateMachine">jvZfQ4tOoUCOid/YwV5oggAA</XPD:REF>
+</XPD:OBJ>
+<XPD:ATTR name="#OwnedDiagrams" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="OwnedDiagrams[0]" type="UMLActivityDiagram" guid="8KsDquspCkaE+krtZ/eS6AAA">
+<XPD:ATTR name="Name" type="string">Main</XPD:ATTR>
+<XPD:REF name="DiagramOwner">jvZfQ4tOoUCOid/YwV5oggAA</XPD:REF>
+<XPD:OBJ name="DiagramView" type="UMLActivityDiagramView" guid="dpEpZh1ZWkiI9rcME45vlwAA">
+<XPD:REF name="Model">8KsDquspCkaE+krtZ/eS6AAA</XPD:REF>
+<XPD:REF name="Diagram">8KsDquspCkaE+krtZ/eS6AAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="OwnedElements[4]" type="UMLModel" guid="MFkr7XSm4UWPwtrZR7QMygAA">
+<XPD:ATTR name="Name" type="string">Physical View</XPD:ATTR>
+<XPD:REF name="Namespace">JMeCBv74ikWbUf6/oZfPfgAA</XPD:REF>
+<XPD:ATTR name="#OwnedDiagrams" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="OwnedDiagrams[0]" type="UMLDeploymentDiagram" guid="gGYtfk4xQUORQCAH8xgCCgAA">
+<XPD:ATTR name="Name" type="string">Main</XPD:ATTR>
+<XPD:REF name="DiagramOwner">MFkr7XSm4UWPwtrZR7QMygAA</XPD:REF>
+<XPD:OBJ name="DiagramView" type="UMLDeploymentDiagramView" guid="mV0HVlIaBEKeZNQpnWlSswAA">
+<XPD:REF name="Model">gGYtfk4xQUORQCAH8xgCCgAA</XPD:REF>
+<XPD:REF name="Diagram">gGYtfk4xQUORQCAH8xgCCgAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:BODY>
+</XPD:PROJECT>
