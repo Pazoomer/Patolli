@@ -4,11 +4,122 @@ package presentation;
 
 public class FrameComoJugar extends javax.swing.JFrame {
 
-    /**
-     * Creates new form HowToPlayMenu
-     */
+    private int paginaInstrucciones=0;
+
     public FrameComoJugar() {
         initComponents();
+    }
+    
+    public void Volver(){
+        //Pasa a la pantalla Opciones
+    }
+    
+    public void InstruccionDerecha() {
+        //Pasa a la instruccion de la derecha
+        paginaInstrucciones++;
+        if (paginaInstrucciones > 6) {
+            paginaInstrucciones = 6;
+        }
+        switch (paginaInstrucciones) {
+            case 1 -> {
+                this.txtInstruccion.setText("""
+                                            Las apuestas son el punto central de juego, hay varias formas de ganar o perder apuestas, 
+                                            
+                                            Si te quedas sin apuestas o sin fichas, pierdes automaticamente.""");
+            }
+            case 2 -> {
+                this.txtInstruccion.setText("""
+                                            Al inicio del juego tus fichas comenzaran fuera del tablero, para colocar una ficha en el tablero debes lanzar las ca\u00f1as y sacar exactamente 1, si no es el caso pagas una apuesta, estas se colocan en la casilla central del tablero que tienes asignada.
+                                            
+                                            Si la casilla esta ocupada, no podras sacar una ficha hasta que se desocupe.""");
+            }
+            case 3 -> {
+                this.txtInstruccion.setText("""
+                                            Una vez dentro del tablero.
+                                            
+                                            Cada jugador deber\u00e1 lanzar las 5 ca\u00f1as en su turno correspondiente y dependiendo como caigan podr\u00e1 avanzar el n\u00famero de
+                                            casillas, excepto en si salen las 5 boca arriba, en cuyo caso se avanzara 10 casillas, si salen 0 no se avanza.
+                                            
+                                            Si logras dar una vuelta completa con una ficha, cobras una apuesta a todos los demas jugadores y vuelves a jugar.
+                                            
+                                            Si no puedes moverte de ninguna forma, pagas 1 apuesta.""");
+            }
+            case 4 -> {
+                this.txtInstruccion.setText("""
+                                            Las fichas dentro del tablero siguen un orden para poder moverlas, pero si pagas 1 apuesta, puedes elegir cual de tus fichas mover en vez de la asignada del turno.
+                                            
+                                            Si sacas un 1, puedes meter al tablero una ficha que este afuera de este en vez de mover la ficha del turno.""");
+            }
+            case 5 -> {
+                this.txtInstruccion.setText("""
+                                            Si tu tirada terminara en un espacio con una ficha de otro jugador, tu ficha vueve al punto de inicio del tablero, si este punto de inicio esta ocupado por la ficha de otro jugador entonces tu ficha sale del tablero
+                                            
+                                            Si tu tirada termina en un espacio con una ficha de otro jugador mientras la ficha del otro jugador esta enuna casilla central entonces puedes avanzar y sacas del juego la ficha del otro jugador.
+                                            
+                                            Si tu tirada terminara en un espacio con una de tus fichas, puedes moverte con normalidad.""");
+            }
+            case 6 -> {
+                this.txtInstruccion.setText("""
+                                            Casillas especiales
+                                            
+                                            Si caes en la casilla del triangulo, tendras que pagar dos apuestas.
+                                            
+                                            Si caes en la casilla circular del final del tablero, juegas dos turnos seguidos.""");
+            }
+        }
+    }
+
+    public void InstruccionIzquierda() {
+        //Pasa a la instruccion de la izquierda
+        paginaInstrucciones--;
+        if (paginaInstrucciones < 0) {
+            paginaInstrucciones = 0;
+        }
+        switch (paginaInstrucciones) {
+            case 0 -> {
+                this.txtInstruccion.setText("""
+                                            El objetivo del Patolli es ser el primero en darle vueltas al tablero igual a la cantidad de fichas iniciales
+                                            O 
+                                            Ganar todas las apuestas de los demas jugadores.""");
+            }
+            case 1 -> {
+                this.txtInstruccion.setText("""
+                                            Las apuestas son el punto central de juego, hay varias formas de ganar o perder apuestas, 
+                                            
+                                            Si te quedas sin apuestas o sin fichas, pierdes automaticamente.""");
+            }
+            case 2 -> {
+                this.txtInstruccion.setText("""
+                                            Al inicio del juego tus fichas comenzaran fuera del tablero, para colocar una ficha en el tablero debes lanzar las cañas y sacar exactamente 1, si no es el caso pagas una apuesta, estas se colocan en la casilla central del tablero que tienes asignada.
+                                            
+                                            Si la casilla esta ocupada, no podras sacar una ficha hasta que se desocupe.""");
+            }
+            case 3 -> {
+                this.txtInstruccion.setText("""
+                                            Una vez dentro del tablero.
+                                            
+                                            Cada jugador deberá lanzar las 5 cañas en su turno correspondiente y dependiendo como caigan podrá avanzar el número de
+                                            casillas, excepto en si salen las 5 boca arriba, en cuyo caso se avanzara 10 casillas, si salen 0 no se avanza.
+                                            
+                                            Si logras dar una vuelta completa con una ficha, cobras una apuesta a todos los demas jugadores y vuelves a jugar.
+                                            
+                                            Si no puedes moverte de ninguna forma, pagas 1 apuesta.""");
+            }
+            case 4 -> {
+                this.txtInstruccion.setText("""
+                                            Las fichas dentro del tablero siguen un orden para poder moverlas, pero si pagas 1 apuesta, puedes elegir cual de tus fichas mover en vez de la asignada del turno.
+                                            
+                                            Si sacas un 1, puedes meter al tablero una ficha que este afuera de este en vez de mover la ficha del turno.""");
+            }
+            case 5 -> {
+                this.txtInstruccion.setText("""
+                                            Si tu tirada terminara en un espacio con una ficha de otro jugador, tu ficha vueve al punto de inicio del tablero, si este punto de inicio esta ocupado por la ficha de otro jugador entonces tu ficha sale del tablero.
+                                            
+                                            Si tu tirada termina en un espacio con una ficha de otro jugador mientras la ficha del otro jugador esta enuna casilla central entonces puedes avanzar y sacas del juego la ficha del otro jugador.
+                                            
+                                            Si tu tirada terminara en un espacio con una de tus fichas, puedes moverte con normalidad.""");
+            }
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -19,11 +130,11 @@ public class FrameComoJugar extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        txtInstruccion = new javax.swing.JTextArea();
+        lblDerecha = new javax.swing.JLabel();
+        lblIzquierda = new javax.swing.JLabel();
+        pnlVolver = new javax.swing.JPanel();
+        lblVolver = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 600));
@@ -64,20 +175,30 @@ public class FrameComoJugar extends javax.swing.JFrame {
 
         jScrollPane1.setBorder(null);
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setBackground(new java.awt.Color(223, 207, 188));
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("    \n\n     El objetivo del Patolli es ser el primero en darle vueltas al \t              tablero igual a la cantidad de fichas iniciales\n                                                O \n          Ganar todas las apuestas de los demas jugadores.");
-        jTextArea1.setWrapStyleWord(true);
-        jTextArea1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jScrollPane1.setViewportView(jTextArea1);
+        txtInstruccion.setEditable(false);
+        txtInstruccion.setBackground(new java.awt.Color(223, 207, 188));
+        txtInstruccion.setColumns(20);
+        txtInstruccion.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        txtInstruccion.setLineWrap(true);
+        txtInstruccion.setRows(5);
+        txtInstruccion.setText("El objetivo del Patolli es ser el primero en darle vueltas al tablero igual a la cantidad de fichas iniciales\n                                            O \n Ganar todas las apuestas de los demas jugadores.");
+        txtInstruccion.setWrapStyleWord(true);
+        txtInstruccion.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane1.setViewportView(txtInstruccion);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ArrowR.png"))); // NOI18N
+        lblDerecha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ArrowR.png"))); // NOI18N
+        lblDerecha.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblDerechaMouseClicked(evt);
+            }
+        });
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ArrowL.png"))); // NOI18N
+        lblIzquierda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ArrowL.png"))); // NOI18N
+        lblIzquierda.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblIzquierdaMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -87,9 +208,9 @@ public class FrameComoJugar extends javax.swing.JFrame {
                 .addGap(41, 41, 41)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
+                        .addComponent(lblIzquierda)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel3))
+                        .addComponent(lblDerecha))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(41, Short.MAX_VALUE))
         );
@@ -100,31 +221,41 @@ public class FrameComoJugar extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(lblDerecha, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblIzquierda, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(19, 19, 19))
         );
 
-        jPanel4.setBackground(new java.awt.Color(192, 160, 123));
+        pnlVolver.setBackground(new java.awt.Color(192, 160, 123));
+        pnlVolver.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlVolverMouseClicked(evt);
+            }
+        });
 
-        jLabel2.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("VOLVER");
+        lblVolver.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
+        lblVolver.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblVolver.setText("VOLVER");
+        lblVolver.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblVolverMouseClicked(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlVolverLayout = new javax.swing.GroupLayout(pnlVolver);
+        pnlVolver.setLayout(pnlVolverLayout);
+        pnlVolverLayout.setHorizontalGroup(
+            pnlVolverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlVolverLayout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addComponent(jLabel2)
+                .addComponent(lblVolver)
                 .addContainerGap(17, Short.MAX_VALUE))
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        pnlVolverLayout.setVerticalGroup(
+            pnlVolverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlVolverLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addComponent(jLabel2)
+                .addComponent(lblVolver)
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -143,7 +274,7 @@ public class FrameComoJugar extends javax.swing.JFrame {
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(pnlVolver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(96, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -154,7 +285,7 @@ public class FrameComoJugar extends javax.swing.JFrame {
                 .addGap(50, 50, 50)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlVolver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(7, Short.MAX_VALUE))
         );
 
@@ -174,7 +305,24 @@ public class FrameComoJugar extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void lblVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblVolverMouseClicked
+        Volver();
+    }//GEN-LAST:event_lblVolverMouseClicked
+
+    private void pnlVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlVolverMouseClicked
+        Volver();
+    }//GEN-LAST:event_pnlVolverMouseClicked
+
+    private void lblIzquierdaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIzquierdaMouseClicked
+        InstruccionIzquierda();
+    }//GEN-LAST:event_lblIzquierdaMouseClicked
+
+    private void lblDerechaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDerechaMouseClicked
+        InstruccionDerecha();
+    }//GEN-LAST:event_lblDerechaMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -213,14 +361,14 @@ public class FrameComoJugar extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JLabel lblDerecha;
+    private javax.swing.JLabel lblIzquierda;
+    private javax.swing.JLabel lblVolver;
+    private javax.swing.JPanel pnlVolver;
+    private javax.swing.JTextArea txtInstruccion;
     // End of variables declaration//GEN-END:variables
 }

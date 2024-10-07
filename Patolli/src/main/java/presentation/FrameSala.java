@@ -9,16 +9,24 @@ public class FrameSala extends javax.swing.JFrame {
         initComponents();
     }
 
+    public void Volver() {
+        //Pasa a la pantalla de opciones
+    }
+    
+    public void Jugar(){
+        //Pasa a la pantalla de tablero
+    }
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel6 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        jPanel7 = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
+        pnlVolver = new javax.swing.JPanel();
+        lblVolver = new javax.swing.JLabel();
+        pnlJugar = new javax.swing.JPanel();
+        lblJugar = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -63,51 +71,71 @@ public class FrameSala extends javax.swing.JFrame {
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
-        jPanel6.setBackground(new java.awt.Color(192, 160, 123));
-        jPanel6.setMaximumSize(new java.awt.Dimension(300, 75));
-        jPanel6.setMinimumSize(new java.awt.Dimension(300, 75));
+        pnlVolver.setBackground(new java.awt.Color(192, 160, 123));
+        pnlVolver.setMaximumSize(new java.awt.Dimension(300, 75));
+        pnlVolver.setMinimumSize(new java.awt.Dimension(300, 75));
+        pnlVolver.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlVolverMouseClicked(evt);
+            }
+        });
 
-        jLabel11.setFont(new java.awt.Font("Comic Sans MS", 1, 30)); // NOI18N
-        jLabel11.setText("VOLVER");
+        lblVolver.setFont(new java.awt.Font("Comic Sans MS", 1, 30)); // NOI18N
+        lblVolver.setText("VOLVER");
+        lblVolver.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblVolverMouseClicked(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlVolverLayout = new javax.swing.GroupLayout(pnlVolver);
+        pnlVolver.setLayout(pnlVolverLayout);
+        pnlVolverLayout.setHorizontalGroup(
+            pnlVolverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlVolverLayout.createSequentialGroup()
                 .addGap(32, 32, 32)
-                .addComponent(jLabel11)
+                .addComponent(lblVolver)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
+        pnlVolverLayout.setVerticalGroup(
+            pnlVolverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlVolverLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addComponent(jLabel11)
+                .addComponent(lblVolver)
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
-        jPanel7.setBackground(new java.awt.Color(192, 160, 123));
-        jPanel7.setMaximumSize(new java.awt.Dimension(300, 75));
-        jPanel7.setMinimumSize(new java.awt.Dimension(300, 75));
+        pnlJugar.setBackground(new java.awt.Color(192, 160, 123));
+        pnlJugar.setMaximumSize(new java.awt.Dimension(300, 75));
+        pnlJugar.setMinimumSize(new java.awt.Dimension(300, 75));
+        pnlJugar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlJugarMouseClicked(evt);
+            }
+        });
 
-        jLabel12.setFont(new java.awt.Font("Comic Sans MS", 1, 30)); // NOI18N
-        jLabel12.setText("JUGAR");
+        lblJugar.setFont(new java.awt.Font("Comic Sans MS", 1, 30)); // NOI18N
+        lblJugar.setText("JUGAR");
+        lblJugar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblJugarMouseClicked(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlJugarLayout = new javax.swing.GroupLayout(pnlJugar);
+        pnlJugar.setLayout(pnlJugarLayout);
+        pnlJugarLayout.setHorizontalGroup(
+            pnlJugarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlJugarLayout.createSequentialGroup()
                 .addGap(40, 40, 40)
-                .addComponent(jLabel12)
+                .addComponent(lblJugar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
+        pnlJugarLayout.setVerticalGroup(
+            pnlJugarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlJugarLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addComponent(jLabel12)
+                .addComponent(lblJugar)
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -159,11 +187,11 @@ public class FrameSala extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel13)
                 .addGap(147, 147, 147)
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlJugar, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(77, 77, 77)
@@ -219,8 +247,8 @@ public class FrameSala extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(pnlJugar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pnlVolver, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(14, 14, 14))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -240,8 +268,24 @@ public class FrameSala extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void lblVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblVolverMouseClicked
+        Volver();
+    }//GEN-LAST:event_lblVolverMouseClicked
+
+    private void pnlVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlVolverMouseClicked
+        Volver();
+    }//GEN-LAST:event_pnlVolverMouseClicked
+
+    private void lblJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblJugarMouseClicked
+        Jugar();
+    }//GEN-LAST:event_lblJugarMouseClicked
+
+    private void pnlJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlJugarMouseClicked
+        Jugar();
+    }//GEN-LAST:event_pnlJugarMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -293,8 +337,6 @@ public class FrameSala extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -306,7 +348,9 @@ public class FrameSala extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
+    private javax.swing.JLabel lblJugar;
+    private javax.swing.JLabel lblVolver;
+    private javax.swing.JPanel pnlJugar;
+    private javax.swing.JPanel pnlVolver;
     // End of variables declaration//GEN-END:variables
 }

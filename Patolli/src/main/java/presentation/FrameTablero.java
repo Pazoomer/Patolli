@@ -21,7 +21,7 @@ public class FrameTablero extends javax.swing.JFrame {
 
     }
 
-    public void inicializarGui() {
+    private void inicializarGui() {
         //Tablero
         inicializarTablero(tableroArriba, 8, 2);
         inicializarTablero(tableroAbajo, 8, 2);
@@ -74,7 +74,7 @@ public class FrameTablero extends javax.swing.JFrame {
         inicializarImagen(this.caña5, "/cañaLisa.png", 36, 46);
     }
 
-    public void inicializarTablero(JPanel tablero, int filas, int columnas) {
+    private void inicializarTablero(JPanel tablero, int filas, int columnas) {
 
         tablero.setLayout(new GridLayout(filas, columnas));
         tablero.setPreferredSize(tablero.getSize());
@@ -109,6 +109,13 @@ public class FrameTablero extends javax.swing.JFrame {
         }
     }
 
+    public void Salir(){
+        //Sale al menu inicial
+    }
+    
+    public void LanzarCañas() {
+        //Lanza las cañas
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -495,6 +502,11 @@ public class FrameTablero extends javax.swing.JFrame {
         btnSalir.setBackground(new java.awt.Color(192, 160, 123));
         btnSalir.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
         btnSalir.setText("Salir");
+        btnSalir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSalirMouseClicked(evt);
+            }
+        });
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalirActionPerformed(evt);
@@ -504,6 +516,11 @@ public class FrameTablero extends javax.swing.JFrame {
         btnLanzarCañas.setBackground(new java.awt.Color(192, 160, 123));
         btnLanzarCañas.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
         btnLanzarCañas.setText("Lanzar Cañas");
+        btnLanzarCañas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLanzarCañasMouseClicked(evt);
+            }
+        });
         btnLanzarCañas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLanzarCañasActionPerformed(evt);
@@ -584,15 +601,24 @@ public class FrameTablero extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-
+        Salir();
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnLanzarCañasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLanzarCañasActionPerformed
-
+        LanzarCañas();
     }//GEN-LAST:event_btnLanzarCañasActionPerformed
+
+    private void btnSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalirMouseClicked
+        Salir();
+    }//GEN-LAST:event_btnSalirMouseClicked
+
+    private void btnLanzarCañasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLanzarCañasMouseClicked
+        LanzarCañas();
+    }//GEN-LAST:event_btnLanzarCañasMouseClicked
 
     /**
      * @param args the command line arguments
