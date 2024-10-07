@@ -4,10 +4,14 @@ package presentation;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import utils.Utils;
 
 /**
  *
@@ -15,57 +19,111 @@ import javax.swing.JPanel;
  */
 public class FrameTablero extends javax.swing.JFrame {
 
-    public FrameTablero() {
+    Utils utils;
+    public int tamaño;
+    public int monto;
+    public int fichas;
+    public int jugadores;
+
+    public FrameTablero(int tamaño, int monto, int fichas, int jugadores) {
         initComponents();
+        utils = new Utils();
+        this.tamaño = tamaño;
+        this.monto = monto;
+        this.fichas = fichas;
+        this.jugadores = jugadores;
         inicializarGui();
 
     }
 
     private void inicializarGui() {
         //Tablero
-        inicializarTablero(tableroArriba, 8, 2);
-        inicializarTablero(tableroAbajo, 8, 2);
-        inicializarTablero(tableroDerecha, 2, 8);
-        inicializarTablero(tableroIzquierda, 2, 8);
+        inicializarTablero(tableroArriba, tamaño, 2);
+        inicializarTablero(tableroAbajo, tamaño, 2);
+        inicializarTablero(tableroDerecha, 2, tamaño);
+        inicializarTablero(tableroIzquierda, 2, tamaño);
         inicializarTablero(tableroCentro, 2, 2);
 
-        //Fichas
-        inicializarImagen(this.iconConcha, "/concha.png", 120, 120);
-
-        inicializarImagen(this.fichaConcha1, "/concha.png", 20, 20);
-        inicializarImagen(this.fichaConcha2, "/concha.png", 20, 20);
-        inicializarImagen(this.fichaConcha3, "/concha.png", 20, 20);
-        inicializarImagen(this.fichaConcha4, "/concha.png", 20, 20);
-        inicializarImagen(this.fichaConcha5, "/concha.png", 20, 20);
-        inicializarImagen(this.fichaConcha6, "/concha.png", 20, 20);
-
-        inicializarImagen(this.iconGato, "/cat.png", 120, 120);
-
-        inicializarImagen(this.fichaGato1, "/cat.png", 20, 20);
-        inicializarImagen(this.fichaGato2, "/cat.png", 20, 20);
-        inicializarImagen(this.fichaGato3, "/cat.png", 20, 20);
-        inicializarImagen(this.fichaGato4, "/cat.png", 20, 20);
-        inicializarImagen(this.fichaGato5, "/cat.png", 20, 20);
-        inicializarImagen(this.fichaGato6, "/cat.png", 20, 20);
-
-        inicializarImagen(this.iconPiramide, "/piramide.png", 120, 120);
-
-        inicializarImagen(this.fichaPiramide1, "/piramide.png", 20, 20);
-        inicializarImagen(this.fichaPiramide2, "/piramide.png", 20, 20);
-        inicializarImagen(this.fichaPiramide3, "/piramide.png", 20, 20);
-        inicializarImagen(this.fichaPiramide4, "/piramide.png", 20, 20);
-        inicializarImagen(this.fichaPiramide5, "/piramide.png", 20, 20);
-        inicializarImagen(this.fichaPiramide6, "/piramide.png", 20, 20);
-
-        inicializarImagen(this.iconMazorca, "/mazorca.png", 120, 120);
-
-        inicializarImagen(this.fichaMazorca1, "/mazorca.png", 20, 20);
-        inicializarImagen(this.fichaMazorca2, "/mazorca.png", 20, 20);
-        inicializarImagen(this.fichaMazorca3, "/mazorca.png", 20, 20);
-        inicializarImagen(this.fichaMazorca4, "/mazorca.png", 20, 20);
-        inicializarImagen(this.fichaMazorca5, "/mazorca.png", 20, 20);
-        inicializarImagen(this.fichaMazorca6, "/mazorca.png", 20, 20);
+        //Monto
+        this.lblConchaApuesta.setText("Apuestas: " + monto);
+        this.lblGatoApuestas.setText("Apuestas: "+monto);
+        this.lblMazorcaApuesta.setText("Apuestas: "+monto);
+        this.lblPiramideApuesta.setText("Apuestas: "+monto);
         
+        //Iconos
+        inicializarImagen(this.iconGato, "/cat.png", 120, 120);
+        inicializarImagen(this.iconConcha, "/concha.png", 120, 120);
+        inicializarImagen(this.iconPiramide, "/piramide.png", 120, 120);
+        inicializarImagen(this.iconMazorca, "/mazorca.png", 120, 120);
+        
+        //Fichas
+        int contadorFichas=0;
+
+        List<JLabel> fichasConcha = new ArrayList<>();
+        fichasConcha.add(this.fichaConcha1);
+        fichasConcha.add(this.fichaConcha2);
+        fichasConcha.add(this.fichaConcha3);
+        fichasConcha.add(this.fichaConcha4);
+        fichasConcha.add(this.fichaConcha5);
+        fichasConcha.add(this.fichaConcha6);
+        
+        List<JLabel> fichasGato = new ArrayList<>();
+        fichasGato.add(this.fichaGato1);
+        fichasGato.add(this.fichaGato2);
+        fichasGato.add(this.fichaGato3);
+        fichasGato.add(this.fichaGato4);
+        fichasGato.add(this.fichaGato5);
+        fichasGato.add(this.fichaGato6);
+        
+        List<JLabel> fichasPiramide = new ArrayList<>();
+        fichasPiramide.add(this.fichaPiramide1);
+        fichasPiramide.add(this.fichaPiramide2);
+        fichasPiramide.add(this.fichaPiramide3);
+        fichasPiramide.add(this.fichaPiramide4);
+        fichasPiramide.add(this.fichaPiramide5);
+        fichasPiramide.add(this.fichaPiramide6);
+        
+        List<JLabel> fichasMazorca = new ArrayList<>();
+        fichasMazorca.add(this.fichaMazorca1);
+        fichasMazorca.add(this.fichaMazorca2);
+        fichasMazorca.add(this.fichaMazorca3);
+        fichasMazorca.add(this.fichaMazorca4);
+        fichasMazorca.add(this.fichaMazorca5);
+        fichasMazorca.add(this.fichaMazorca6);
+
+        for (int i = 0; i < fichasConcha.size(); i++) {
+            if (contadorFichas >= fichas) {
+                //Remueve el label
+                this.pnlConcha.remove(fichasConcha.get(i));
+                this.pnlGato.remove(fichasGato.get(i));
+                this.pnlPiramide.remove(fichasPiramide.get(i));
+                this.pnlMazorca.remove(fichasMazorca.get(i));
+            } else {
+                //Inicializa la imagen
+                inicializarImagen(fichasConcha.get(i), "/concha.png", 20, 20);
+                inicializarImagen(fichasGato.get(i), "/cat.png", 20, 20);
+                inicializarImagen(fichasPiramide.get(i), "/piramide.png", 20, 20);
+                inicializarImagen(fichasMazorca.get(i), "/mazorca.png", 20, 20);
+            }
+            contadorFichas++;
+        }
+        
+        //Jugadores
+        for (int i = 0; i < -jugadores+4; i++) {
+            switch (2-i) {
+                case 2 -> {
+                    this.pnlJugadores.remove(this.pnlMazorca);
+                }
+                case 1 -> {
+                    this.pnlJugadores.remove(this.pnlPiramide);
+                }
+                case 0 -> {
+                    this.pnlJugadores.remove(this.pnlConcha);
+                    
+                }
+            }
+        }
+
         //Cañas
         inicializarImagen(this.caña1, "/cañaLisa.png", 36, 46);
         inicializarImagen(this.caña2, "/cañaLisa.png", 36, 46);
@@ -111,10 +169,15 @@ public class FrameTablero extends javax.swing.JFrame {
 
     public void Salir(){
         //Sale al menu inicial
+        FrameInicio inicio=new FrameInicio();
+        inicio.setVisible(true);
+        this.dispose();
     }
-    
+
     public void LanzarCañas() {
         //Lanza las cañas
+        JOptionPane.showMessageDialog(null, "Resultado: "+utils.GenerarLanzamiento(), "Simulacion de lanzamiento", JOptionPane.INFORMATION_MESSAGE);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -127,38 +190,42 @@ public class FrameTablero extends javax.swing.JFrame {
         tableroDerecha = new javax.swing.JPanel();
         tableroIzquierda = new javax.swing.JPanel();
         pnlJugadores = new javax.swing.JPanel();
-        iconGato = new javax.swing.JLabel();
+        pnlConcha = new javax.swing.JPanel();
         iconConcha = new javax.swing.JLabel();
-        iconPiramide = new javax.swing.JLabel();
-        iconMazorca = new javax.swing.JLabel();
-        lblGatoApuestas = new javax.swing.JLabel();
-        lblPiramideApuesta = new javax.swing.JLabel();
-        lblMazorcaApuesta = new javax.swing.JLabel();
         lblConchaApuesta = new javax.swing.JLabel();
-        fichaGato1 = new javax.swing.JLabel();
         fichaConcha2 = new javax.swing.JLabel();
-        fichaGato4 = new javax.swing.JLabel();
-        fichaGato3 = new javax.swing.JLabel();
-        fichaConcha1 = new javax.swing.JLabel();
-        fichaGato2 = new javax.swing.JLabel();
         fichaConcha3 = new javax.swing.JLabel();
-        fichaConcha4 = new javax.swing.JLabel();
-        fichaPiramide1 = new javax.swing.JLabel();
-        fichaPiramide2 = new javax.swing.JLabel();
-        fichaPiramide3 = new javax.swing.JLabel();
-        fichaPiramide4 = new javax.swing.JLabel();
-        fichaMazorca1 = new javax.swing.JLabel();
-        fichaMazorca2 = new javax.swing.JLabel();
-        fichaMazorca3 = new javax.swing.JLabel();
-        fichaMazorca4 = new javax.swing.JLabel();
-        fichaGato5 = new javax.swing.JLabel();
-        fichaGato6 = new javax.swing.JLabel();
-        fichaConcha5 = new javax.swing.JLabel();
+        fichaConcha1 = new javax.swing.JLabel();
         fichaConcha6 = new javax.swing.JLabel();
+        fichaConcha4 = new javax.swing.JLabel();
+        fichaConcha5 = new javax.swing.JLabel();
+        pnlPiramide = new javax.swing.JPanel();
+        iconPiramide = new javax.swing.JLabel();
         fichaPiramide5 = new javax.swing.JLabel();
         fichaPiramide6 = new javax.swing.JLabel();
+        fichaPiramide3 = new javax.swing.JLabel();
+        fichaPiramide4 = new javax.swing.JLabel();
+        fichaPiramide1 = new javax.swing.JLabel();
+        fichaPiramide2 = new javax.swing.JLabel();
+        lblPiramideApuesta = new javax.swing.JLabel();
+        pnlMazorca = new javax.swing.JPanel();
+        iconMazorca = new javax.swing.JLabel();
         fichaMazorca5 = new javax.swing.JLabel();
         fichaMazorca6 = new javax.swing.JLabel();
+        fichaMazorca3 = new javax.swing.JLabel();
+        fichaMazorca4 = new javax.swing.JLabel();
+        fichaMazorca2 = new javax.swing.JLabel();
+        fichaMazorca1 = new javax.swing.JLabel();
+        lblMazorcaApuesta = new javax.swing.JLabel();
+        pnlGato = new javax.swing.JPanel();
+        fichaGato2 = new javax.swing.JLabel();
+        fichaGato1 = new javax.swing.JLabel();
+        fichaGato3 = new javax.swing.JLabel();
+        fichaGato5 = new javax.swing.JLabel();
+        fichaGato6 = new javax.swing.JLabel();
+        fichaGato4 = new javax.swing.JLabel();
+        lblGatoApuestas = new javax.swing.JLabel();
+        iconGato = new javax.swing.JLabel();
         pnlBotones = new javax.swing.JPanel();
         btnSalir = new javax.swing.JButton();
         btnLanzarCañas = new javax.swing.JButton();
@@ -237,7 +304,7 @@ public class FrameTablero extends javax.swing.JFrame {
         tableroIzquierda.setLayout(tableroIzquierdaLayout);
         tableroIzquierdaLayout.setHorizontalGroup(
             tableroIzquierdaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 183, Short.MAX_VALUE)
         );
         tableroIzquierdaLayout.setVerticalGroup(
             tableroIzquierdaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -281,74 +348,274 @@ public class FrameTablero extends javax.swing.JFrame {
         pnlJugadores.setBackground(new java.awt.Color(102, 102, 0));
         pnlJugadores.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        iconGato.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cat.png"))); // NOI18N
+        pnlConcha.setBackground(new java.awt.Color(102, 102, 0));
+        pnlConcha.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         iconConcha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/concha.png"))); // NOI18N
-
-        iconPiramide.setIcon(new javax.swing.ImageIcon(getClass().getResource("/piramide.png"))); // NOI18N
-
-        iconMazorca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mazorca.png"))); // NOI18N
-        iconMazorca.setText("jLabel5");
-
-        lblGatoApuestas.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        lblGatoApuestas.setText("Apuestas:");
-
-        lblPiramideApuesta.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        lblPiramideApuesta.setText("Apuestas:");
-
-        lblMazorcaApuesta.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        lblMazorcaApuesta.setText("Apuestas:");
 
         lblConchaApuesta.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         lblConchaApuesta.setText("Apuestas:");
 
-        fichaGato1.setText("1");
-
         fichaConcha2.setText("2");
-
-        fichaGato4.setText("4");
-
-        fichaGato3.setText("3");
-
-        fichaConcha1.setText("1");
-
-        fichaGato2.setText("2");
 
         fichaConcha3.setText("3");
 
+        fichaConcha1.setText("1");
+
+        fichaConcha6.setText("6");
+
         fichaConcha4.setText("4");
-
-        fichaPiramide1.setText("1");
-
-        fichaPiramide2.setText("2");
-
-        fichaPiramide3.setText("3");
-
-        fichaPiramide4.setText("4");
-
-        fichaMazorca1.setText("1");
-
-        fichaMazorca2.setText("2");
-
-        fichaMazorca3.setText("3");
-
-        fichaMazorca4.setText("4");
-
-        fichaGato5.setText("5");
-
-        fichaGato6.setText("6");
 
         fichaConcha5.setText("5");
 
-        fichaConcha6.setText("6");
+        javax.swing.GroupLayout pnlConchaLayout = new javax.swing.GroupLayout(pnlConcha);
+        pnlConcha.setLayout(pnlConchaLayout);
+        pnlConchaLayout.setHorizontalGroup(
+            pnlConchaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlConchaLayout.createSequentialGroup()
+                .addComponent(iconConcha, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlConchaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlConchaLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblConchaApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlConchaLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                        .addGroup(pnlConchaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlConchaLayout.createSequentialGroup()
+                                .addComponent(fichaConcha1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(fichaConcha2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlConchaLayout.createSequentialGroup()
+                                .addComponent(fichaConcha3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(fichaConcha4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlConchaLayout.createSequentialGroup()
+                                .addComponent(fichaConcha5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(fichaConcha6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())))
+        );
+        pnlConchaLayout.setVerticalGroup(
+            pnlConchaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(iconConcha, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(pnlConchaLayout.createSequentialGroup()
+                .addComponent(lblConchaApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(pnlConchaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fichaConcha5)
+                    .addComponent(fichaConcha6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlConchaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fichaConcha3)
+                    .addComponent(fichaConcha4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlConchaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fichaConcha1)
+                    .addComponent(fichaConcha2)))
+        );
+
+        pnlPiramide.setBackground(new java.awt.Color(102, 102, 0));
+        pnlPiramide.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        iconPiramide.setIcon(new javax.swing.ImageIcon(getClass().getResource("/piramide.png"))); // NOI18N
 
         fichaPiramide5.setText("5");
 
         fichaPiramide6.setText("6");
 
+        fichaPiramide3.setText("3");
+
+        fichaPiramide4.setText("4");
+
+        fichaPiramide1.setText("1");
+
+        fichaPiramide2.setText("2");
+
+        lblPiramideApuesta.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        lblPiramideApuesta.setText("Apuestas:");
+
+        javax.swing.GroupLayout pnlPiramideLayout = new javax.swing.GroupLayout(pnlPiramide);
+        pnlPiramide.setLayout(pnlPiramideLayout);
+        pnlPiramideLayout.setHorizontalGroup(
+            pnlPiramideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPiramideLayout.createSequentialGroup()
+                .addComponent(iconPiramide, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlPiramideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlPiramideLayout.createSequentialGroup()
+                        .addComponent(fichaPiramide1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(fichaPiramide2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlPiramideLayout.createSequentialGroup()
+                        .addComponent(fichaPiramide3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(fichaPiramide4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlPiramideLayout.createSequentialGroup()
+                        .addComponent(fichaPiramide5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(fichaPiramide6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblPiramideApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 6, Short.MAX_VALUE))
+        );
+        pnlPiramideLayout.setVerticalGroup(
+            pnlPiramideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPiramideLayout.createSequentialGroup()
+                .addComponent(iconPiramide, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 12, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPiramideLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblPiramideApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnlPiramideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fichaPiramide5)
+                    .addComponent(fichaPiramide6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlPiramideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fichaPiramide3)
+                    .addComponent(fichaPiramide4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlPiramideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fichaPiramide1)
+                    .addComponent(fichaPiramide2))
+                .addContainerGap())
+        );
+
+        pnlMazorca.setBackground(new java.awt.Color(102, 102, 0));
+        pnlMazorca.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        iconMazorca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mazorca.png"))); // NOI18N
+        iconMazorca.setText("jLabel5");
+
         fichaMazorca5.setText("5");
 
         fichaMazorca6.setText("6");
+
+        fichaMazorca3.setText("3");
+
+        fichaMazorca4.setText("4");
+
+        fichaMazorca2.setText("2");
+
+        fichaMazorca1.setText("1");
+
+        lblMazorcaApuesta.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        lblMazorcaApuesta.setText("Apuestas:");
+
+        javax.swing.GroupLayout pnlMazorcaLayout = new javax.swing.GroupLayout(pnlMazorca);
+        pnlMazorca.setLayout(pnlMazorcaLayout);
+        pnlMazorcaLayout.setHorizontalGroup(
+            pnlMazorcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMazorcaLayout.createSequentialGroup()
+                .addComponent(iconMazorca, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlMazorcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlMazorcaLayout.createSequentialGroup()
+                        .addComponent(fichaMazorca1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(fichaMazorca2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlMazorcaLayout.createSequentialGroup()
+                        .addComponent(fichaMazorca3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(fichaMazorca4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlMazorcaLayout.createSequentialGroup()
+                        .addComponent(fichaMazorca5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(fichaMazorca6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblMazorcaApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 6, Short.MAX_VALUE))
+        );
+        pnlMazorcaLayout.setVerticalGroup(
+            pnlMazorcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMazorcaLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnlMazorcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(pnlMazorcaLayout.createSequentialGroup()
+                        .addComponent(lblMazorcaApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(pnlMazorcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(fichaMazorca5)
+                            .addComponent(fichaMazorca6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlMazorcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(fichaMazorca3)
+                            .addComponent(fichaMazorca4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlMazorcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(fichaMazorca1)
+                            .addComponent(fichaMazorca2)))
+                    .addComponent(iconMazorca, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        pnlGato.setBackground(new java.awt.Color(102, 102, 0));
+        pnlGato.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        fichaGato2.setText("2");
+
+        fichaGato1.setText("1");
+
+        fichaGato3.setText("3");
+
+        fichaGato5.setText("5");
+
+        fichaGato6.setText("6");
+
+        fichaGato4.setText("4");
+
+        lblGatoApuestas.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        lblGatoApuestas.setText("Apuestas:");
+
+        iconGato.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cat.png"))); // NOI18N
+
+        javax.swing.GroupLayout pnlGatoLayout = new javax.swing.GroupLayout(pnlGato);
+        pnlGato.setLayout(pnlGatoLayout);
+        pnlGatoLayout.setHorizontalGroup(
+            pnlGatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlGatoLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(iconGato, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlGatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlGatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlGatoLayout.createSequentialGroup()
+                            .addComponent(fichaGato1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(fichaGato2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(pnlGatoLayout.createSequentialGroup()
+                            .addGroup(pnlGatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(fichaGato5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(fichaGato3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(pnlGatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(fichaGato4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(fichaGato6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(lblGatoApuestas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        pnlGatoLayout.setVerticalGroup(
+            pnlGatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlGatoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlGatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlGatoLayout.createSequentialGroup()
+                        .addComponent(iconGato, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 6, Short.MAX_VALUE))
+                    .addGroup(pnlGatoLayout.createSequentialGroup()
+                        .addComponent(lblGatoApuestas, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(pnlGatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(fichaGato5)
+                            .addComponent(fichaGato6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlGatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(fichaGato4)
+                            .addComponent(fichaGato3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlGatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(fichaGato1)
+                            .addComponent(fichaGato2)))))
+        );
 
         javax.swing.GroupLayout pnlJugadoresLayout = new javax.swing.GroupLayout(pnlJugadores);
         pnlJugadores.setLayout(pnlJugadoresLayout);
@@ -356,144 +623,29 @@ public class FrameTablero extends javax.swing.JFrame {
             pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlJugadoresLayout.createSequentialGroup()
                 .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlJugadoresLayout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(iconMazorca, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(iconConcha, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(iconPiramide, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlJugadoresLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(iconGato, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblPiramideApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblMazorcaApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblConchaApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlJugadoresLayout.createSequentialGroup()
-                        .addComponent(fichaGato1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fichaGato2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(lblGatoApuestas, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlJugadoresLayout.createSequentialGroup()
-                            .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(fichaGato5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(fichaGato3, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(fichaGato4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(fichaGato6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(pnlJugadoresLayout.createSequentialGroup()
-                        .addComponent(fichaConcha1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(fichaConcha2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlJugadoresLayout.createSequentialGroup()
-                        .addComponent(fichaConcha3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(fichaConcha4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlJugadoresLayout.createSequentialGroup()
-                        .addComponent(fichaPiramide1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(fichaPiramide2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlJugadoresLayout.createSequentialGroup()
-                        .addComponent(fichaPiramide3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(fichaPiramide4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlJugadoresLayout.createSequentialGroup()
-                        .addComponent(fichaMazorca1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(fichaMazorca2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlJugadoresLayout.createSequentialGroup()
-                        .addComponent(fichaMazorca3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(fichaMazorca4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlJugadoresLayout.createSequentialGroup()
-                        .addComponent(fichaConcha5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(fichaConcha6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlJugadoresLayout.createSequentialGroup()
-                        .addComponent(fichaPiramide5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(fichaPiramide6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlJugadoresLayout.createSequentialGroup()
-                        .addComponent(fichaMazorca5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(fichaMazorca6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(25, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(pnlGato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlJugadoresLayout.createSequentialGroup()
+                        .addContainerGap(29, Short.MAX_VALUE)
+                        .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pnlConcha, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pnlPiramide, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pnlMazorca, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         pnlJugadoresLayout.setVerticalGroup(
             pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlJugadoresLayout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(iconGato, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlJugadoresLayout.createSequentialGroup()
-                        .addComponent(lblGatoApuestas, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fichaGato5)
-                            .addComponent(fichaGato6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fichaGato4)
-                            .addComponent(fichaGato3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fichaGato1)
-                            .addComponent(fichaGato2))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(iconConcha, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlJugadoresLayout.createSequentialGroup()
-                        .addComponent(lblConchaApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fichaConcha5)
-                            .addComponent(fichaConcha6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fichaConcha3)
-                            .addComponent(fichaConcha4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fichaConcha1)
-                            .addComponent(fichaConcha2))))
-                .addGap(28, 28, 28)
-                .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(iconPiramide, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlJugadoresLayout.createSequentialGroup()
-                        .addComponent(lblPiramideApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fichaPiramide5)
-                            .addComponent(fichaPiramide6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fichaPiramide3)
-                            .addComponent(fichaPiramide4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fichaPiramide1)
-                            .addComponent(fichaPiramide2))))
-                .addGap(18, 18, 18)
-                .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(iconMazorca, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlJugadoresLayout.createSequentialGroup()
-                        .addComponent(lblMazorcaApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fichaMazorca5)
-                            .addComponent(fichaMazorca6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fichaMazorca3)
-                            .addComponent(fichaMazorca4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fichaMazorca1)
-                            .addComponent(fichaMazorca2))))
-                .addGap(25, 25, 25))
+                .addGap(14, 14, 14)
+                .addComponent(pnlGato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlConcha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pnlPiramide, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pnlMazorca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         pnlBotones.setBackground(new java.awt.Color(102, 102, 0));
@@ -571,7 +723,7 @@ public class FrameTablero extends javax.swing.JFrame {
                     .addGroup(pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnLanzarCañas, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -581,7 +733,7 @@ public class FrameTablero extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnlJugadores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(pnlTablero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnlBotones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -596,8 +748,7 @@ public class FrameTablero extends javax.swing.JFrame {
                         .addComponent(pnlTablero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnlBotones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(pnlJugadores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(pnlJugadores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
@@ -651,7 +802,7 @@ public class FrameTablero extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrameTablero().setVisible(true);
+                new FrameTablero(8,10,4,3).setVisible(true);
             }
         });
     }
@@ -665,11 +816,17 @@ public class FrameTablero extends javax.swing.JFrame {
     private javax.swing.JLabel caña4;
     private javax.swing.JLabel caña5;
     private javax.swing.JLabel fichaConcha1;
+    private javax.swing.JLabel fichaConcha10;
+    private javax.swing.JLabel fichaConcha11;
+    private javax.swing.JLabel fichaConcha12;
     private javax.swing.JLabel fichaConcha2;
     private javax.swing.JLabel fichaConcha3;
     private javax.swing.JLabel fichaConcha4;
     private javax.swing.JLabel fichaConcha5;
     private javax.swing.JLabel fichaConcha6;
+    private javax.swing.JLabel fichaConcha7;
+    private javax.swing.JLabel fichaConcha8;
+    private javax.swing.JLabel fichaConcha9;
     private javax.swing.JLabel fichaGato1;
     private javax.swing.JLabel fichaGato2;
     private javax.swing.JLabel fichaGato3;
@@ -689,15 +846,22 @@ public class FrameTablero extends javax.swing.JFrame {
     private javax.swing.JLabel fichaPiramide5;
     private javax.swing.JLabel fichaPiramide6;
     private javax.swing.JLabel iconConcha;
+    private javax.swing.JLabel iconConcha1;
     private javax.swing.JLabel iconGato;
     private javax.swing.JLabel iconMazorca;
     private javax.swing.JLabel iconPiramide;
     private javax.swing.JLabel lblConchaApuesta;
+    private javax.swing.JLabel lblConchaApuesta1;
     private javax.swing.JLabel lblGatoApuestas;
     private javax.swing.JLabel lblMazorcaApuesta;
     private javax.swing.JLabel lblPiramideApuesta;
     private javax.swing.JPanel pnlBotones;
+    private javax.swing.JPanel pnlConcha;
+    private javax.swing.JPanel pnlConcha1;
+    private javax.swing.JPanel pnlGato;
     private javax.swing.JPanel pnlJugadores;
+    private javax.swing.JPanel pnlMazorca;
+    private javax.swing.JPanel pnlPiramide;
     private javax.swing.JPanel pnlTablero;
     private javax.swing.JPanel tableroAbajo;
     private javax.swing.JPanel tableroArriba;

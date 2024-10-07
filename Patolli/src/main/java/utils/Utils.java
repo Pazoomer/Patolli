@@ -46,4 +46,18 @@ public class Utils {
         return resultados[new Random().nextInt(resultados.length)];
 
     }
+    
+     public static String GenerarCodigoSala(){
+        String letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // Letras disponibles
+        StringBuilder codigo = new StringBuilder();
+        Random random = new Random();
+
+        // Generar 4 letras aleatorias
+        for (int i = 0; i < 4; i++) {
+            int index = random.nextInt(letras.length());
+            codigo.append(letras.charAt(index));
+        }
+
+        return codigo.toString(); // Retornar el código generado
+    }
 }

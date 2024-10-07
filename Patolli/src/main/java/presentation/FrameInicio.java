@@ -9,6 +9,9 @@ public class FrameInicio extends javax.swing.JFrame {
     
     public void PasarPantalla() {
         //Pasa a la pantalla Opciones
+        FrameOpciones opciones=new FrameOpciones();
+        opciones.setVisible(true);
+        this.dispose();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

@@ -1,6 +1,5 @@
 package presentation;
 
-import DTO.OpcionesTablero;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -8,8 +7,10 @@ import javax.swing.JOptionPane;
 
 public class FrameOpciones extends javax.swing.JFrame {
 
-    public OpcionesTablero opcionesTablero=new OpcionesTablero();
-    
+    public int tamaño;
+    public int monto;
+    public int fichas;
+
     public FrameOpciones() {
         initComponents();
         SetTamañoTablero(8);
@@ -19,10 +20,16 @@ public class FrameOpciones extends javax.swing.JFrame {
 
     public void Jugar() {
         //Pasa a la pantalla sala
+        FrameSala sala = new FrameSala(tamaño, monto, fichas, null);
+        sala.setVisible(true);
+        this.dispose();
     }
 
     public void ComoJugar() {
         //Pasa a la pantalla Como Jugar
+        FrameComoJugar comoJugar=new FrameComoJugar();
+        comoJugar.setVisible(true);
+        this.dispose();
     }
 
     public void Unirse() {
@@ -37,7 +44,7 @@ public class FrameOpciones extends javax.swing.JFrame {
 
     public void SetTamañoTablero(int tamaño) {
         //Pone el tamaño del tablero
-        opcionesTablero.tamaño = tamaño;
+        this.tamaño = tamaño;
 
         JLabel label = null;
         switch (tamaño) {
@@ -78,7 +85,7 @@ public class FrameOpciones extends javax.swing.JFrame {
 
     public void SetMontoApuestas(int monto) {
         //Pone el monto de apuestas
-        opcionesTablero.monto = monto;
+        this.monto = monto;
 
         JLabel label = null;
         
@@ -119,7 +126,7 @@ public class FrameOpciones extends javax.swing.JFrame {
 
     public void SetFichasJugador(int fichas) {
         //Pone las fichas de jugador
-        opcionesTablero.fichas = fichas;
+        this.fichas = fichas;
         
         JLabel label = null;
         

@@ -1,20 +1,43 @@
 
 package presentation;
 
+import utils.Utils;
+
 
 public class FrameSala extends javax.swing.JFrame {
 
+    public int tamaño;
+    public int monto;
+    public int fichas;
+    public int jugadores;
+    public String codigo;
 
-    public FrameSala() {
+    public FrameSala(int tamaño, int monto, int fichas, String codigo) {
         initComponents();
+        this.tamaño = tamaño;
+        this.monto = monto;
+        this.fichas = fichas;
+
+        if (codigo != null) {
+            this.codigo = codigo;
+        } else {
+            this.codigo = Utils.GenerarCodigoSala();
+        }
+        this.lblCodigo.setText("CODIGO: "+this.codigo);
     }
 
     public void Volver() {
         //Pasa a la pantalla de opciones
+        FrameOpciones opciones = new FrameOpciones();
+        opciones.setVisible(true);
+        this.dispose();
     }
     
     public void Jugar(){
         //Pasa a la pantalla de tablero
+        FrameTablero tablero=new FrameTablero(tamaño, monto, fichas, jugadores);
+        tablero.setVisible(true);
+        this.dispose();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -22,7 +45,7 @@ public class FrameSala extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        lblCodigo = new javax.swing.JLabel();
         pnlVolver = new javax.swing.JPanel();
         lblVolver = new javax.swing.JLabel();
         pnlJugar = new javax.swing.JPanel();
@@ -51,8 +74,8 @@ public class FrameSala extends javax.swing.JFrame {
         jPanel2.setMaximumSize(new java.awt.Dimension(300, 75));
         jPanel2.setMinimumSize(new java.awt.Dimension(300, 75));
 
-        jLabel1.setFont(new java.awt.Font("Comic Sans MS", 1, 30)); // NOI18N
-        jLabel1.setText("CODIGO: J5BA2C");
+        lblCodigo.setFont(new java.awt.Font("Comic Sans MS", 1, 30)); // NOI18N
+        lblCodigo.setText("CODIGO: J5BA2C");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -60,14 +83,14 @@ public class FrameSala extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(40, 40, 40)
-                .addComponent(jLabel1)
+                .addComponent(lblCodigo)
                 .addContainerGap(35, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addComponent(jLabel1)
+                .addComponent(lblCodigo)
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -329,13 +352,12 @@ public class FrameSala extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrameSala().setVisible(true);
+                new FrameSala(8,10,2,null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
@@ -348,6 +370,7 @@ public class FrameSala extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblJugar;
     private javax.swing.JLabel lblVolver;
     private javax.swing.JPanel pnlJugar;

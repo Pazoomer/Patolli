@@ -12,6 +12,9 @@ public class FrameComoJugar extends javax.swing.JFrame {
     
     public void Volver(){
         //Pasa a la pantalla Opciones
+        FrameOpciones opciones=new FrameOpciones();
+        opciones.setVisible(true);
+        this.dispose();
     }
     
     public void InstruccionDerecha() {
