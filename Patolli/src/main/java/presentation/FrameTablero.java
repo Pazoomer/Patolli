@@ -162,9 +162,12 @@ public class FrameTablero extends javax.swing.JFrame {
         caña5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(102, 102, 0));
 
+        pnlTablero.setBackground(new java.awt.Color(102, 102, 0));
         pnlTablero.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        tableroArriba.setBackground(new java.awt.Color(102, 102, 0));
         tableroArriba.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout tableroArribaLayout = new javax.swing.GroupLayout(tableroArriba);
@@ -178,6 +181,7 @@ public class FrameTablero extends javax.swing.JFrame {
             .addGap(0, 192, Short.MAX_VALUE)
         );
 
+        tableroCentro.setBackground(new java.awt.Color(102, 102, 0));
         tableroCentro.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout tableroCentroLayout = new javax.swing.GroupLayout(tableroCentro);
@@ -191,6 +195,7 @@ public class FrameTablero extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
+        tableroAbajo.setBackground(new java.awt.Color(102, 102, 0));
         tableroAbajo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout tableroAbajoLayout = new javax.swing.GroupLayout(tableroAbajo);
@@ -204,6 +209,7 @@ public class FrameTablero extends javax.swing.JFrame {
             .addGap(0, 180, Short.MAX_VALUE)
         );
 
+        tableroDerecha.setBackground(new java.awt.Color(102, 102, 0));
         tableroDerecha.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout tableroDerechaLayout = new javax.swing.GroupLayout(tableroDerecha);
@@ -217,6 +223,7 @@ public class FrameTablero extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
+        tableroIzquierda.setBackground(new java.awt.Color(102, 102, 0));
         tableroIzquierda.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout tableroIzquierdaLayout = new javax.swing.GroupLayout(tableroIzquierda);
@@ -264,6 +271,7 @@ public class FrameTablero extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        pnlJugadores.setBackground(new java.awt.Color(102, 102, 0));
         pnlJugadores.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         iconGato.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cat.png"))); // NOI18N
@@ -275,12 +283,16 @@ public class FrameTablero extends javax.swing.JFrame {
         iconMazorca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mazorca.png"))); // NOI18N
         iconMazorca.setText("jLabel5");
 
+        lblGatoApuestas.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         lblGatoApuestas.setText("Apuestas:");
 
+        lblPiramideApuesta.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         lblPiramideApuesta.setText("Apuestas:");
 
+        lblMazorcaApuesta.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         lblMazorcaApuesta.setText("Apuestas:");
 
+        lblConchaApuesta.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         lblConchaApuesta.setText("Apuestas:");
 
         fichaGato1.setText("1");
@@ -477,9 +489,11 @@ public class FrameTablero extends javax.swing.JFrame {
                 .addGap(25, 25, 25))
         );
 
+        pnlBotones.setBackground(new java.awt.Color(102, 102, 0));
         pnlBotones.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        btnSalir.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        btnSalir.setBackground(new java.awt.Color(192, 160, 123));
+        btnSalir.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -487,7 +501,8 @@ public class FrameTablero extends javax.swing.JFrame {
             }
         });
 
-        btnLanzarCañas.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        btnLanzarCañas.setBackground(new java.awt.Color(192, 160, 123));
+        btnLanzarCañas.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
         btnLanzarCañas.setText("Lanzar Cañas");
         btnLanzarCañas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -651,7 +666,6 @@ public class FrameTablero extends javax.swing.JFrame {
     private javax.swing.JLabel iconGato;
     private javax.swing.JLabel iconMazorca;
     private javax.swing.JLabel iconPiramide;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JLabel lblConchaApuesta;
     private javax.swing.JLabel lblGatoApuestas;
     private javax.swing.JLabel lblMazorcaApuesta;
