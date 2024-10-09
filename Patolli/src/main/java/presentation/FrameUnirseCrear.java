@@ -1,32 +1,43 @@
-
 package presentation;
 
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Clase que representa la interfaz de usuario para unirse o crear una partida.
+ * Esta clase permite a los jugadores ingresar un código para unirse a una partida existente 
+ * o crear una nueva partida.
+ * 
  * @author t1pas
  */
 public class FrameUnirseCrear extends javax.swing.JFrame {
 
     /**
-     * Creates new form FrameUnirseCrear
+     * Crea una nueva instancia de FrameUnirseCrear.
+     * Inicializa los componentes de la interfaz gráfica.
      */
     public FrameUnirseCrear() {
         initComponents();
     }
     
-    public void Unirse(){
-        //Pasa a la pantalla sala con el codigo 
+    /**
+     * Intenta unirse a una partida existente utilizando el código proporcionado.
+     * Si el código es válido, se muestra un mensaje de éxito. 
+     * De lo contrario, se muestra un mensaje de error indicando que la partida no fue encontrada.
+     */
+    public void Unirse() {
+        // Pasa a la pantalla sala con el código 
         if (this.txtCodigo.getText() != null && !"AAAA".equals(this.txtCodigo.getText())) {
-            JOptionPane.showMessageDialog(null, "No se encontro la partida", "Partida no encontrada", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No se encontró la partida", "Partida no encontrada", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(null, "Uniendose a la partida", "Partida encontrada", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Uniéndose a la partida", "Partida encontrada", JOptionPane.INFORMATION_MESSAGE);
         }
     }
     
-    public void Crear(){
-        FrameOpciones opciones=new FrameOpciones();
+    /**
+     * Crea una nueva partida y muestra la pantalla de opciones.
+     */
+    public void Crear() {
+        FrameOpciones opciones = new FrameOpciones();
         opciones.setVisible(true);
         this.dispose();
     }
@@ -189,19 +200,39 @@ public class FrameUnirseCrear extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Maneja el evento de clic del mouse en la etiqueta "Unirse".
+     * Llama al método Unirse para intentar unirse a una partida.
+     *
+     * @param evt el evento de clic del mouse generado al hacer clic en la etiqueta
+     */
     private void lblUnirseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUnirseMouseClicked
         Unirse();
     }//GEN-LAST:event_lblUnirseMouseClicked
-
+    /**
+     * Maneja el evento de clic del mouse en el panel "Unirse".
+     * Llama al método Unirse para intentar unirse a una partida.
+     *
+     * @param evt el evento de clic del mouse generado al hacer clic en el panel
+     */
     private void pnlUnirseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlUnirseMouseClicked
         Unirse();
     }//GEN-LAST:event_pnlUnirseMouseClicked
-
+    /**
+     * Maneja el evento de clic del mouse en la etiqueta "Crear".
+     * Llama al método Crear para iniciar una nueva partida.
+     *
+     * @param evt el evento de clic del mouse generado al hacer clic en la etiqueta
+     */
     private void lblCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCrearMouseClicked
         Crear();
     }//GEN-LAST:event_lblCrearMouseClicked
-
+    /**
+     * Maneja el evento de clic del mouse en el panel "Crear".
+     * Llama al método Crear para iniciar una nueva partida.
+     *
+     * @param evt el evento de clic del mouse generado al hacer clic en el panel
+     */
     private void pnlCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlCrearMouseClicked
         Crear();
     }//GEN-LAST:event_pnlCrearMouseClicked

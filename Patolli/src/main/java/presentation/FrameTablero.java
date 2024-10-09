@@ -16,7 +16,10 @@ import javax.swing.border.LineBorder;
 import utils.Utils;
 
 /**
- *
+ * Clase que representa el tablero del juego.
+ * Esta clase se encarga de inicializar y gestionar el estado del tablero, 
+ * así como las interacciones de los jugadores.
+ * 
  * @author t1pas
  */
 public class FrameTablero extends javax.swing.JFrame {
@@ -28,6 +31,14 @@ public class FrameTablero extends javax.swing.JFrame {
     public int jugadores;
     public INegocio negocio;
 
+    /**
+     * Constructor de la clase FrameTablero.
+     *
+     * @param tamaño el tamaño del tablero
+     * @param monto el monto de las apuestas
+     * @param fichas el número de fichas disponibles
+     * @param jugadores el número de jugadores
+     */
     public FrameTablero(int tamaño, int monto, int fichas, int jugadores) {
         this.setResizable(false);
         initComponents();
@@ -37,30 +48,34 @@ public class FrameTablero extends javax.swing.JFrame {
         this.fichas = fichas;
         this.jugadores = jugadores;
         inicializarGui();
-
     }
 
+    /**
+     * Inicializa la interfaz gráfica de usuario del tablero.
+     * Configura los componentes del tablero y establece el estado inicial
+     * de los elementos visuales, como fichas y montos de apuesta.
+     */
     private void inicializarGui() {
-        //Tablero
-        inicializarTablero(tableroArriba, tamaño, 2,false);
-        inicializarTablero(tableroAbajo, tamaño, 2,true);
-        inicializarTablero(tableroDerecha, 2, tamaño,true);
-        inicializarTablero(tableroIzquierda, 2, tamaño,false);
-        inicializarTablero(tableroCentro, 2, 2,true);
+        // Tablero
+        inicializarTablero(tableroArriba, tamaño, 2, false);
+        inicializarTablero(tableroAbajo, tamaño, 2, true);
+        inicializarTablero(tableroDerecha, 2, tamaño, true);
+        inicializarTablero(tableroIzquierda, 2, tamaño, false);
+        inicializarTablero(tableroCentro, 2, 2, true);
 
-        //Monto
+        // Monto
         this.lblConchaApuesta.setText("Apuestas: " + monto);
         this.lblGatoApuestas.setText("Apuestas: " + monto);
         this.lblMazorcaApuesta.setText("Apuestas: " + monto);
         this.lblPiramideApuesta.setText("Apuestas: " + monto);
 
-        //Iconos
+        // Iconos
         inicializarImagen(this.iconGato, "/cat.png", 120, 120);
         inicializarImagen(this.iconConcha, "/concha.png", 120, 120);
         inicializarImagen(this.iconPiramide, "/piramide.png", 120, 120);
         inicializarImagen(this.iconMazorca, "/mazorca.png", 120, 120);
 
-        //Fichas
+        // Fichas
         int contadorFichas = 0;
 
         List<JLabel> fichasConcha = new ArrayList<>();
@@ -97,13 +112,13 @@ public class FrameTablero extends javax.swing.JFrame {
 
         for (int i = 0; i < fichasConcha.size(); i++) {
             if (contadorFichas >= fichas) {
-                //Remueve el label
+                // Remueve el label
                 this.pnlConcha.remove(fichasConcha.get(i));
                 this.pnlGato.remove(fichasGato.get(i));
                 this.pnlPiramide.remove(fichasPiramide.get(i));
                 this.pnlMazorca.remove(fichasMazorca.get(i));
             } else {
-                //Inicializa la imagen
+                // Inicializa la imagen
                 inicializarImagen(fichasConcha.get(i), "/concha.png", 20, 20);
                 inicializarImagen(fichasGato.get(i), "/cat.png", 20, 20);
                 inicializarImagen(fichasPiramide.get(i), "/piramide.png", 20, 20);
@@ -112,7 +127,7 @@ public class FrameTablero extends javax.swing.JFrame {
             contadorFichas++;
         }
 
-        //Jugadores
+        // Jugadores
         for (int i = 0; i < -jugadores + 4; i++) {
             switch (2 - i) {
                 case 2 -> {
@@ -123,104 +138,116 @@ public class FrameTablero extends javax.swing.JFrame {
                 }
                 case 0 -> {
                     this.pnlJugadores.remove(this.pnlConcha);
-
                 }
             }
         }
     }
 
+    /**
+     * Inicializa un tablero específico con un diseño de cuadrícula.
+     *
+     * @param tablero el panel que representa el tablero
+     * @param filas el número de filas en el tablero
+     * @param columnas el número de columnas en el tablero
+     * @param invertir indica si se debe invertir el color de las casillas
+     */
     private void inicializarTablero(JPanel tablero, int filas, int columnas, boolean invertir) {
-
         tablero.setLayout(new GridLayout(filas, columnas));
         tablero.setPreferredSize(tablero.getSize());
         tablero.setMinimumSize(tablero.getSize());
         tablero.setMaximumSize(tablero.getSize());
 
         for (int i = 1; i <= filas * columnas; i++) {
-            JLabel label = new JLabel(""); // Creas un nuevo JLabel
-            label.setBorder(new LineBorder(Color.BLACK, 1)); // Añadir borde rojo
+            JLabel label = new JLabel(""); // Crea un nuevo JLabel
+            label.setBorder(new LineBorder(Color.BLACK, 1)); // Añadir borde negro
             label.setOpaque(true); // Hacer el fondo visible
-
             label.setBackground(Color.WHITE);
+
+            // Lógica para asignar colores a las casillas del tablero
             if (filas * columnas > 6) {
-                //Colocar casilla inicial (Amarilla)
+                // Colocar casilla inicial (Amarilla)
                 if (invertir) {
                     if (columnas > filas) {
                         if (i == columnas + 1) {
-                            label.setBackground(Color.YELLOW); //DERECHA
+                            label.setBackground(Color.YELLOW); // DERECHA
                         }
                     } else {
                         if (i == 1) {
-                            label.setBackground(Color.YELLOW); //ABAJO
+                            label.setBackground(Color.YELLOW); // ABAJO
                         }
                     }
-
                 } else {
                     if (columnas > filas) {
                         if (i == columnas) {
-                            label.setBackground(Color.YELLOW); //IZQUIERDA
+                            label.setBackground(Color.YELLOW); // IZQUIERDA
                         }
                     } else {
                         if (i == filas * columnas) {
-                            label.setBackground(Color.YELLOW); //ARRIBA
+                            label.setBackground(Color.YELLOW); // ARRIBA
                         }
                     }
                 }
                 
-                //Colocar casilla doble turno (Azul)
+                // Colocar casilla doble turno (Azul)
                 if (invertir) {
                     if (columnas > filas) {
-                        if (i == columnas || i==columnas*filas) {
-                            label.setBackground(Color.BLUE); //DERECHA
+                        if (i == columnas || i == columnas * filas) {
+                            label.setBackground(Color.BLUE); // DERECHA
                         }
                     } else {
-                        if (i == filas*columnas || i==filas*columnas-1) {
-                            label.setBackground(Color.BLUE); //ABAJO
+                        if (i == filas * columnas || i == filas * columnas - 1) {
+                            label.setBackground(Color.BLUE); // ABAJO
                         }
                     }
-
                 } else {
                     if (columnas > filas) {
-                        if (i == 1 || i==columnas+1) {
-                            label.setBackground(Color.BLUE); //IZQUIERDA
+                        if (i == 1 || i == columnas + 1) {
+                            label.setBackground(Color.BLUE); // IZQUIERDA
                         }
                     } else {
-                        if (i ==1 || i==2) {
-                            label.setBackground(Color.BLUE); //ARRIBA
+                        if (i == 1 || i == 2) {
+                            label.setBackground(Color.BLUE); // ARRIBA
                         }
                     }
                 }
                 
-                //Colocar casilla pagar apuesta (ROJA)
+                // Colocar casilla pagar apuesta (ROJA)
                 if (invertir) {
                     if (columnas > filas) {
-                        if (i == columnas-3 || i==columnas*filas-3) {
-                            label.setBackground(Color.RED); //DERECHA
+                        if (i == columnas - 3 || i == columnas * filas - 3) {
+                            label.setBackground(Color.RED); // DERECHA
                         }
                     } else {
-                        if (i == filas*columnas-7 || i==filas*columnas-6) {
-                            label.setBackground(Color.RED); //ABAJO
+                        if (i == filas * columnas - 7 || i == filas * columnas - 6) {
+                            label.setBackground(Color.RED); // ABAJO
                         }
                     }
-
                 } else {
                     if (columnas > filas) {
-                        if (i == 4 || i==columnas+4) {
-                            label.setBackground(Color.RED); //IZQUIERDA
+                        if (i == 4 || i == columnas + 4) {
+                            label.setBackground(Color.RED); // IZQUIERDA
                         }
                     } else {
-                        if (i ==7 || i==8) {
-                            label.setBackground(Color.RED); //ARRIBA
+                        if (i == 7 || i == 8) {
+                            label.setBackground(Color.RED); // ARRIBA
                         }
                     }
                 }
             }
 
-            //inicializarImagen(label, "/cat.png", 15, 15);
+            // Añadir el JLabel al tablero
             tablero.add(label);
         }
     }
 
+    /**
+     * Inicializa una imagen en un JLabel con las dimensiones especificadas.
+     *
+     * @param ficha el JLabel donde se establecerá la imagen
+     * @param url la URL de la imagen
+     * @param x el ancho de la imagen
+     * @param y la altura de la imagen
+     */
     private void inicializarImagen(JLabel ficha, String url, int x, int y) {
         try {
             // Cargar la imagen desde la URL
@@ -238,12 +265,14 @@ public class FrameTablero extends javax.swing.JFrame {
 
             // Establecer el tamaño del JLabel para asegurarte de que mantenga las dimensiones
             ficha.setPreferredSize(new Dimension(x, y));
-
         } catch (Exception e) {
             System.out.println("Error al cargar la imagen: " + e.getMessage());
         }
     }
 
+    /**
+     * Cierra la aplicación después de confirmar la salida con el usuario.
+     */
     public void Salir() {
         int opcion = JOptionPane.showConfirmDialog(null, "¿Realmente quieres salir?", "Confirmar salida", JOptionPane.YES_NO_OPTION);
 
@@ -252,43 +281,45 @@ public class FrameTablero extends javax.swing.JFrame {
             inicio.setVisible(true);
             this.dispose();
         }
-
     }
 
     /**
-     * Simula que lanza las cañas
+     * Simula el lanzamiento de las cañas y muestra el resultado en el campo de texto.
      */
     public void LanzarCañas() {
-        //Lanza las cañas
+        // Lanza las cañas
         int resultado = utils.GenerarLanzamiento();
         this.txtResultado.setText(String.valueOf(resultado));
     }
 
     /**
-     * Ilumina el color del jugador del turno actual e ilumina el boton de
-     * lanzar cañas
+     * Avanza al siguiente jugador en el turno.
+     * Ilumina el jugador del turno actual e ilumina el botón de lanzar cañas.
      */
     public void SiguienteJugador() {
         negocio.SiguienteJugador();
     }
 
+    /**
+     * Permite a los jugadores realizar apuestas.
+     */
     public void Apostar() {
         negocio.Apostar();
     }
 
     /**
-     * Ilumina las fichas del jugador actual, iluminas las fichas segun la ficha
-     * actual, las que se pueden mover y las que no
+     * Ilumina las fichas del jugador actual, 
+     * resaltando las fichas que pueden moverse y las que no.
      */
     public void IluminarFichas() {
-
+        // Implementar la lógica para iluminar las fichas del jugador
     }
 
     /**
-     * Simula que mueve la ficha
+     * Simula el movimiento de una ficha.
      */
     public void MueveFicha() {
-
+        // Implementar la lógica para mover la ficha
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -891,27 +922,57 @@ public class FrameTablero extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+    * Maneja el evento de acción cuando se hace clic en el botón "Salir".
+    * Llama al método Salir para cerrar la aplicación.
+    *
+    * @param evt el evento de acción generado al hacer clic en el botón
+    */
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         Salir();
     }//GEN-LAST:event_btnSalirActionPerformed
-
+    /**
+    * Maneja el evento de acción cuando se hace clic en el botón "Lanzar Cañas".
+    * Llama al método LanzarCañas para simular el lanzamiento de las cañas.
+    *
+    * @param evt el evento de acción generado al hacer clic en el botón
+    */
     private void btnLanzarCañasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLanzarCañasActionPerformed
         LanzarCañas();
     }//GEN-LAST:event_btnLanzarCañasActionPerformed
-
+    /**
+    * Maneja el evento de clic del mouse en el botón "Salir".
+    * Llama al método Salir para cerrar la aplicación.
+    *
+    * @param evt el evento de clic del mouse generado al hacer clic en el botón
+    */
     private void btnSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalirMouseClicked
         Salir();
     }//GEN-LAST:event_btnSalirMouseClicked
-
+    /**
+    * Maneja el evento de clic del mouse en el botón "Lanzar Cañas".
+    * Llama al método LanzarCañas para simular el lanzamiento de las cañas.
+    *
+    * @param evt el evento de clic del mouse generado al hacer clic en el botón
+    */
     private void btnLanzarCañasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLanzarCañasMouseClicked
         LanzarCañas();
     }//GEN-LAST:event_btnLanzarCañasMouseClicked
-
+    /**
+    * Maneja el evento de acción cuando se hace clic en el botón "Pagar Apuesta".
+    * Llama al método Apostar para permitir a los jugadores realizar apuestas.
+    *
+    * @param evt el evento de acción generado al hacer clic en el botón
+    */
     private void btnPagarApuestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagarApuestaActionPerformed
         Apostar();
     }//GEN-LAST:event_btnPagarApuestaActionPerformed
-
+    /**
+    * Maneja el evento de acción cuando se hace clic en el botón "Siguiente Jugador".
+    * Llama al método SiguienteJugador para avanzar al siguiente jugador en el turno.
+    *
+    * @param evt el evento de acción generado al hacer clic en el botón
+    */
     private void btnSiguienteJugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteJugadorActionPerformed
         SiguienteJugador();
     }//GEN-LAST:event_btnSiguienteJugadorActionPerformed

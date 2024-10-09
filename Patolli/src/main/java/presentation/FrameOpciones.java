@@ -5,161 +5,185 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+/**
+ * La clase FrameOpciones permite al usuario configurar las opciones antes de iniciar una partida.
+ * Los usuarios pueden elegir el tamaño del tablero, el monto de las apuestas y el número de fichas por jugador.
+ * Además, ofrece opciones para jugar, ver instrucciones o regresar a la pantalla anterior.
+ * 
+ * @autor t1pas
+ */
 public class FrameOpciones extends javax.swing.JFrame {
 
-    public int tamaño;
-    public int monto;
-    public int fichas;
+    public int tamaño; // Almacena el tamaño del tablero
+    public int monto;  // Almacena el monto de las apuestas
+    public int fichas; // Almacena la cantidad de fichas por jugador
 
+    /**
+     * Constructor de FrameOpciones.
+     * Inicializa la ventana y asigna valores predeterminados al tamaño del tablero, monto de las apuestas y fichas.
+     */
     public FrameOpciones() {
-        this.setResizable(false);
-        initComponents();
-        SetTamañoTablero(8);
-        SetMontoApuestas(10);
-        SetFichasJugador(2);
+        this.setResizable(false); // Desactiva la opción de cambiar el tamaño de la ventana
+        initComponents(); // Inicializa los componentes de la interfaz
+        SetTamañoTablero(8); // Establece el tamaño del tablero a 8 por defecto
+        SetMontoApuestas(10); // Establece el monto de apuestas a 10 por defecto
+        SetFichasJugador(2); // Establece el número de fichas a 2 por defecto
     }
 
+    /**
+     * Navega a la pantalla de la sala de juego.
+     * Crea una instancia de FrameSala, pasándole los valores seleccionados de tamaño, monto y fichas.
+     */
     public void Jugar() {
-        //Pasa a la pantalla sala
-        FrameSala sala = new FrameSala(tamaño, monto, fichas, null);
-        sala.setVisible(true);
-        this.dispose();
+        FrameSala sala = new FrameSala(tamaño, monto, fichas, null); // Crea una nueva sala con los parámetros seleccionados
+        sala.setVisible(true); // Muestra la nueva pantalla
+        this.dispose(); // Cierra la pantalla actual
     }
 
+    /**
+     * Navega a la pantalla con las instrucciones del juego.
+     * Crea una instancia de FrameComoJugar y cambia a esa pantalla.
+     */
     public void ComoJugar() {
-        //Pasa a la pantalla Como Jugar
-        FrameComoJugar comoJugar=new FrameComoJugar();
-        comoJugar.setVisible(true);
-        this.dispose();
+        FrameComoJugar comoJugar = new FrameComoJugar(); // Crea una nueva pantalla de instrucciones
+        comoJugar.setVisible(true); // Muestra la pantalla de instrucciones
+        this.dispose(); // Cierra la pantalla actual
     }
     
-    public void Volver(){
-        FrameUnirseCrear unirseCrear=new FrameUnirseCrear();
-        unirseCrear.setVisible(true);
-        this.dispose();
+    /**
+     * Vuelve a la pantalla anterior de unirse o crear partida.
+     * Crea una instancia de FrameUnirseCrear y cambia a esa pantalla.
+     */
+    public void Volver() {
+        FrameUnirseCrear unirseCrear = new FrameUnirseCrear(); // Crea una nueva pantalla de opciones de unirse o crear
+        unirseCrear.setVisible(true); // Muestra la pantalla de opciones
+        this.dispose(); // Cierra la pantalla actual
     }
 
+    /**
+     * Establece el tamaño del tablero basado en la opción seleccionada.
+     * Cambia el aspecto visual de la etiqueta que representa el tamaño seleccionado.
+     * 
+     * @param tamaño El tamaño del tablero (8, 10, o 12).
+     */
     public void SetTamañoTablero(int tamaño) {
-        //Pone el tamaño del tablero
-        this.tamaño = tamaño;
+        this.tamaño = tamaño; // Asigna el tamaño del tablero
 
         JLabel label = null;
+        // Selecciona la etiqueta correspondiente al tamaño del tablero
         switch (tamaño) {
-            case 8 -> {
-                label = this.lblTamaño8;
-            }
-            case 10 -> {
-                label = this.lblTamaño10;
-            }
-            case 12 -> {
-                label = this.lblTamaño12;
-            }
-
+            case 8 -> label = this.lblTamaño8;
+            case 10 -> label = this.lblTamaño10;
+            case 12 -> label = this.lblTamaño12;
         }
-        this.lblTamaño8.setOpaque(true);  // Permitir cambiar el fondo
-        this.lblTamaño8.setBackground(new Color(192, 160, 123));  // Fondo azul para mostrar selección
-        this.lblTamaño8.setForeground(Color.WHITE); // Texto blanco
+
+        // Configura el aspecto visual de todas las etiquetas de tamaño
+        this.lblTamaño8.setOpaque(true);
+        this.lblTamaño8.setBackground(new Color(192, 160, 123));
+        this.lblTamaño8.setForeground(Color.WHITE);
         this.lblTamaño8.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
 
-        this.lblTamaño10.setOpaque(true);  // Permitir cambiar el fondo
-        this.lblTamaño10.setBackground(new Color(192, 160, 123));  // Fondo azul para mostrar selección
-        this.lblTamaño10.setForeground(Color.WHITE); // Texto blanco
+        this.lblTamaño10.setOpaque(true);
+        this.lblTamaño10.setBackground(new Color(192, 160, 123));
+        this.lblTamaño10.setForeground(Color.WHITE);
         this.lblTamaño10.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
 
-        this.lblTamaño12.setOpaque(true);  // Permitir cambiar el fondo
-        this.lblTamaño12.setBackground(new Color(192, 160, 123));  // Fondo azul para mostrar selección
-        this.lblTamaño12.setForeground(Color.WHITE); // Texto blanco
+        this.lblTamaño12.setOpaque(true);
+        this.lblTamaño12.setBackground(new Color(192, 160, 123));
+        this.lblTamaño12.setForeground(Color.WHITE);
         this.lblTamaño12.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
 
+        // Resalta la etiqueta seleccionada
         if (label != null) {
-            label.setBackground(Color.BLACK);  // Fondo normal
-            label.setForeground(Color.BLACK); // Texto negro
+            label.setBackground(Color.BLACK);  // Fondo negro
+            label.setForeground(Color.WHITE); // Texto blanco
             label.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-            label.setForeground(Color.WHITE);
         }
-
     }
 
+    /**
+     * Establece el monto de las apuestas basado en la opción seleccionada.
+     * Cambia el aspecto visual de la etiqueta que representa el monto seleccionado.
+     * 
+     * @param monto El monto de las apuestas (10, 20, o 40).
+     */
     public void SetMontoApuestas(int monto) {
-        //Pone el monto de apuestas
-        this.monto = monto;
+        this.monto = monto; // Asigna el monto de las apuestas
 
         JLabel label = null;
-        
+        // Selecciona la etiqueta correspondiente al monto de apuestas
         switch (monto) {
-            case 10 -> {
-                label=this.lblMonto10;
-            }
-            case 20 -> {
-                label=this.lblMonto20;
-            }
-            case 40 -> {
-                label=this.lblMonto40;
-            }
+            case 10 -> label = this.lblMonto10;
+            case 20 -> label = this.lblMonto20;
+            case 40 -> label = this.lblMonto40;
         }
 
-        this.lblMonto10.setOpaque(true);  // Permitir cambiar el fondo
-        this.lblMonto10.setBackground(new Color(192, 160, 123));  // Fondo azul para mostrar selección
-        this.lblMonto10.setForeground(Color.WHITE); // Texto blanco
+        // Configura el aspecto visual de todas las etiquetas de monto
+        this.lblMonto10.setOpaque(true);
+        this.lblMonto10.setBackground(new Color(192, 160, 123));
+        this.lblMonto10.setForeground(Color.WHITE);
         this.lblMonto10.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
-        
-        this.lblMonto20.setOpaque(true);  // Permitir cambiar el fondo
-        this.lblMonto20.setBackground(new Color(192, 160, 123));  // Fondo azul para mostrar selección
-        this.lblMonto20.setForeground(Color.WHITE); // Texto blanco
+
+        this.lblMonto20.setOpaque(true);
+        this.lblMonto20.setBackground(new Color(192, 160, 123));
+        this.lblMonto20.setForeground(Color.WHITE);
         this.lblMonto20.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
-        
-        this.lblMonto40.setOpaque(true);  // Permitir cambiar el fondo
-        this.lblMonto40.setBackground(new Color(192, 160, 123));  // Fondo azul para mostrar selección
-        this.lblMonto40.setForeground(Color.WHITE); // Texto blanco
+
+        this.lblMonto40.setOpaque(true);
+        this.lblMonto40.setBackground(new Color(192, 160, 123));
+        this.lblMonto40.setForeground(Color.WHITE);
         this.lblMonto40.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
-        
+
+        // Resalta la etiqueta seleccionada
         if (label != null) {
-            label.setBackground(Color.BLACK);  // Fondo normal
-            label.setForeground(Color.BLACK); // Texto negro
+            label.setBackground(Color.BLACK);  // Fondo negro
+            label.setForeground(Color.WHITE); // Texto blanco
             label.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-            label.setForeground(Color.WHITE);
         }
     }
 
+    /**
+     * Establece el número de fichas de jugador basado en la opción seleccionada.
+     * Cambia el aspecto visual de la etiqueta que representa la cantidad de fichas seleccionada.
+     * 
+     * @param fichas El número de fichas por jugador (2, 4, o 6).
+     */
     public void SetFichasJugador(int fichas) {
-        //Pone las fichas de jugador
-        this.fichas = fichas;
-        
+        this.fichas = fichas; // Asigna el número de fichas por jugador
+
         JLabel label = null;
-        
+        // Selecciona la etiqueta correspondiente al número de fichas
         switch(fichas){
-            case 2 -> {
-                label=this.lblFichas2;
-            }
-            case 4 -> {
-                label=this.lblFichas4;
-            }
-            case 6 -> {
-                label=this.lblFichas6;
-            }
+            case 2 -> label = this.lblFichas2;
+            case 4 -> label = this.lblFichas4;
+            case 6 -> label = this.lblFichas6;
         }
-        this.lblFichas2.setOpaque(true);  // Permitir cambiar el fondo
-        this.lblFichas2.setBackground(new Color(192, 160, 123));  // Fondo azul para mostrar selección
-        this.lblFichas2.setForeground(Color.WHITE); // Texto blanco
+
+        // Configura el aspecto visual de todas las etiquetas de fichas
+        this.lblFichas2.setOpaque(true);
+        this.lblFichas2.setBackground(new Color(192, 160, 123));
+        this.lblFichas2.setForeground(Color.WHITE);
         this.lblFichas2.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
-        
-        this.lblFichas4.setOpaque(true);  // Permitir cambiar el fondo
-        this.lblFichas4.setBackground(new Color(192, 160, 123));  // Fondo azul para mostrar selección
-        this.lblFichas4.setForeground(Color.WHITE); // Texto blanco
+
+        this.lblFichas4.setOpaque(true);
+        this.lblFichas4.setBackground(new Color(192, 160, 123));
+        this.lblFichas4.setForeground(Color.WHITE);
         this.lblFichas4.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
-        
-        this.lblFichas6.setOpaque(true);  // Permitir cambiar el fondo
-        this.lblFichas6.setBackground(new Color(192, 160, 123));  // Fondo azul para mostrar selección
-        this.lblFichas6.setForeground(Color.WHITE); // Texto blanco
+
+        this.lblFichas6.setOpaque(true);
+        this.lblFichas6.setBackground(new Color(192, 160, 123));
+        this.lblFichas6.setForeground(Color.WHITE);
         this.lblFichas6.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
-        
+
+        // Resalta la etiqueta seleccionada
         if (label != null) {
-            label.setBackground(Color.BLACK);  // Fondo normal
-            label.setForeground(Color.BLACK); // Texto negro
+            label.setBackground(Color.BLACK);  // Fondo negro
+            label.setForeground(Color.WHITE); // Texto blanco
             label.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-            label.setForeground(Color.WHITE);
         }
     }
+
+
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -596,63 +620,144 @@ public class FrameOpciones extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Método llamado cuando se hace clic en la etiqueta 'Jugar'.
+     * Inicia el juego pasando a la pantalla correspondiente.
+     *
+     * @param evt Evento del mouse que se genera al hacer clic.
+     */
     private void lblJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblJugarMouseClicked
         Jugar();
     }//GEN-LAST:event_lblJugarMouseClicked
-
+    /**
+     * Método llamado cuando se hace clic en el panel 'Jugar'.
+     * Inicia el juego pasando a la pantalla correspondiente.
+     *
+     * @param evt Evento del mouse que se genera al hacer clic.
+     */
     private void pnlJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlJugarMouseClicked
         Jugar();
     }//GEN-LAST:event_pnlJugarMouseClicked
-
+    /**
+     * Método llamado cuando se hace clic en la etiqueta para seleccionar un
+     * tablero de tamaño 8.
+     * Actualiza el tamaño del tablero a 8.
+     *
+     * @param evt Evento del mouse que se genera al hacer clic.
+     */
     private void lblTamaño8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTamaño8MouseClicked
         SetTamañoTablero(8);
     }//GEN-LAST:event_lblTamaño8MouseClicked
-
+    /**
+     * Método llamado cuando se hace clic en la etiqueta para seleccionar un
+     * tablero de tamaño 10.
+     * Actualiza el tamaño del tablero a 10.
+     *
+     * @param evt Evento del mouse que se genera al hacer clic.
+     */
     private void lblTamaño10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTamaño10MouseClicked
         SetTamañoTablero(10);
     }//GEN-LAST:event_lblTamaño10MouseClicked
-
+    /**
+     * Método llamado cuando se hace clic en la etiqueta para seleccionar un
+     * tablero de tamaño 12.
+     * Actualiza el tamaño del tablero a 12.
+     *
+     * @param evt Evento del mouse que se genera al hacer clic.
+     */
     private void lblTamaño12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTamaño12MouseClicked
         SetTamañoTablero(12);
     }//GEN-LAST:event_lblTamaño12MouseClicked
-
+    /**
+     * Método llamado cuando se hace clic en la etiqueta para seleccionar un
+     * monto de apuesta de 10.
+     * Actualiza el monto de apuestas a 10.
+     *
+     * @param evt Evento del mouse que se genera al hacer clic.
+     */
     private void lblMonto10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblMonto10MouseClicked
         SetMontoApuestas(10);
     }//GEN-LAST:event_lblMonto10MouseClicked
-
+    /**
+     * Método llamado cuando se hace clic en la etiqueta para seleccionar un
+     * monto de apuesta de 20.
+     * Actualiza el monto de apuestas a 20.
+     *
+     * @param evt Evento del mouse que se genera al hacer clic.
+     */
     private void lblMonto20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblMonto20MouseClicked
         SetMontoApuestas(20);
     }//GEN-LAST:event_lblMonto20MouseClicked
-
+    /**
+     * Método llamado cuando se hace clic en la etiqueta para seleccionar un
+     * monto de apuesta de 40.
+     * Actualiza el monto de apuestas a 40.
+     *
+     * @param evt Evento del mouse que se genera al hacer clic.
+     */
     private void lblMonto40MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblMonto40MouseClicked
         SetMontoApuestas(40);
     }//GEN-LAST:event_lblMonto40MouseClicked
-
+    /**
+     * Método llamado cuando se hace clic en la etiqueta para seleccionar 2 fichas.
+     * Actualiza el número de fichas del jugador a 2.
+     *
+     * @param evt Evento del mouse que se genera al hacer clic.
+     */
     private void lblFichas2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFichas2MouseClicked
         SetFichasJugador(2);
     }//GEN-LAST:event_lblFichas2MouseClicked
-
+    /**
+     * Método llamado cuando se hace clic en la etiqueta para seleccionar 4 fichas.
+     * Actualiza el número de fichas del jugador a 4.
+     *
+     * @param evt Evento del mouse que se genera al hacer clic.
+     */
     private void lblFichas4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFichas4MouseClicked
         SetFichasJugador(4);
     }//GEN-LAST:event_lblFichas4MouseClicked
-
+    /**
+     * Método llamado cuando se hace clic en la etiqueta para seleccionar 6 fichas.
+     * Actualiza el número de fichas del jugador a 6.
+     *
+     * @param evt Evento del mouse que se genera al hacer clic.
+     */
     private void lblFichas6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFichas6MouseClicked
         SetFichasJugador(6);
     }//GEN-LAST:event_lblFichas6MouseClicked
-
+    /**
+     * Método llamado cuando se hace clic en la etiqueta 'Cómo Jugar'.
+     * Abre la pantalla de instrucciones del juego.
+     *
+     * @param evt Evento del mouse que se genera al hacer clic.
+     */
     private void lblComoJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblComoJugarMouseClicked
         ComoJugar();
     }//GEN-LAST:event_lblComoJugarMouseClicked
-
+    /**
+     * Método llamado cuando se hace clic en el panel 'Cómo Jugar'.
+     * Abre la pantalla de instrucciones del juego.
+     *
+     * @param evt Evento del mouse que se genera al hacer clic.
+     */
     private void pnlComoJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlComoJugarMouseClicked
         ComoJugar();
     }//GEN-LAST:event_pnlComoJugarMouseClicked
-
+    /**
+     * Método llamado cuando se hace clic en la etiqueta 'Volver'.
+     * Regresa a la pantalla anterior.
+     *
+     * @param evt Evento del mouse que se genera al hacer clic.
+     */
     private void lblVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblVolverMouseClicked
         Volver();
     }//GEN-LAST:event_lblVolverMouseClicked
-
+    /**
+     * Método llamado cuando se hace clic en el panel 'Volver'.
+     * Regresa a la pantalla anterior.
+     *
+     * @param evt Evento del mouse que se genera al hacer clic.
+     */
     private void pnlVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlVolverMouseClicked
         Volver();
     }//GEN-LAST:event_pnlVolverMouseClicked

@@ -1,18 +1,30 @@
-
 package presentation;
 
 import javax.swing.JOptionPane;
 import utils.Utils;
 
-
+/**
+ * Clase que representa la sala de juego.
+ * Maneja la interacción de los jugadores, el código de la sala y la transición
+ * a otras pantallas del juego.
+ */
 public class FrameSala extends javax.swing.JFrame {
 
-    public int tamaño;
-    public int monto;
-    public int fichas;
-    public int jugadores=1;
-    public String codigo;
+    public int tamaño;      // Tamaño del tablero de juego.
+    public int monto;       // Monto de apuestas.
+    public int fichas;      // Número de fichas del jugador.
+    public int jugadores = 1; // Contador de jugadores en la sala.
+    public String codigo;   // Código de la sala.
 
+    /**
+     * Constructor de la clase FrameSala.
+     * Inicializa la sala con el tamaño del tablero, monto de apuestas, número de fichas y código de la sala.
+     *
+     * @param tamaño Tamaño del tablero de juego.
+     * @param monto Monto de apuestas.
+     * @param fichas Número de fichas del jugador.
+     * @param codigo Código de la sala. Si es null, se genera uno nuevo.
+     */
     public FrameSala(int tamaño, int monto, int fichas, String codigo) {
         this.setResizable(false);
         initComponents();
@@ -20,6 +32,7 @@ public class FrameSala extends javax.swing.JFrame {
         this.monto = monto;
         this.fichas = fichas;
 
+        // Si se proporciona un código, se utiliza; de lo contrario, se genera uno nuevo.
         if (codigo != null) {
             this.codigo = codigo;
         } else {
@@ -27,6 +40,7 @@ public class FrameSala extends javax.swing.JFrame {
         }
         this.lblCodigo.setText("CODIGO: " + this.codigo);
 
+        // Inicializa la visibilidad de los componentes para los jugadores.
         this.lblP2.setVisible(false);
         this.conchaIcono.setVisible(false);
         this.lblP3.setVisible(false);
@@ -35,54 +49,67 @@ public class FrameSala extends javax.swing.JFrame {
         this.mazorcaIcono.setVisible(false);
     }
 
+    /**
+     * Método que permite regresar a la pantalla de opciones.
+     */
     public void Volver() {
-        //Pasa a la pantalla de opciones
+        // Pasa a la pantalla de opciones
         FrameOpciones opciones = new FrameOpciones();
         opciones.setVisible(true);
         this.dispose();
     }
-    
+
+    /**
+     * Método que inicia el juego.
+     * Si hay más de un jugador, pasa a la pantalla del tablero; de lo contrario,
+     * muestra un mensaje informando que se necesitan más jugadores.
+     */
     public void Jugar() {
-        //Pasa a la pantalla de tablero
+        // Pasa a la pantalla de tablero
         if (jugadores > 1) {
             FrameTablero tablero = new FrameTablero(tamaño, monto, fichas, jugadores);
             tablero.setVisible(true);
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(null, "Se necesitan dos jugadores para jugar", "Faltan jugadores", JOptionPane.INFORMATION_MESSAGE);
-
         }
-
     }
-    
-    public void AñadirJugador(int numeroJugadores){
-        jugadores=jugadores+numeroJugadores;
-        switch(jugadores){
-            case 1->{
+
+    /**
+     * Método para añadir un jugador a la sala.
+     * Actualiza la cantidad de jugadores y la visibilidad de los iconos correspondientes.
+     *
+     * @param numeroJugadores El número de jugadores a añadir (puede ser negativo para restar).
+     */
+    public void AñadirJugador(int numeroJugadores) {
+        jugadores = jugadores + numeroJugadores;
+        switch (jugadores) {
+            case 1 -> {
                 this.lblP2.setVisible(false);
                 this.conchaIcono.setVisible(false);
             }
             case 2 -> {
                 this.lblP2.setVisible(true);
                 this.conchaIcono.setVisible(true);
-                
+
                 this.lblP3.setVisible(false);
                 this.piramideIcono.setVisible(false);
                 this.lblP4.setVisible(false);
                 this.mazorcaIcono.setVisible(false);
             }
-            case 3->{
+            case 3 -> {
                 this.lblP3.setVisible(true);
                 this.piramideIcono.setVisible(true);
-                
+
                 this.lblP4.setVisible(false);
                 this.mazorcaIcono.setVisible(false);
             }
-            case 4->{
+            case 4 -> {
                 this.lblP4.setVisible(true);
                 this.mazorcaIcono.setVisible(true);
             }
-            case 5->{
+            case 5 -> {
+                // No se pueden tener más de 4 jugadores, se reduce el contador.
                 AñadirJugador(-1);
             }
         }
@@ -375,27 +402,59 @@ public class FrameSala extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+    * Maneja el evento de clic en la etiqueta "Volver".
+    * Llama al método Volver() para regresar a la pantalla de opciones.
+    *
+    * @param evt el evento de mouse que se ha producido
+    */
     private void lblVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblVolverMouseClicked
         Volver();
     }//GEN-LAST:event_lblVolverMouseClicked
-
+    /**
+    * Maneja el evento de clic en el panel "Volver".
+    * Llama al método {@link #Volver()} para regresar a la pantalla de opciones.
+    *
+    * @param evt el evento de mouse que se ha producido
+    */
     private void pnlVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlVolverMouseClicked
         Volver();
     }//GEN-LAST:event_pnlVolverMouseClicked
-
+    /**
+    * Maneja el evento de clic en la etiqueta "Jugar".
+    * Llama al método Jugar para iniciar el juego.
+    *
+    * @param evt el evento de mouse que se ha producido
+    */
     private void lblJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblJugarMouseClicked
         Jugar();
     }//GEN-LAST:event_lblJugarMouseClicked
-
+    /**
+    * Maneja el evento de clic en el panel "Jugar".
+    * Llama al método Jugar para iniciar el juego.
+    *
+    * @param evt el evento de mouse que se ha producido
+    */
     private void pnlJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlJugarMouseClicked
         Jugar();
     }//GEN-LAST:event_pnlJugarMouseClicked
-
+    /**
+    * Maneja el evento de clic en el botón para añadir un jugador.
+    * Llama al método AñadirJugador con el parámetro 1
+    * para incrementar el número de jugadores en la sala.
+    *
+    * @param evt el evento de mouse que se ha producido
+    */
     private void TODObtnAñadirJugadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TODObtnAñadirJugadorMouseClicked
         AñadirJugador(1);
     }//GEN-LAST:event_TODObtnAñadirJugadorMouseClicked
-
+    /**
+    * Maneja el evento de clic en el botón para eliminar un jugador.
+    * Llama al método {@link #AñadirJugador(int)} con el parámetro -1
+    * para decrementar el número de jugadores en la sala.
+    *
+    * @param evt el evento de mouse que se ha producido
+    */
     private void TODObtnEliminarJugadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TODObtnEliminarJugadorMouseClicked
        AñadirJugador(-1);
     }//GEN-LAST:event_TODObtnEliminarJugadorMouseClicked

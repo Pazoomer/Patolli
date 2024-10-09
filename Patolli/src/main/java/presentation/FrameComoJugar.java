@@ -1,16 +1,30 @@
-
 package presentation;
 
-
+/**
+ * La clase FrameComoJugar muestra las instrucciones del juego Patolli.
+ * Permite a los usuarios navegar por las instrucciones del juego y regresar 
+ * a la pantalla de opciones. 
+ * 
+ * @author t1pas
+ */
 public class FrameComoJugar extends javax.swing.JFrame {
 
+    // Página actual de las instrucciones
     private int paginaInstrucciones=0;
 
+    /**
+     * Constructor de FrameComoJugar.
+     * Inicializa la ventana y desactiva la opción de cambiar el tamaño de la ventana.
+     */
     public FrameComoJugar() {
         this.setResizable(false);
         initComponents();
     }
     
+    /**
+     * Cierra la ventana actual y regresa a la pantalla de opciones.
+     * Instancia una nueva ventana de FrameOpciones.
+     */
     public void Volver(){
         //Pasa a la pantalla Opciones
         FrameOpciones opciones=new FrameOpciones();
@@ -18,12 +32,18 @@ public class FrameComoJugar extends javax.swing.JFrame {
         this.dispose();
     }
     
+    /**
+     * Muestra la siguiente página de las instrucciones.
+     * Avanza a la instrucción siguiente y actualiza el texto mostrado.
+     * Controla que no se sobrepase el número máximo de páginas.
+     */
     public void InstruccionDerecha() {
-        //Pasa a la instruccion de la derecha
+        // Avanza a la instrucción siguiente
         paginaInstrucciones++;
         if (paginaInstrucciones > 6) {
-            paginaInstrucciones = 6;
+            paginaInstrucciones = 6; // Limita el valor máximo
         }
+        // Actualiza el texto de la instrucción según la página
         switch (paginaInstrucciones) {
             case 1 -> {
                 this.txtInstruccion.setText("""
@@ -73,12 +93,18 @@ public class FrameComoJugar extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Muestra la página anterior de las instrucciones.
+     * Retrocede a la instrucción anterior y actualiza el texto mostrado.
+     * Controla que no se retroceda más allá de la primera página.
+     */
     public void InstruccionIzquierda() {
-        //Pasa a la instruccion de la izquierda
+        // Retrocede a la instrucción anterior
         paginaInstrucciones--;
         if (paginaInstrucciones < 0) {
-            paginaInstrucciones = 0;
+            paginaInstrucciones = 0; // Limita el valor mínimo
         }
+        // Actualiza el texto de la instrucción según la página
         switch (paginaInstrucciones) {
             case 0 -> {
                 this.txtInstruccion.setText("""
@@ -311,19 +337,42 @@ public class FrameComoJugar extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+ * Este método se ejecuta cuando se hace clic en la etiqueta lblVolver.
+ * Llama al método Volver(), que regresa a la pantalla de opciones.
+ * 
+ * @param evt El evento de clic del ratón.
+ */
     private void lblVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblVolverMouseClicked
         Volver();
     }//GEN-LAST:event_lblVolverMouseClicked
-
+/**
+ * Este método se ejecuta cuando se hace clic en el panel pnlVolver.
+ * Al igual que lblVolverMouseClicked, llama al método Volver() para regresar
+ * a la pantalla de opciones.
+ * 
+ * @param evt El evento de clic del ratón.
+ */
     private void pnlVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlVolverMouseClicked
         Volver();
     }//GEN-LAST:event_pnlVolverMouseClicked
-
+/**
+ * Este método se ejecuta cuando se hace clic en la etiqueta lblIzquierda.
+ * Llama al método InstruccionIzquierda() para mostrar la página anterior
+ * de las instrucciones del juego.
+ * 
+ * @param evt El evento de clic del ratón.
+ */
     private void lblIzquierdaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIzquierdaMouseClicked
         InstruccionIzquierda();
     }//GEN-LAST:event_lblIzquierdaMouseClicked
-
+/**
+ * Este método se ejecuta cuando se hace clic en la etiqueta lblDerecha.
+ * Llama al método InstruccionDerecha() para mostrar la siguiente página
+ * de las instrucciones del juego.
+ * 
+ * @param evt El evento de clic del ratón.
+ */
     private void lblDerechaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDerechaMouseClicked
         InstruccionDerecha();
     }//GEN-LAST:event_lblDerechaMouseClicked
