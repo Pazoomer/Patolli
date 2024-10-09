@@ -1,23 +1,41 @@
-
 package utils;
 
 import java.util.Random;
 
 /**
- *
+ * Clase de utilidades que proporciona funciones para la simulación de lanzamientos
+ * de dados y la generación de códigos de sala.
+ * 
+ * La clase inicializa un arreglo de resultados que representa las probabilidades
+ * de obtener diferentes resultados al lanzar dados, y permite simular estos lanzamientos.
+ * También incluye un método para generar códigos de sala aleatorios.
+ * 
  * @author t1pas
  */
 public class Utils {
 
+    // Arreglo que contiene los resultados posibles basados en probabilidades
     int[] resultados = new int[32];
 
+    /**
+     * Constructor de la clase Utils que inicializa el arreglo de resultados.
+     */
     public Utils() {
         Inicilizar();
     }
 
+    /**
+     * Inicializa el arreglo de resultados basado en las probabilidades definidas.
+     * El arreglo contiene 32 elementos que representan los diferentes resultados
+     * posibles al lanzar los dados, con la siguiente distribución:
+     * - 0: 1 vez
+     * - 1: 5 veces
+     * - 2: 10 veces
+     * - 3: 10 veces
+     * - 4: 5 veces
+     * - 10: 1 vez
+     */
     public void Inicilizar() {
-        // Arreglo que contiene la cantidad de resultados en función de las probabilidades
-        // 32 elementos en total (sumatoria de 1, 5, 10, 10, 5, 1)
         int index = 0;
 
         // Llenar el arreglo de acuerdo a las probabilidades
@@ -41,13 +59,22 @@ public class Utils {
         }
     }
 
+    /**
+     * Genera un lanzamiento aleatorio basado en las probabilidades definidas.
+     * 
+     * @return Un entero que representa el resultado del lanzamiento.
+     */
     public int GenerarLanzamiento() {
         // Simular un lanzamiento aleatorio de los dados
         return resultados[new Random().nextInt(resultados.length)];
-
     }
-    
-     public static String GenerarCodigoSala(){
+
+    /**
+     * Genera un código de sala aleatorio de 4 letras mayúsculas.
+     * 
+     * @return Un String que representa el código de sala generado.
+     */
+    public static String GenerarCodigoSala() {
         String letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // Letras disponibles
         StringBuilder codigo = new StringBuilder();
         Random random = new Random();
