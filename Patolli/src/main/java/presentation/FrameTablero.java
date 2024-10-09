@@ -1,16 +1,18 @@
-
 package presentation;
 
+import Mock.INegocio;
+import Mock.Negocio;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 import utils.Utils;
 
 /**
@@ -24,8 +26,10 @@ public class FrameTablero extends javax.swing.JFrame {
     public int monto;
     public int fichas;
     public int jugadores;
+    public INegocio negocio;
 
     public FrameTablero(int tamaño, int monto, int fichas, int jugadores) {
+        this.setResizable(false);
         initComponents();
         utils = new Utils();
         this.tamaño = tamaño;
@@ -38,26 +42,26 @@ public class FrameTablero extends javax.swing.JFrame {
 
     private void inicializarGui() {
         //Tablero
-        inicializarTablero(tableroArriba, tamaño, 2);
-        inicializarTablero(tableroAbajo, tamaño, 2);
-        inicializarTablero(tableroDerecha, 2, tamaño);
-        inicializarTablero(tableroIzquierda, 2, tamaño);
-        inicializarTablero(tableroCentro, 2, 2);
+        inicializarTablero(tableroArriba, tamaño, 2,false);
+        inicializarTablero(tableroAbajo, tamaño, 2,true);
+        inicializarTablero(tableroDerecha, 2, tamaño,true);
+        inicializarTablero(tableroIzquierda, 2, tamaño,false);
+        inicializarTablero(tableroCentro, 2, 2,true);
 
         //Monto
         this.lblConchaApuesta.setText("Apuestas: " + monto);
-        this.lblGatoApuestas.setText("Apuestas: "+monto);
-        this.lblMazorcaApuesta.setText("Apuestas: "+monto);
-        this.lblPiramideApuesta.setText("Apuestas: "+monto);
-        
+        this.lblGatoApuestas.setText("Apuestas: " + monto);
+        this.lblMazorcaApuesta.setText("Apuestas: " + monto);
+        this.lblPiramideApuesta.setText("Apuestas: " + monto);
+
         //Iconos
         inicializarImagen(this.iconGato, "/cat.png", 120, 120);
         inicializarImagen(this.iconConcha, "/concha.png", 120, 120);
         inicializarImagen(this.iconPiramide, "/piramide.png", 120, 120);
         inicializarImagen(this.iconMazorca, "/mazorca.png", 120, 120);
-        
+
         //Fichas
-        int contadorFichas=0;
+        int contadorFichas = 0;
 
         List<JLabel> fichasConcha = new ArrayList<>();
         fichasConcha.add(this.fichaConcha1);
@@ -66,7 +70,7 @@ public class FrameTablero extends javax.swing.JFrame {
         fichasConcha.add(this.fichaConcha4);
         fichasConcha.add(this.fichaConcha5);
         fichasConcha.add(this.fichaConcha6);
-        
+
         List<JLabel> fichasGato = new ArrayList<>();
         fichasGato.add(this.fichaGato1);
         fichasGato.add(this.fichaGato2);
@@ -74,7 +78,7 @@ public class FrameTablero extends javax.swing.JFrame {
         fichasGato.add(this.fichaGato4);
         fichasGato.add(this.fichaGato5);
         fichasGato.add(this.fichaGato6);
-        
+
         List<JLabel> fichasPiramide = new ArrayList<>();
         fichasPiramide.add(this.fichaPiramide1);
         fichasPiramide.add(this.fichaPiramide2);
@@ -82,7 +86,7 @@ public class FrameTablero extends javax.swing.JFrame {
         fichasPiramide.add(this.fichaPiramide4);
         fichasPiramide.add(this.fichaPiramide5);
         fichasPiramide.add(this.fichaPiramide6);
-        
+
         List<JLabel> fichasMazorca = new ArrayList<>();
         fichasMazorca.add(this.fichaMazorca1);
         fichasMazorca.add(this.fichaMazorca2);
@@ -107,10 +111,10 @@ public class FrameTablero extends javax.swing.JFrame {
             }
             contadorFichas++;
         }
-        
+
         //Jugadores
-        for (int i = 0; i < -jugadores+4; i++) {
-            switch (2-i) {
+        for (int i = 0; i < -jugadores + 4; i++) {
+            switch (2 - i) {
                 case 2 -> {
                     this.pnlJugadores.remove(this.pnlMazorca);
                 }
@@ -119,20 +123,13 @@ public class FrameTablero extends javax.swing.JFrame {
                 }
                 case 0 -> {
                     this.pnlJugadores.remove(this.pnlConcha);
-                    
+
                 }
             }
         }
-
-        //Cañas
-        inicializarImagen(this.caña1, "/cañaLisa.png", 36, 46);
-        inicializarImagen(this.caña2, "/cañaLisa.png", 36, 46);
-        inicializarImagen(this.caña3, "/cañaLisa.png", 36, 46);
-        inicializarImagen(this.caña4, "/cañaLisa.png", 36, 46);
-        inicializarImagen(this.caña5, "/cañaLisa.png", 36, 46);
     }
 
-    private void inicializarTablero(JPanel tablero, int filas, int columnas) {
+    private void inicializarTablero(JPanel tablero, int filas, int columnas, boolean invertir) {
 
         tablero.setLayout(new GridLayout(filas, columnas));
         tablero.setPreferredSize(tablero.getSize());
@@ -140,7 +137,87 @@ public class FrameTablero extends javax.swing.JFrame {
         tablero.setMaximumSize(tablero.getSize());
 
         for (int i = 1; i <= filas * columnas; i++) {
-            tablero.add(new JButton(""));
+            JLabel label = new JLabel(""); // Creas un nuevo JLabel
+            label.setBorder(new LineBorder(Color.BLACK, 1)); // Añadir borde rojo
+            label.setOpaque(true); // Hacer el fondo visible
+
+            label.setBackground(Color.WHITE);
+            if (filas * columnas > 6) {
+                //Colocar casilla inicial (Amarilla)
+                if (invertir) {
+                    if (columnas > filas) {
+                        if (i == columnas + 1) {
+                            label.setBackground(Color.YELLOW); //DERECHA
+                        }
+                    } else {
+                        if (i == 1) {
+                            label.setBackground(Color.YELLOW); //ABAJO
+                        }
+                    }
+
+                } else {
+                    if (columnas > filas) {
+                        if (i == columnas) {
+                            label.setBackground(Color.YELLOW); //IZQUIERDA
+                        }
+                    } else {
+                        if (i == filas * columnas) {
+                            label.setBackground(Color.YELLOW); //ARRIBA
+                        }
+                    }
+                }
+                
+                //Colocar casilla doble turno (Azul)
+                if (invertir) {
+                    if (columnas > filas) {
+                        if (i == columnas || i==columnas*filas) {
+                            label.setBackground(Color.BLUE); //DERECHA
+                        }
+                    } else {
+                        if (i == filas*columnas || i==filas*columnas-1) {
+                            label.setBackground(Color.BLUE); //ABAJO
+                        }
+                    }
+
+                } else {
+                    if (columnas > filas) {
+                        if (i == 1 || i==columnas+1) {
+                            label.setBackground(Color.BLUE); //IZQUIERDA
+                        }
+                    } else {
+                        if (i ==1 || i==2) {
+                            label.setBackground(Color.BLUE); //ARRIBA
+                        }
+                    }
+                }
+                
+                //Colocar casilla pagar apuesta (ROJA)
+                if (invertir) {
+                    if (columnas > filas) {
+                        if (i == columnas-3 || i==columnas*filas-3) {
+                            label.setBackground(Color.RED); //DERECHA
+                        }
+                    } else {
+                        if (i == filas*columnas-7 || i==filas*columnas-6) {
+                            label.setBackground(Color.RED); //ABAJO
+                        }
+                    }
+
+                } else {
+                    if (columnas > filas) {
+                        if (i == 4 || i==columnas+4) {
+                            label.setBackground(Color.RED); //IZQUIERDA
+                        }
+                    } else {
+                        if (i ==7 || i==8) {
+                            label.setBackground(Color.RED); //ARRIBA
+                        }
+                    }
+                }
+            }
+
+            //inicializarImagen(label, "/cat.png", 15, 15);
+            tablero.add(label);
         }
     }
 
@@ -167,16 +244,50 @@ public class FrameTablero extends javax.swing.JFrame {
         }
     }
 
-    public void Salir(){
-        //Sale al menu inicial
-        FrameInicio inicio=new FrameInicio();
-        inicio.setVisible(true);
-        this.dispose();
+    public void Salir() {
+        int opcion = JOptionPane.showConfirmDialog(null, "¿Realmente quieres salir?", "Confirmar salida", JOptionPane.YES_NO_OPTION);
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            FrameInicio inicio = new FrameInicio();
+            inicio.setVisible(true);
+            this.dispose();
+        }
+
     }
 
+    /**
+     * Simula que lanza las cañas
+     */
     public void LanzarCañas() {
         //Lanza las cañas
-        JOptionPane.showMessageDialog(null, "Resultado: "+utils.GenerarLanzamiento(), "Simulacion de lanzamiento", JOptionPane.INFORMATION_MESSAGE);
+        int resultado = utils.GenerarLanzamiento();
+        this.txtResultado.setText(String.valueOf(resultado));
+    }
+
+    /**
+     * Ilumina el color del jugador del turno actual e ilumina el boton de
+     * lanzar cañas
+     */
+    public void SiguienteJugador() {
+        negocio.SiguienteJugador();
+    }
+
+    public void Apostar() {
+        negocio.Apostar();
+    }
+
+    /**
+     * Ilumina las fichas del jugador actual, iluminas las fichas segun la ficha
+     * actual, las que se pueden mover y las que no
+     */
+    public void IluminarFichas() {
+
+    }
+
+    /**
+     * Simula que mueve la ficha
+     */
+    public void MueveFicha() {
 
     }
 
@@ -189,6 +300,10 @@ public class FrameTablero extends javax.swing.JFrame {
         tableroAbajo = new javax.swing.JPanel();
         tableroDerecha = new javax.swing.JPanel();
         tableroIzquierda = new javax.swing.JPanel();
+        btnSiguienteJugador = new javax.swing.JButton();
+        btnPagarApuesta = new javax.swing.JButton();
+        lblTurnoDe = new javax.swing.JLabel();
+        lblIconJugadorActual = new javax.swing.JLabel();
         pnlJugadores = new javax.swing.JPanel();
         pnlConcha = new javax.swing.JPanel();
         iconConcha = new javax.swing.JLabel();
@@ -229,11 +344,7 @@ public class FrameTablero extends javax.swing.JFrame {
         pnlBotones = new javax.swing.JPanel();
         btnSalir = new javax.swing.JButton();
         btnLanzarCañas = new javax.swing.JButton();
-        caña1 = new javax.swing.JLabel();
-        caña2 = new javax.swing.JLabel();
-        caña3 = new javax.swing.JLabel();
-        caña4 = new javax.swing.JLabel();
-        caña5 = new javax.swing.JLabel();
+        txtResultado = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(102, 102, 0));
@@ -304,12 +415,31 @@ public class FrameTablero extends javax.swing.JFrame {
         tableroIzquierda.setLayout(tableroIzquierdaLayout);
         tableroIzquierdaLayout.setHorizontalGroup(
             tableroIzquierdaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 183, Short.MAX_VALUE)
+            .addGap(0, 202, Short.MAX_VALUE)
         );
         tableroIzquierdaLayout.setVerticalGroup(
             tableroIzquierdaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 100, Short.MAX_VALUE)
         );
+
+        btnSiguienteJugador.setText("TODO: SiguienteJugador()");
+        btnSiguienteJugador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSiguienteJugadorActionPerformed(evt);
+            }
+        });
+
+        btnPagarApuesta.setText("TODO: PagarApuesta()");
+        btnPagarApuesta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPagarApuestaActionPerformed(evt);
+            }
+        });
+
+        lblTurnoDe.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
+        lblTurnoDe.setText("Turno de:");
+
+        lblIconJugadorActual.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout pnlTableroLayout = new javax.swing.GroupLayout(pnlTablero);
         pnlTablero.setLayout(pnlTableroLayout);
@@ -317,7 +447,18 @@ public class FrameTablero extends javax.swing.JFrame {
             pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTableroLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tableroIzquierda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tableroIzquierda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(pnlTableroLayout.createSequentialGroup()
+                        .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(btnSiguienteJugador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnPagarApuesta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(pnlTableroLayout.createSequentialGroup()
+                                .addComponent(lblTurnoDe)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblIconJugadorActual, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tableroAbajo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -332,16 +473,31 @@ public class FrameTablero extends javax.swing.JFrame {
         pnlTableroLayout.setVerticalGroup(
             pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTableroLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tableroArriba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlTableroLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(tableroArriba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlTableroLayout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(lblTurnoDe))
+                    .addGroup(pnlTableroLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(lblIconJugadorActual, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(tableroCentro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(tableroDerecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(tableroIzquierda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tableroAbajo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlTableroLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tableroAbajo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlTableroLayout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(btnSiguienteJugador)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnPagarApuesta)))
                 .addContainerGap())
         );
 
@@ -645,7 +801,7 @@ public class FrameTablero extends javax.swing.JFrame {
                 .addComponent(pnlPiramide, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnlMazorca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlBotones.setBackground(new java.awt.Color(102, 102, 0));
@@ -679,34 +835,20 @@ public class FrameTablero extends javax.swing.JFrame {
             }
         });
 
-        caña1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cañaLisa.png"))); // NOI18N
-
-        caña2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cañaLisa.png"))); // NOI18N
-
-        caña3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cañaLisa.png"))); // NOI18N
-
-        caña4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cañaLisa.png"))); // NOI18N
-
-        caña5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cañaLisa.png"))); // NOI18N
+        txtResultado.setEditable(false);
+        txtResultado.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
+        txtResultado.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         javax.swing.GroupLayout pnlBotonesLayout = new javax.swing.GroupLayout(pnlBotones);
         pnlBotones.setLayout(pnlBotonesLayout);
         pnlBotonesLayout.setHorizontalGroup(
             pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBotonesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(caña1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(caña2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(caña3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(caña4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(caña5, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(26, 26, 26)
+                .addComponent(txtResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btnLanzarCañas, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -714,16 +856,11 @@ public class FrameTablero extends javax.swing.JFrame {
             pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlBotonesLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(caña1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(caña5, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(caña4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(caña3, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(caña2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnLanzarCañas, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLanzarCañas, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -771,6 +908,14 @@ public class FrameTablero extends javax.swing.JFrame {
         LanzarCañas();
     }//GEN-LAST:event_btnLanzarCañasMouseClicked
 
+    private void btnPagarApuestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagarApuestaActionPerformed
+        Apostar();
+    }//GEN-LAST:event_btnPagarApuestaActionPerformed
+
+    private void btnSiguienteJugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteJugadorActionPerformed
+        SiguienteJugador();
+    }//GEN-LAST:event_btnSiguienteJugadorActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -802,31 +947,22 @@ public class FrameTablero extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrameTablero(8,10,4,3).setVisible(true);
+                new FrameTablero(8, 10, 4, 3).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLanzarCañas;
+    private javax.swing.JButton btnPagarApuesta;
     private javax.swing.JButton btnSalir;
-    private javax.swing.JLabel caña1;
-    private javax.swing.JLabel caña2;
-    private javax.swing.JLabel caña3;
-    private javax.swing.JLabel caña4;
-    private javax.swing.JLabel caña5;
+    private javax.swing.JButton btnSiguienteJugador;
     private javax.swing.JLabel fichaConcha1;
-    private javax.swing.JLabel fichaConcha10;
-    private javax.swing.JLabel fichaConcha11;
-    private javax.swing.JLabel fichaConcha12;
     private javax.swing.JLabel fichaConcha2;
     private javax.swing.JLabel fichaConcha3;
     private javax.swing.JLabel fichaConcha4;
     private javax.swing.JLabel fichaConcha5;
     private javax.swing.JLabel fichaConcha6;
-    private javax.swing.JLabel fichaConcha7;
-    private javax.swing.JLabel fichaConcha8;
-    private javax.swing.JLabel fichaConcha9;
     private javax.swing.JLabel fichaGato1;
     private javax.swing.JLabel fichaGato2;
     private javax.swing.JLabel fichaGato3;
@@ -846,18 +982,17 @@ public class FrameTablero extends javax.swing.JFrame {
     private javax.swing.JLabel fichaPiramide5;
     private javax.swing.JLabel fichaPiramide6;
     private javax.swing.JLabel iconConcha;
-    private javax.swing.JLabel iconConcha1;
     private javax.swing.JLabel iconGato;
     private javax.swing.JLabel iconMazorca;
     private javax.swing.JLabel iconPiramide;
     private javax.swing.JLabel lblConchaApuesta;
-    private javax.swing.JLabel lblConchaApuesta1;
     private javax.swing.JLabel lblGatoApuestas;
+    private javax.swing.JLabel lblIconJugadorActual;
     private javax.swing.JLabel lblMazorcaApuesta;
     private javax.swing.JLabel lblPiramideApuesta;
+    private javax.swing.JLabel lblTurnoDe;
     private javax.swing.JPanel pnlBotones;
     private javax.swing.JPanel pnlConcha;
-    private javax.swing.JPanel pnlConcha1;
     private javax.swing.JPanel pnlGato;
     private javax.swing.JPanel pnlJugadores;
     private javax.swing.JPanel pnlMazorca;
@@ -868,5 +1003,6 @@ public class FrameTablero extends javax.swing.JFrame {
     private javax.swing.JPanel tableroCentro;
     private javax.swing.JPanel tableroDerecha;
     private javax.swing.JPanel tableroIzquierda;
+    private javax.swing.JTextField txtResultado;
     // End of variables declaration//GEN-END:variables
 }

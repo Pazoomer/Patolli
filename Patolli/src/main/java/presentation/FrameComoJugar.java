@@ -7,6 +7,7 @@ public class FrameComoJugar extends javax.swing.JFrame {
     private int paginaInstrucciones=0;
 
     public FrameComoJugar() {
+        this.setResizable(false);
         initComponents();
     }
     
@@ -34,7 +35,7 @@ public class FrameComoJugar extends javax.swing.JFrame {
                 this.txtInstruccion.setText("""
                                             Al inicio del juego tus fichas comenzaran fuera del tablero, para colocar una ficha en el tablero debes lanzar las ca\u00f1as y sacar exactamente 1, si no es el caso pagas una apuesta, estas se colocan en la casilla central del tablero que tienes asignada.
                                             
-                                            Si la casilla esta ocupada, no podras sacar una ficha hasta que se desocupe.""");
+                                            Si la casilla esta ocupada por una ficha enemiga, no podras sacar una ficha hasta que se desocupe.""");
             }
             case 3 -> {
                 this.txtInstruccion.setText("""
@@ -57,7 +58,7 @@ public class FrameComoJugar extends javax.swing.JFrame {
                 this.txtInstruccion.setText("""
                                             Si tu tirada terminara en un espacio con una ficha de otro jugador, tu ficha vueve al punto de inicio del tablero, si este punto de inicio esta ocupado por la ficha de otro jugador entonces tu ficha sale del tablero
                                             
-                                            Si tu tirada termina en un espacio con una ficha de otro jugador mientras la ficha del otro jugador esta enuna casilla central entonces puedes avanzar y sacas del juego la ficha del otro jugador.
+                                            Si tu tirada termina en un espacio con una ficha de otro jugador mientras la ficha del otro jugador esta en una casilla central entonces puedes avanzar y sacas del juego la ficha del otro jugador.
                                             
                                             Si tu tirada terminara en un espacio con una de tus fichas, puedes moverte con normalidad.""");
             }

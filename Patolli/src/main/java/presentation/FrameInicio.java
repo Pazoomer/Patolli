@@ -4,13 +4,14 @@ package presentation;
 public class FrameInicio extends javax.swing.JFrame {
 
     public FrameInicio() {
+        this.setResizable(false);
         initComponents();
     }
     
     public void PasarPantalla() {
         //Pasa a la pantalla Opciones
-        FrameOpciones opciones=new FrameOpciones();
-        opciones.setVisible(true);
+        FrameUnirseCrear unirseCrear=new FrameUnirseCrear();
+        unirseCrear.setVisible(true);
         this.dispose();
     }
 
