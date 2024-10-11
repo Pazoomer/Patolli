@@ -1,11 +1,11 @@
 package presentation;
 
-import Mock.INegocio;
-import Mock.Negocio;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -13,6 +13,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+import negocio.ControlApuestas;
+import negocio.ControlJuego;
+import negocio.IControlApuestas;
+import negocio.IControlJuego;
 import utils.Utils;
 
 /**
@@ -29,7 +33,11 @@ public class FrameTablero extends javax.swing.JFrame {
     public int monto;
     public int fichas;
     public int jugadores;
-    public INegocio negocio;
+    public IControlJuego controlJuego;
+    public IControlApuestas controlApuestas;
+    
+    //TODO: Eliminar atributo
+    int jugador=0;
 
     /**
      * Constructor de la clase FrameTablero.
@@ -47,7 +55,10 @@ public class FrameTablero extends javax.swing.JFrame {
         this.monto = monto;
         this.fichas = fichas;
         this.jugadores = jugadores;
+        controlApuestas=new ControlApuestas();
+        controlJuego=new ControlJuego();
         inicializarGui();
+        SiguienteJugador();
     }
 
     /**
@@ -63,6 +74,13 @@ public class FrameTablero extends javax.swing.JFrame {
         inicializarTablero(tableroIzquierda, 2, tamaño, false);
         inicializarTablero(tableroCentro, 2, 2, true);
 
+        //Cañas
+        this.inicializarImagen(this.lblCaña1, "/cañaLisa.png", 27, 54);
+        this.inicializarImagen(this.lblCaña2, "/cañaLisa.png", 27, 54);
+        this.inicializarImagen(this.lblCaña3, "/cañaLisa.png", 27, 54);
+        this.inicializarImagen(this.lblCaña4, "/cañaLisa.png", 27, 54);
+        this.inicializarImagen(this.lblCaña5, "/cañaLisa.png", 27, 54);
+        
         // Monto
         this.lblConchaApuesta.setText("Apuestas: " + monto);
         this.lblGatoApuestas.setText("Apuestas: " + monto);
@@ -126,7 +144,51 @@ public class FrameTablero extends javax.swing.JFrame {
             }
             contadorFichas++;
         }
-
+        
+        for (int i = 0; i < fichasMazorca.size(); i++) {
+            final int numFicha = i; // Guardar el índice de la ficha actual
+            final int numJugador = 3; // Guardar el índice de la ficha actual
+            fichasMazorca.get(i).addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    clickearFicha(numFicha,numJugador); // Envía el índice o referencia de la ficha
+                }
+            });
+        }
+        
+        for (int i = 0; i < fichasConcha.size(); i++) {
+            final int numFicha = i; // Guardar el índice de la ficha actual
+            final int numJugador = 1; // Guardar el índice de la ficha actual
+            fichasMazorca.get(i).addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    clickearFicha(numFicha,numJugador); // Envía el índice o referencia de la ficha
+                }
+            });
+        }
+        
+        for (int i = 0; i < fichasPiramide.size(); i++) {
+            final int numFicha = i; // Guardar el índice de la ficha actual
+            final int numJugador = 2; // Guardar el índice de la ficha actual
+            fichasMazorca.get(i).addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    clickearFicha(numFicha,numJugador); // Envía el índice o referencia de la ficha
+                }
+            });
+        }
+        
+        for (int i = 0; i < fichasGato.size(); i++) {
+            final int numFicha = i; // Guardar el índice de la ficha actual
+            final int numJugador = 0; // Guardar el índice de la ficha actual
+            fichasMazorca.get(i).addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    clickearFicha(numFicha,numJugador); // Envía el índice o referencia de la ficha
+                }
+            });
+        }
+        
         // Jugadores
         for (int i = 0; i < -jugadores + 4; i++) {
             switch (2 - i) {
@@ -141,6 +203,12 @@ public class FrameTablero extends javax.swing.JFrame {
                 }
             }
         }
+    }
+    
+    private void clickearFicha(int numeroFicha, int numJugador){
+        //TODO: Usar el nombre de
+        System.out.println("Ficha "+numeroFicha+" Jugador"+numJugador);
+       
     }
 
     /**
@@ -162,7 +230,7 @@ public class FrameTablero extends javax.swing.JFrame {
             label.setBorder(new LineBorder(Color.BLACK, 1)); // Añadir borde negro
             label.setOpaque(true); // Hacer el fondo visible
             label.setBackground(Color.WHITE);
-
+            
             // Lógica para asignar colores a las casillas del tablero
             if (filas * columnas > 6) {
                 // Colocar casilla inicial (Amarilla)
@@ -284,27 +352,70 @@ public class FrameTablero extends javax.swing.JFrame {
     }
 
     /**
-     * Simula el lanzamiento de las cañas y muestra el resultado en el campo de texto.
+     * Simula el lanzamiento de las cañas y muestra el resultado en el campo de
+     * texto.
      */
     public void LanzarCañas() {
         // Lanza las cañas
         int resultado = utils.GenerarLanzamiento();
         this.txtResultado.setText(String.valueOf(resultado));
+
+        this.inicializarImagen(this.lblCaña1, "/cañaLisa.png", 27, 54);
+        this.inicializarImagen(this.lblCaña2, "/cañaLisa.png", 27, 54);
+        this.inicializarImagen(this.lblCaña3, "/cañaLisa.png", 27, 54);
+        this.inicializarImagen(this.lblCaña4, "/cañaLisa.png", 27, 54);
+        this.inicializarImagen(this.lblCaña5, "/cañaLisa.png", 27, 54);
+        
+        switch (resultado) {
+            case 10:
+                this.inicializarImagen(this.lblCaña5, "/cañaMarcada.png", 27, 54);
+            case 4:
+                this.inicializarImagen(this.lblCaña4, "/cañaMarcada.png", 27, 54);
+            case 3:
+                this.inicializarImagen(this.lblCaña3, "/cañaMarcada.png", 27, 54);
+            case 2:
+                this.inicializarImagen(this.lblCaña2, "/cañaMarcada.png", 27, 54);
+            case 1:
+                this.inicializarImagen(this.lblCaña1, "/cañaMarcada.png", 27, 54);
+        }
     }
 
     /**
-     * Avanza al siguiente jugador en el turno.
-     * Ilumina el jugador del turno actual e ilumina el botón de lanzar cañas.
+     * Avanza al siguiente jugador en el turno. Ilumina el jugador del turno
+     * actual e ilumina el botón de lanzar cañas.
      */
     public void SiguienteJugador() {
-        negocio.SiguienteJugador();
+        //TODO: Implementar con negocio
+        
+        jugador++;
+        if (jugador >= jugadores+1) {
+            jugador = 1;
+        }
+
+        switch (jugador) {
+            case 1 -> {
+                this.inicializarImagen(this.lblIconJugadorActual, "/cat.png", 64, 60);
+            }
+            case 2 -> {
+                this.inicializarImagen(this.lblIconJugadorActual, "/concha.png", 64, 60);
+            }
+            case 3 -> {
+                this.inicializarImagen(this.lblIconJugadorActual, "/piramide.png", 64, 60);
+            }
+            case 4 -> {
+                this.inicializarImagen(this.lblIconJugadorActual, "/mazorca.png", 64, 60);
+            }
+        }
+
+
     }
 
     /**
      * Permite a los jugadores realizar apuestas.
      */
     public void Apostar() {
-        negocio.Apostar();
+        //TODO: Implementar con negocio
+        
     }
 
     /**
@@ -312,14 +423,14 @@ public class FrameTablero extends javax.swing.JFrame {
      * resaltando las fichas que pueden moverse y las que no.
      */
     public void IluminarFichas() {
-        // Implementar la lógica para iluminar las fichas del jugador
+        //TODO: implementar con el negocio
     }
 
     /**
      * Simula el movimiento de una ficha.
      */
     public void MueveFicha() {
-        // Implementar la lógica para mover la ficha
+        // TODO: implementar con el negocio
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -376,6 +487,11 @@ public class FrameTablero extends javax.swing.JFrame {
         btnSalir = new javax.swing.JButton();
         btnLanzarCañas = new javax.swing.JButton();
         txtResultado = new javax.swing.JTextField();
+        lblCaña1 = new javax.swing.JLabel();
+        lblCaña3 = new javax.swing.JLabel();
+        lblCaña2 = new javax.swing.JLabel();
+        lblCaña5 = new javax.swing.JLabel();
+        lblCaña4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(102, 102, 0));
@@ -488,7 +604,7 @@ public class FrameTablero extends javax.swing.JFrame {
                             .addGroup(pnlTableroLayout.createSequentialGroup()
                                 .addComponent(lblTurnoDe)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblIconJugadorActual, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(lblIconJugadorActual, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -512,8 +628,8 @@ public class FrameTablero extends javax.swing.JFrame {
                         .addGap(36, 36, 36)
                         .addComponent(lblTurnoDe))
                     .addGroup(pnlTableroLayout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(lblIconJugadorActual, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(lblIconJugadorActual, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -832,7 +948,7 @@ public class FrameTablero extends javax.swing.JFrame {
                 .addComponent(pnlPiramide, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnlMazorca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         pnlBotones.setBackground(new java.awt.Color(102, 102, 0));
@@ -870,28 +986,57 @@ public class FrameTablero extends javax.swing.JFrame {
         txtResultado.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
         txtResultado.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        lblCaña1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cañaLisa.png"))); // NOI18N
+
+        lblCaña3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cañaLisa.png"))); // NOI18N
+
+        lblCaña2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cañaLisa.png"))); // NOI18N
+
+        lblCaña5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cañaLisa.png"))); // NOI18N
+
+        lblCaña4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cañaLisa.png"))); // NOI18N
+
         javax.swing.GroupLayout pnlBotonesLayout = new javax.swing.GroupLayout(pnlBotones);
         pnlBotones.setLayout(pnlBotonesLayout);
         pnlBotonesLayout.setHorizontalGroup(
             pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBotonesLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(txtResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnLanzarCañas, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(lblCaña1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblCaña2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
+                .addComponent(lblCaña3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblCaña4, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblCaña5, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22)
+                .addComponent(txtResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnLanzarCañas, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         pnlBotonesLayout.setVerticalGroup(
             pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlBotonesLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLanzarCañas, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(pnlBotonesLayout.createSequentialGroup()
+                            .addGap(12, 12, 12)
+                            .addGroup(pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnLanzarCañas, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lblCaña2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(lblCaña3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(lblCaña4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(lblCaña5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(lblCaña1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1046,6 +1191,11 @@ public class FrameTablero extends javax.swing.JFrame {
     private javax.swing.JLabel iconGato;
     private javax.swing.JLabel iconMazorca;
     private javax.swing.JLabel iconPiramide;
+    private javax.swing.JLabel lblCaña1;
+    private javax.swing.JLabel lblCaña2;
+    private javax.swing.JLabel lblCaña3;
+    private javax.swing.JLabel lblCaña4;
+    private javax.swing.JLabel lblCaña5;
     private javax.swing.JLabel lblConchaApuesta;
     private javax.swing.JLabel lblGatoApuestas;
     private javax.swing.JLabel lblIconJugadorActual;

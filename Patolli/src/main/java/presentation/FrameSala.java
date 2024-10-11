@@ -84,6 +84,9 @@ public class FrameSala extends javax.swing.JFrame {
     public void AñadirJugador(int numeroJugadores) {
         jugadores = jugadores + numeroJugadores;
         switch (jugadores) {
+            case 0->{
+                AñadirJugador(1);
+            }
             case 1 -> {
                 this.lblP2.setVisible(false);
                 this.conchaIcono.setVisible(false);
