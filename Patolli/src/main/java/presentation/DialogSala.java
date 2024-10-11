@@ -1,5 +1,7 @@
 package presentation;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import utils.Utils;
 
@@ -8,8 +10,8 @@ import utils.Utils;
  * Maneja la interacción de los jugadores, el código de la sala y la transición
  * a otras pantallas del juego.
  */
-public class FrameSala extends javax.swing.JFrame {
-
+public class DialogSala extends JDialog {
+    private JFrame parent;
     public int tamaño;      // Tamaño del tablero de juego.
     public int monto;       // Monto de apuestas.
     public int fichas;      // Número de fichas del jugador.
@@ -20,14 +22,23 @@ public class FrameSala extends javax.swing.JFrame {
      * Constructor de la clase FrameSala.
      * Inicializa la sala con el tamaño del tablero, monto de apuestas, número de fichas y código de la sala.
      *
+     * @param parent
      * @param tamaño Tamaño del tablero de juego.
      * @param monto Monto de apuestas.
      * @param fichas Número de fichas del jugador.
      * @param codigo Código de la sala. Si es null, se genera uno nuevo.
      */
-    public FrameSala(int tamaño, int monto, int fichas, String codigo) {
+    public DialogSala(JFrame parent, int tamaño, int monto, int fichas, String codigo) {
         this.setResizable(false);
         initComponents();
+        // Agregar un WindowListener para manejar el evento de cerrar
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                Cerrar(); // Llama a tu método Cerrar() cuando se intente cerrar la ventana
+            }
+        });
+        this.parent=parent;
         this.tamaño = tamaño;
         this.monto = monto;
         this.fichas = fichas;
@@ -53,23 +64,23 @@ public class FrameSala extends javax.swing.JFrame {
      * Método que permite regresar a la pantalla de opciones.
      */
     public void Volver() {
-        // Pasa a la pantalla de opciones
-        FrameOpciones opciones = new FrameOpciones();
-        opciones.setVisible(true);
-        this.dispose();
+        if (parent instanceof FrameInicio frameInicio) {
+            frameInicio.PasarPantallaOpciones(this);
+        }
     }
 
     /**
      * Método que inicia el juego.
      * Si hay más de un jugador, pasa a la pantalla del tablero; de lo contrario,
-     * muestra un mensaje informando que se necesitan más jugadores.
+     * muestra un mensaje informando que se
+     * necesitan más jugadores.
      */
     public void Jugar() {
         // Pasa a la pantalla de tablero
         if (jugadores > 1) {
-            FrameTablero tablero = new FrameTablero(tamaño, monto, fichas, jugadores);
-            tablero.setVisible(true);
-            this.dispose();
+            if (parent instanceof FrameInicio frameInicio) {
+                frameInicio.PasarPantallaTablero(this,tamaño, monto, fichas,jugadores);
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Se necesitan dos jugadores para jugar", "Faltan jugadores", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -117,6 +128,12 @@ public class FrameSala extends javax.swing.JFrame {
             }
         }
     }
+    
+    public void Cerrar() {
+        if (parent instanceof FrameInicio frameInicio) {
+            frameInicio.CerrarPrograma();
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -141,9 +158,14 @@ public class FrameSala extends javax.swing.JFrame {
         TODObtnAñadirJugador = new javax.swing.JButton();
         TODObtnEliminarJugador = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 600));
         setSize(new java.awt.Dimension(800, 600));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 0));
         jPanel1.setMaximumSize(new java.awt.Dimension(800, 600));
@@ -462,52 +484,9 @@ public class FrameSala extends javax.swing.JFrame {
        AñadirJugador(-1);
     }//GEN-LAST:event_TODObtnEliminarJugadorMouseClicked
 
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameSala.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameSala.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameSala.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameSala.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrameSala(8,10,2,null).setVisible(true);
-            }
-        });
-    }
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+ 
+    }//GEN-LAST:event_formWindowClosed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton TODObtnAñadirJugador;

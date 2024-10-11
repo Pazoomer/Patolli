@@ -1,5 +1,8 @@
 package presentation;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+
 /**
  * La clase FrameComoJugar muestra las instrucciones del juego Patolli.
  * Permite a los usuarios navegar por las instrucciones del juego y regresar 
@@ -7,18 +10,29 @@ package presentation;
  * 
  * @author t1pas
  */
-public class FrameComoJugar extends javax.swing.JFrame {
+public class DialogComoJugar extends JDialog {
 
+    private JFrame parent;
     // Página actual de las instrucciones
     private int paginaInstrucciones=0;
 
     /**
      * Constructor de FrameComoJugar.
      * Inicializa la ventana y desactiva la opción de cambiar el tamaño de la ventana.
+     * @param parent
      */
-    public FrameComoJugar() {
-        this.setResizable(false);
+    public DialogComoJugar(JFrame parent) {
+        super(parent, true); // Inicializa el JDialog con modal
+        this.parent=parent;
+        this.setResizable(false); // Desactiva la opción de cambiar el tamaño de la ventana
         initComponents();
+        // Agregar un WindowListener para manejar el evento de cerrar
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                Cerrar(); // Llama a tu método Cerrar() cuando se intente cerrar la ventana
+            }
+        });
     }
     
     /**
@@ -26,10 +40,9 @@ public class FrameComoJugar extends javax.swing.JFrame {
      * Instancia una nueva ventana de FrameOpciones.
      */
     public void Volver(){
-        //Pasa a la pantalla Opciones
-        FrameOpciones opciones=new FrameOpciones();
-        opciones.setVisible(true);
-        this.dispose();
+        if (parent instanceof FrameInicio frameInicio) {
+            frameInicio.PasarPantallaOpciones(this);
+        }
     }
     
     /**
@@ -151,6 +164,12 @@ public class FrameComoJugar extends javax.swing.JFrame {
             }
         }
     }
+    
+    public void Cerrar() {
+        if (parent instanceof FrameInicio frameInicio) {
+            frameInicio.CerrarPrograma();
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -166,10 +185,15 @@ public class FrameComoJugar extends javax.swing.JFrame {
         pnlVolver = new javax.swing.JPanel();
         lblVolver = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 600));
         setResizable(false);
         setSize(new java.awt.Dimension(800, 600));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 0));
         jPanel1.setMaximumSize(new java.awt.Dimension(800, 600));
@@ -377,40 +401,10 @@ public class FrameComoJugar extends javax.swing.JFrame {
         InstruccionDerecha();
     }//GEN-LAST:event_lblDerechaMouseClicked
 
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameComoJugar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameComoJugar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameComoJugar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameComoJugar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+      
+    }//GEN-LAST:event_formWindowClosed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrameComoJugar().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

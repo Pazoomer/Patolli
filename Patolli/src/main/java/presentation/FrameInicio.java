@@ -1,5 +1,7 @@
 package presentation;
 
+import javax.swing.JDialog;
+
 /**
  * La clase FrameInicio representa la pantalla inicial del juego.
  * Proporciona un mecanismo para que el usuario pase a la siguiente pantalla, 
@@ -18,15 +20,103 @@ public class FrameInicio extends javax.swing.JFrame {
         initComponents();
     }
     
+    public void CerrarPrograma() {
+        this.dispose();
+    }
+    
     /**
-     * Pasa a la siguiente pantalla, que es FrameUnirseCrear.
-     * Crea una nueva instancia de FrameUnirseCrear y cierra la ventana actual.
+     * Pasa a la siguiente pantalla, que es FrameUnirseCrear. Crea una nueva
+     * instancia de FrameUnirseCrear y esconde la ventana actual
+     *
+     * @param children
      */
-    public void PasarPantalla() {
-        // Crea una nueva instancia de la pantalla FrameUnirseCrear
-        FrameUnirseCrear unirseCrear = new FrameUnirseCrear();
+    public void PasarPantallaUnirseCrear(JDialog children) {
+        if (children != null) {
+            children.dispose();
+        }
+        this.setVisible(false);
+        DialogUnirseCrear unirseCrear = new DialogUnirseCrear(this);
         unirseCrear.setVisible(true); // Muestra la nueva pantalla
-        this.dispose(); // Cierra la ventana actual (FrameInicio)
+        
+    }
+
+    /**
+     * Pasa a la siguiente pantalla, que es DialogComoJugar Crea una nueva
+     * instancia de DialogComoJugar y esconde la ventana actual
+     *
+     * @param children
+     */
+    public void PasarPantallaComoJugar(JDialog children) {
+        if (children != null) {
+            children.dispose();
+        }
+        this.setVisible(false);
+        DialogComoJugar comoJugar = new DialogComoJugar(this);
+        comoJugar.setVisible(true); // Muestra la nueva pantalla
+        
+    } 
+    
+    /**
+     * Pasa a la siguiente pantalla, que es FrameSala.
+     * Crea una nueva instancia de FrameSala y esconde la ventana actual
+     * @param children
+     * @param tamaño
+     * @param monto
+     * @param fichas
+     * @param codigo
+     */
+    public void PasarPantallaSala(JDialog children,int tamaño, int monto, int fichas, String codigo) {
+        if (children != null) {
+            children.dispose();
+        }
+        this.setVisible(false);
+        DialogSala sala = new DialogSala(this,tamaño,monto,fichas,codigo);
+        sala.setVisible(true); // Muestra la nueva pantalla
+        
+    } 
+    
+    /**
+     * Pasa a la siguiente pantalla, que es FrameOpciones.
+     * Crea una nueva instancia de FrameOpciones y esconde la ventana actual
+     * @param children
+     */
+    public void PasarPantallaOpciones(JDialog children) {
+        if (children != null) {
+            children.dispose();
+        }
+        this.setVisible(false);
+        DialogOpciones opciones = new DialogOpciones(this);
+        opciones.setVisible(true); // Muestra la nueva pantalla
+        
+    } 
+    
+    /**
+     * Pasa a la siguiente pantalla, que es FrameInicio
+     * @param children
+     */
+    public void PasarPantallaInicio(JDialog children) {
+        if (children != null) {
+            children.dispose();
+        }
+        this.setVisible(true);
+    } 
+    
+    /**
+     * Pasa a la siguiente pantalla, que es FrameTablero.
+     * Crea una nueva instancia de FrameTablero y esconde la ventana actual
+     * @param children
+     * @param tamaño
+     * @param fichas
+     * @param monto
+     * @param jugadores
+     */
+    public void PasarPantallaTablero(JDialog children,int tamaño, int fichas, int monto, int jugadores) {
+        if (children != null) {
+            children.dispose();
+        }
+        this.setVisible(false);
+        DialogTablero tablero = new DialogTablero(this,tamaño,fichas,monto, jugadores);
+        tablero.setVisible(true); // Muestra la nueva pantalla
     } 
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -112,7 +202,7 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param evt El evento de clic del ratón.
      */
     private void pnlTodoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlTodoMouseClicked
-        PasarPantalla();
+        PasarPantallaUnirseCrear(null);
     }//GEN-LAST:event_pnlTodoMouseClicked
 
     /**
@@ -122,7 +212,7 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param evt El evento de clic del ratón.
      */
     private void lblLogoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLogoMouseClicked
-        PasarPantalla();
+        PasarPantallaUnirseCrear(null);
     }//GEN-LAST:event_lblLogoMouseClicked
     /**
      * Este método se ejecuta cuando se hace clic en la etiqueta lblInstruccion.
@@ -131,7 +221,7 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param evt El evento de clic del ratón.
      */
     private void lblInstrucccionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblInstrucccionMouseClicked
-        PasarPantalla();
+        PasarPantallaUnirseCrear(null);
     }//GEN-LAST:event_lblInstrucccionMouseClicked
 
     public static void main(String args[]) {

@@ -1,5 +1,7 @@
 package presentation;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -9,14 +11,26 @@ import javax.swing.JOptionPane;
  * 
  * @author t1pas
  */
-public class FrameUnirseCrear extends javax.swing.JFrame {
+public class DialogUnirseCrear extends JDialog {
 
+    JFrame parent;
     /**
      * Crea una nueva instancia de FrameUnirseCrear.
      * Inicializa los componentes de la interfaz gráfica.
+     * @param parent
      */
-    public FrameUnirseCrear() {
+    public DialogUnirseCrear(JFrame parent) {
+        super(parent, true); // Inicializa el JDialog con modal
+        this.parent = parent;
+        this.setResizable(false); // Desactiva la opción de cambiar el tamaño de la ventana
         initComponents();
+        // Agregar un WindowListener para manejar el evento de cerrar
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                Cerrar(); // Llama a tu método Cerrar() cuando se intente cerrar la ventana
+            }
+        });
     }
     
     /**
@@ -37,9 +51,15 @@ public class FrameUnirseCrear extends javax.swing.JFrame {
      * Crea una nueva partida y muestra la pantalla de opciones.
      */
     public void Crear() {
-        FrameOpciones opciones = new FrameOpciones();
-        opciones.setVisible(true);
-        this.dispose();
+        if (parent instanceof FrameInicio frameInicio) { // Reemplaza MiFrameClase por la clase real del JFrame que tiene el método
+            frameInicio.PasarPantallaOpciones(this); // Llama al método directamente
+        }
+    }
+    
+    public void Cerrar() {
+        if (parent instanceof FrameInicio frameInicio) {
+            frameInicio.CerrarPrograma();
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -54,8 +74,13 @@ public class FrameUnirseCrear extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         txtCodigo = new javax.swing.JTextArea();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(102, 102, 0));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 0));
 
@@ -237,40 +262,9 @@ public class FrameUnirseCrear extends javax.swing.JFrame {
         Crear();
     }//GEN-LAST:event_pnlCrearMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameUnirseCrear.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameUnirseCrear.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameUnirseCrear.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameUnirseCrear.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrameUnirseCrear().setVisible(true);
-            }
-        });
-    }
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+       
+    }//GEN-LAST:event_formWindowClosed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
@@ -278,16 +272,8 @@ public class FrameUnirseCrear extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lblCrear;
     private javax.swing.JLabel lblUnirse;
-    private javax.swing.JLabel lblUnirse1;
-    private javax.swing.JLabel lblUnirse2;
-    private javax.swing.JLabel lblUnirse3;
-    private javax.swing.JLabel lblUnirse4;
     private javax.swing.JPanel pnlCrear;
     private javax.swing.JPanel pnlUnirse;
-    private javax.swing.JPanel pnlUnirse1;
-    private javax.swing.JPanel pnlUnirse2;
-    private javax.swing.JPanel pnlUnirse3;
-    private javax.swing.JPanel pnlUnirse4;
     private javax.swing.JTextArea txtCodigo;
     // End of variables declaration//GEN-END:variables
 }

@@ -2,8 +2,9 @@ package presentation;
 
 import java.awt.Color;
 import javax.swing.BorderFactory;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 /**
  * La clase FrameOpciones permite al usuario configurar las opciones antes de iniciar una partida.
@@ -12,8 +13,9 @@ import javax.swing.JOptionPane;
  * 
  * @autor t1pas
  */
-public class FrameOpciones extends javax.swing.JFrame {
+public class DialogOpciones extends JDialog {
 
+    private JFrame parent;
     public int tamaño; // Almacena el tamaño del tablero
     public int monto;  // Almacena el monto de las apuestas
     public int fichas; // Almacena la cantidad de fichas por jugador
@@ -21,10 +23,21 @@ public class FrameOpciones extends javax.swing.JFrame {
     /**
      * Constructor de FrameOpciones.
      * Inicializa la ventana y asigna valores predeterminados al tamaño del tablero, monto de las apuestas y fichas.
+     * @param parent
      */
-    public FrameOpciones() {
+    public DialogOpciones(JFrame parent) {
+        super(parent, true); // Inicializa el JDialog con modal
+        this.parent=parent;
+        this.setResizable(false); // Desactiva la opción de cambiar el tamaño de la ventana
         this.setResizable(false); // Desactiva la opción de cambiar el tamaño de la ventana
         initComponents(); // Inicializa los componentes de la interfaz
+        // Agregar un WindowListener para manejar el evento de cerrar
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                Cerrar(); // Llama a tu método Cerrar() cuando se intente cerrar la ventana
+            }
+        });
         SetTamañoTablero(8); // Establece el tamaño del tablero a 8 por defecto
         SetMontoApuestas(10); // Establece el monto de apuestas a 10 por defecto
         SetFichasJugador(2); // Establece el número de fichas a 2 por defecto
@@ -35,9 +48,9 @@ public class FrameOpciones extends javax.swing.JFrame {
      * Crea una instancia de FrameSala, pasándole los valores seleccionados de tamaño, monto y fichas.
      */
     public void Jugar() {
-        FrameSala sala = new FrameSala(tamaño, monto, fichas, null); // Crea una nueva sala con los parámetros seleccionados
-        sala.setVisible(true); // Muestra la nueva pantalla
-        this.dispose(); // Cierra la pantalla actual
+        if (parent instanceof FrameInicio frameInicio) {
+            frameInicio.PasarPantallaSala(this,tamaño, monto, fichas, null);
+        }
     }
 
     /**
@@ -45,24 +58,30 @@ public class FrameOpciones extends javax.swing.JFrame {
      * Crea una instancia de FrameComoJugar y cambia a esa pantalla.
      */
     public void ComoJugar() {
-        FrameComoJugar comoJugar = new FrameComoJugar(); // Crea una nueva pantalla de instrucciones
-        comoJugar.setVisible(true); // Muestra la pantalla de instrucciones
-        this.dispose(); // Cierra la pantalla actual
+        if (parent instanceof FrameInicio frameInicio) {
+            frameInicio.PasarPantallaComoJugar(this);
+        }
+    }
+    public void Cerrar() {
+        if (parent instanceof FrameInicio frameInicio) {
+            frameInicio.CerrarPrograma();
+        }
     }
     
     /**
      * Vuelve a la pantalla anterior de unirse o crear partida.
-     * Crea una instancia de FrameUnirseCrear y cambia a esa pantalla.
+     * Crea una
+     * instancia de FrameUnirseCrear y cambia a esa pantalla.
      */
     public void Volver() {
-        FrameUnirseCrear unirseCrear = new FrameUnirseCrear(); // Crea una nueva pantalla de opciones de unirse o crear
-        unirseCrear.setVisible(true); // Muestra la pantalla de opciones
-        this.dispose(); // Cierra la pantalla actual
+        if (parent instanceof FrameInicio frameInicio) {
+            frameInicio.PasarPantallaUnirseCrear(this);
+        }
     }
 
     /**
-     * Establece el tamaño del tablero basado en la opción seleccionada.
-     * Cambia el aspecto visual de la etiqueta que representa el tamaño seleccionado.
+     * Establece el tamaño del tablero basado en la opción seleccionada. Cambia
+     * el aspecto visual de la etiqueta que representa el tamaño seleccionado.
      * 
      * @param tamaño El tamaño del tablero (8, 10, o 12).
      */
@@ -214,10 +233,15 @@ public class FrameOpciones extends javax.swing.JFrame {
         pnlVolver = new javax.swing.JPanel();
         lblVolver = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 600));
         setResizable(false);
         setSize(new java.awt.Dimension(800, 600));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 0));
         jPanel1.setMaximumSize(new java.awt.Dimension(800, 600));
@@ -762,52 +786,10 @@ public class FrameOpciones extends javax.swing.JFrame {
         Volver();
     }//GEN-LAST:event_pnlVolverMouseClicked
 
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameOpciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameOpciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameOpciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameOpciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+       
+    }//GEN-LAST:event_formWindowClosed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrameOpciones().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;

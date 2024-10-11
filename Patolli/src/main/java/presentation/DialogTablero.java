@@ -9,6 +9,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -26,8 +28,9 @@ import utils.Utils;
  * 
  * @author t1pas
  */
-public class FrameTablero extends javax.swing.JFrame {
+public class DialogTablero extends JDialog {
 
+    private final JFrame parent;
     Utils utils;
     public int tamaño;
     public int monto;
@@ -42,12 +45,15 @@ public class FrameTablero extends javax.swing.JFrame {
     /**
      * Constructor de la clase FrameTablero.
      *
+     * @param parent
      * @param tamaño el tamaño del tablero
      * @param monto el monto de las apuestas
      * @param fichas el número de fichas disponibles
      * @param jugadores el número de jugadores
      */
-    public FrameTablero(int tamaño, int monto, int fichas, int jugadores) {
+    public DialogTablero(JFrame parent, int tamaño, int monto, int fichas, int jugadores) {
+        super(parent, true); // Inicializa el JDialog con modal
+        this.parent=parent;
         this.setResizable(false);
         initComponents();
         utils = new Utils();
@@ -59,6 +65,13 @@ public class FrameTablero extends javax.swing.JFrame {
         controlJuego=new ControlJuego();
         inicializarGui();
         SiguienteJugador();
+        // Agregar un WindowListener para manejar el evento de cerrar
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                Cerrar(); // Llama a tu método Cerrar() cuando se intente cerrar la ventana
+            }
+        });
     }
 
     /**
@@ -345,9 +358,10 @@ public class FrameTablero extends javax.swing.JFrame {
         int opcion = JOptionPane.showConfirmDialog(null, "¿Realmente quieres salir?", "Confirmar salida", JOptionPane.YES_NO_OPTION);
 
         if (opcion == JOptionPane.YES_OPTION) {
-            FrameInicio inicio = new FrameInicio();
-            inicio.setVisible(true);
-            this.dispose();
+            if (parent instanceof FrameInicio frameInicio) {
+                frameInicio.PasarPantallaInicio(this);
+            }
+            
         }
     }
 
@@ -408,6 +422,12 @@ public class FrameTablero extends javax.swing.JFrame {
         }
 
 
+    }
+    
+    public void Cerrar() {
+        if (parent instanceof FrameInicio frameInicio) {
+            frameInicio.CerrarPrograma();
+        }
     }
 
     /**
@@ -493,8 +513,13 @@ public class FrameTablero extends javax.swing.JFrame {
         lblCaña5 = new javax.swing.JLabel();
         lblCaña4 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(102, 102, 0));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         pnlTablero.setBackground(new java.awt.Color(102, 102, 0));
         pnlTablero.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -1122,41 +1147,9 @@ public class FrameTablero extends javax.swing.JFrame {
         SiguienteJugador();
     }//GEN-LAST:event_btnSiguienteJugadorActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameTablero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameTablero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameTablero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameTablero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrameTablero(8, 10, 4, 3).setVisible(true);
-            }
-        });
-    }
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+  
+    }//GEN-LAST:event_formWindowClosed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLanzarCañas;
