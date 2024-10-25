@@ -69,6 +69,7 @@ public class DialogTablero extends JDialog {
     
     //Casillas del tablero
     private List<JLabel> casillas;  
+    private List<Integer> casillasOrdenadas; //Arreglo de numeros que traduce el verdadero orden de las casillas
     //Tamaño        8           
     //Totales       68          
     //Inicio        (Arriba: 15,    Abajo: 16,       Derecha: 40,   Izquieda: 55)          
@@ -134,6 +135,7 @@ public class DialogTablero extends JDialog {
         inicializarTablero(tableroDerecha, 2, tamaño, true);
         inicializarTablero(tableroIzquierda, 2, tamaño, false);
         inicializarTablero(tableroCentro, 2, 2, true);
+        reacomodarCasillas();
 
         //Cañas
         this.inicializarImagen(this.lblCaña1, "/cañaLisa.png", 27, 54);
@@ -153,6 +155,7 @@ public class DialogTablero extends JDialog {
         this.lblPiramideApuesta.setText("Apuestas: " + monto);
         
         //Limites de panel
+        this.pnlJugadores.setLayout(null);
         this.pnlGato.setLayout(null);
         this.pnlConcha.setLayout(null);
         this.pnlMazorca.setLayout(null);
@@ -296,6 +299,97 @@ public class DialogTablero extends JDialog {
             }
         }
         
+    }
+    /**
+     * Le da un orden logico a la lista de casillas para mejor manipulacion
+     */
+    private void reacomodarCasillas() {
+        casillasOrdenadas = new ArrayList<>();
+        switch (tamaño) {
+            case 8 -> {
+                //Tamaño 8 -> 68 elementos
+                //15, 13, 11, 9, 7, 5, 3, 1, 0, 2, 4, 6, 8, 10, 12, 14, 64
+                //55, 54, 53, 52, 51, 50, 49, 48, 56, 57, 58, 59, 60, 61, 62, 63, 66
+                //16, 18, 20, 22, 24, 26, 28, 30, 31, 29, 27, 25, 23, 21, 19, 17, 67
+                //40, 41, 42, 43, 44, 45, 46, 47, 39, 38, 37, 36, 35, 34, 33, 32, 65
+                casillasOrdenadas.add(15);
+                casillasOrdenadas.add(13);
+                casillasOrdenadas.add(11);
+                casillasOrdenadas.add(9);
+                casillasOrdenadas.add(7);
+                casillasOrdenadas.add(5);
+                casillasOrdenadas.add(3);
+                casillasOrdenadas.add(1);
+                casillasOrdenadas.add(0);
+                casillasOrdenadas.add(2);
+                casillasOrdenadas.add(4);
+                casillasOrdenadas.add(6);
+                casillasOrdenadas.add(8);
+                casillasOrdenadas.add(10);
+                casillasOrdenadas.add(12);
+                casillasOrdenadas.add(14);
+                casillasOrdenadas.add(64);
+
+                casillasOrdenadas.add(55);
+                casillasOrdenadas.add(54);
+                casillasOrdenadas.add(53);
+                casillasOrdenadas.add(52);
+                casillasOrdenadas.add(51);
+                casillasOrdenadas.add(50);
+                casillasOrdenadas.add(49);
+                casillasOrdenadas.add(48);
+                casillasOrdenadas.add(56);
+                casillasOrdenadas.add(57);
+                casillasOrdenadas.add(58);
+                casillasOrdenadas.add(59);
+                casillasOrdenadas.add(60);
+                casillasOrdenadas.add(61);
+                casillasOrdenadas.add(62);
+                casillasOrdenadas.add(63);
+                casillasOrdenadas.add(66);
+
+                casillasOrdenadas.add(16);
+                casillasOrdenadas.add(18);
+                casillasOrdenadas.add(20);
+                casillasOrdenadas.add(22);
+                casillasOrdenadas.add(24);
+                casillasOrdenadas.add(26);
+                casillasOrdenadas.add(28);
+                casillasOrdenadas.add(30);
+                casillasOrdenadas.add(31);
+                casillasOrdenadas.add(29);
+                casillasOrdenadas.add(27);
+                casillasOrdenadas.add(25);
+                casillasOrdenadas.add(23);
+                casillasOrdenadas.add(21);
+                casillasOrdenadas.add(19);
+                casillasOrdenadas.add(17);
+                casillasOrdenadas.add(67);
+
+                casillasOrdenadas.add(40);
+                casillasOrdenadas.add(41);
+                casillasOrdenadas.add(42);
+                casillasOrdenadas.add(43);
+                casillasOrdenadas.add(44);
+                casillasOrdenadas.add(45);
+                casillasOrdenadas.add(46);
+                casillasOrdenadas.add(47);
+                casillasOrdenadas.add(39);
+                casillasOrdenadas.add(38);
+                casillasOrdenadas.add(37);
+                casillasOrdenadas.add(36);
+                casillasOrdenadas.add(35);
+                casillasOrdenadas.add(34);
+                casillasOrdenadas.add(33);
+                casillasOrdenadas.add(32);
+                casillasOrdenadas.add(65);
+            }
+            case 10 -> {
+            }
+            case 12 -> {
+            }
+
+        }
     }
     /**
      * Intenta mover la ficha a la que se le hizo click si se cumplen las condiciones
@@ -529,7 +623,8 @@ public class DialogTablero extends JDialog {
             case 1:
                 this.inicializarImagen(this.lblCaña1, "/cañaMarcada.png", 27, 54);
         }
-        this.btnLanzarCañas.setEnabled(false);
+        //TODO: Habilitar este codigo
+        //this.btnLanzarCañas.setEnabled(false);
         iluminarFichas(true);
     }
     /**
@@ -595,11 +690,12 @@ public class DialogTablero extends JDialog {
     public void iluminarFichas(boolean iluminar) {
         List<JLabel> fichasIluminables = getListaFichasMiJugador();
         List<Integer> fichasIluminablesPosicion = getListaFichasPosicionMiJugador();
-        boolean casillaInicialLibre=casillas.get(getCasillaInicialMiJugador()).getIcon() == null;
+        boolean casillaInicialLibre = casillas.get(getCasillaInicialMiJugador()).getIcon() == null;
         if (fichasIluminables != null && fichasIluminablesPosicion != null) {
             for (int i = 0; i < fichas; i++) {
                 if (iluminar) {
                     //Si la ficha esta fuera del tablero, no se ilumina
+                    System.out.println("i: "+i+" Posicion: "+fichasIluminablesPosicion.get(i));
                     if (fichasIluminablesPosicion.get(i) != -1) {
                         puedeMover = true;
                         fichasIluminables.get(i).setBorder(BorderFactory.createLineBorder(Color.BLUE, 3)); // Borde azul
@@ -629,25 +725,66 @@ public class DialogTablero extends JDialog {
 
             if (colorBorde.equals(Color.BLUE)) {
                 //Si la ficha tiene borde azul, significa que va a moverse por el tablero
-                //TODO
-            } else if (colorBorde.equals(Color.YELLOW)) {
-                //Si la ficha tiene borde amarillo, significa que va a entrar al tablero
+                
+                //Hacer un nuevo label en el tablero
                 JLabel labelAux = new JLabel();
-                labelAux.setBorder(new LineBorder(Color.BLACK, 1)); // Añadir borde negro
-                labelAux.setOpaque(true); // Hacer el fondo visible
+                labelAux.setBorder(new LineBorder(Color.BLACK, 1)); 
+                labelAux.setOpaque(true); 
                 labelAux.setBackground(casillas.get(getCasillaInicialMiJugador()).getBackground());
                 labelAux.setIcon(miFicha.getIcon());
                 labelAux.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
 
-                        clickearFicha(numFicha, numJugador); // Envía el índice o referencia de la ficha
+                        clickearFicha(numFicha, numJugador);
+                    }
+                });
+                
+                //Quitar el viejo label del tablero
+                JLabel labelEmpty = new JLabel();
+                labelAux.setBorder(new LineBorder(Color.BLACK, 1)); 
+                labelAux.setOpaque(true); 
+                labelAux.setBackground(casillas.get(getListaFichasPosicionMiJugador().get(numFicha)).getBackground());
+                
+                //Obtiene la casilla real donde va la ficha
+                int casillaTermina = getListaFichasPosicionMiJugador().get(numFicha);
+                casillaTermina=casillasOrdenadas.indexOf(casillaTermina);
+                casillaTermina+=resultadoCañas;
+                casillaTermina = casillaTermina % ((tamaño * 8) + 4);
+                casillaTermina=casillasOrdenadas.get(casillaTermina);
+
+                
+                casillas.set(casillaTermina, labelAux);
+                casillas.set(getListaFichasPosicionMiJugador().get(numFicha), labelEmpty);
+
+                //Actualizar la posicion en la lista
+                getListaFichasPosicionMiJugador().set(numFicha, casillaTermina);
+                getListaFichasMiJugador().set(numFicha, labelAux);
+                
+            } else if (colorBorde.equals(Color.YELLOW)) {
+                //Si la ficha tiene borde amarillo, significa que va a entrar al tablero
+                
+                //Hacer un nuevo label en el tablero
+                JLabel labelAux = new JLabel();
+                labelAux.setBorder(new LineBorder(Color.BLACK, 1)); 
+                labelAux.setOpaque(true); 
+                labelAux.setBackground(casillas.get(getCasillaInicialMiJugador()).getBackground());
+                labelAux.setIcon(miFicha.getIcon());
+                labelAux.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+
+                        clickearFicha(numFicha, numJugador); 
                     }
                 });
                 casillas.set(getCasillaInicialMiJugador(), labelAux);
 
+                //Actualizar la posicion en la lista
                 getListaFichasPosicionMiJugador().set(numFicha, getCasillaInicialMiJugador());
-                //miFicha.setVisible(false);
+                getListaFichasMiJugador().set(numFicha, labelAux);
+                
+                //Esconder la ficha del tablero del jugador
+                miFicha.setVisible(false);
             }
         }
         iluminarFichas(false);
