@@ -66,9 +66,9 @@ public class DialogComoJugar extends JDialog {
             }
             case 2 -> {
                 this.txtInstruccion.setText("""
-                                            Al inicio del juego tus fichas comenzaran fuera del tablero, para colocar una ficha en el tablero debes lanzar las ca\u00f1as y sacar exactamente 1, si no es el caso pagas una apuesta, estas se colocan en la casilla central del tablero que tienes asignada.
+                                            Al inicio del juego tus fichas comenzaran fuera del tablero, para colocar una ficha en el tablero debes lanzar las ca\u00f1as y sacar exactamente 1, si no es el caso pagas una apuesta, estas se colocan en la casilla amarilla del tablero que tienes asignada.
                                             
-                                            Si la casilla esta ocupada por una ficha enemiga, no podras sacar una ficha hasta que se desocupe.""");
+                                            Si la casilla esta ocupada por una ficha, no podras sacar una ficha hasta que se desocupe.""");
             }
             case 3 -> {
                 this.txtInstruccion.setText("""
@@ -82,26 +82,22 @@ public class DialogComoJugar extends JDialog {
                                             Si no puedes moverte de ninguna forma, pagas 1 apuesta.""");
             }
             case 4 -> {
-                this.txtInstruccion.setText("""
-                                            Las fichas dentro del tablero siguen un orden para poder moverlas, pero si pagas 1 apuesta, puedes elegir cual de tus fichas mover en vez de la asignada del turno.
-                                            
+                this.txtInstruccion.setText("""  
                                             Si sacas un 1, puedes meter al tablero una ficha que este afuera de este en vez de mover la ficha del turno.""");
             }
             case 5 -> {
                 this.txtInstruccion.setText("""
-                                            Si tu tirada terminara en un espacio con una ficha de otro jugador, tu ficha vueve al punto de inicio del tablero, si este punto de inicio esta ocupado por la ficha de otro jugador entonces tu ficha sale del tablero
+                                            Si tu tirada terminara en un espacio con una ficha, tu ficha vueve al punto de inicio del tablero, si este punto de inicio esta ocupado por otra ficha entonces tu ficha sale del tablero
                                             
-                                            Si tu tirada termina en un espacio con una ficha de otro jugador mientras la ficha del otro jugador esta en una casilla central entonces puedes avanzar y sacas del juego la ficha del otro jugador.
-                                            
-                                            Si tu tirada terminara en un espacio con una de tus fichas, puedes moverte con normalidad.""");
+                                            Si tu tirada termina en un espacio con una ficha en una casilla central entonces puedes avanzar y sacas del juego la otra ficha.""");
             }
             case 6 -> {
                 this.txtInstruccion.setText("""
                                             Casillas especiales
                                             
-                                            Si caes en la casilla del triangulo, tendras que pagar dos apuestas.
+                                            Si caes en la casilla roja, tendras que pagar dos apuestas.
                                             
-                                            Si caes en la casilla circular del final del tablero, juegas dos turnos seguidos.""");
+                                            Si caes en la casilla azul, juegas dos turnos adicionales seguidos.""");
             }
         }
     }

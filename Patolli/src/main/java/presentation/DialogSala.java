@@ -16,6 +16,7 @@ public class DialogSala extends JDialog {
     public int monto;       // Monto de apuestas.
     public int fichas;      // Número de fichas del jugador.
     public int jugadores = 1; // Contador de jugadores en la sala.
+    public int miJugador; //Representa el jugador dueño de la pantalla
     public String codigo;   // Código de la sala.
 
     /**
@@ -79,7 +80,7 @@ public class DialogSala extends JDialog {
         // Pasa a la pantalla de tablero
         if (jugadores > 1) {
             if (parent instanceof FrameInicio frameInicio) {
-                frameInicio.PasarPantallaTablero(this,tamaño, monto, fichas,jugadores);
+                frameInicio.PasarPantallaTablero(this,tamaño, monto, fichas,jugadores, miJugador);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Se necesitan dos jugadores para jugar", "Faltan jugadores", JOptionPane.INFORMATION_MESSAGE);

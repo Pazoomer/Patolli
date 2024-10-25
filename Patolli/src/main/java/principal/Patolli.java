@@ -1,4 +1,4 @@
-package test;
+package principal;
 
 import presentation.FrameInicio;
 

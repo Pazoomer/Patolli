@@ -7,16 +7,15 @@ package negocio;
  */
 public class ControlJuego implements IControlJuego {
 
-    Juego juego=new Juego();
-    
     @Override
-    public int moverFicha() {
-       return juego.moverFicha();
+    public boolean salir(int numJugador) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public boolean salir() {
-        return juego.salir();
+    public int calcularResultadoCañas() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
     
 }
