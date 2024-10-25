@@ -8,13 +8,15 @@ package negocio;
 public class ControlApuestas implements IControlApuestas{
 
     @Override
-    public boolean cobrarApuestaBanco(int jugador, int cantidad) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    public Integer cobrarApuestaBanco(int jugador, int cantidad) {
+        return -1;
+       }
 
     @Override
-    public boolean pagarApuestaJugador(int jugadorCobrar, int jugadorPagar, int cantidad) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Integer pagarApuestaJugador(int jugadorCobrar, int jugadorPagar, int cantidad) {
+    return -1;
     }
+
+    
     
 }

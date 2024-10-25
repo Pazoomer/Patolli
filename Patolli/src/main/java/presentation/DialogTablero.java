@@ -41,6 +41,7 @@ public class DialogTablero extends JDialog {
     //Banderas
     public int resultadoCañas; //Resultado del ultimo lanzamiento de cañas
     boolean puedeMover; //Indica si el jugador puede mover una ficha
+    public int turnosExtra; //Indica los turnos extras del jugador
     
     //Jugadores
     int jugador = 0; //Representa al jugador actual
@@ -695,11 +696,12 @@ public class DialogTablero extends JDialog {
             for (int i = 0; i < fichas; i++) {
                 if (iluminar) {
                     //Si la ficha esta fuera del tablero, no se ilumina
-                    System.out.println("i: "+i+" Posicion: "+fichasIluminablesPosicion.get(i));
                     if (fichasIluminablesPosicion.get(i) != -1) {
-                        puedeMover = true;
-                        fichasIluminables.get(i).setBorder(BorderFactory.createLineBorder(Color.BLUE, 3)); // Borde azul
-
+                        //Si la ficha fuera a terminar en una casilla ocupada, no se ilumina
+                        if (casillas.get(getPosicionReal(fichasIluminablesPosicion.get(i))).getIcon() == null) {
+                            puedeMover = true;
+                            fichasIluminables.get(i).setBorder(BorderFactory.createLineBorder(Color.BLUE, 3)); // Borde azul
+                        } 
                         //A menos que haya sacado un 1 en las cañas, siempre y cuando la casilla de inicio este despejada
                     } else if (this.resultadoCañas == 1 && casillaInicialLibre) {
                         fichasIluminables.get(i).setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3)); // Borde amarillo 
@@ -709,6 +711,15 @@ public class DialogTablero extends JDialog {
                     fichasIluminables.get(i).setBorder(null); // Sin borde
                 }
             }
+        }
+        //Si no puede mover nada
+        if(!puedeMover){
+            //Despliega un mensaje de informacion
+            JOptionPane.showMessageDialog(null, "No puedes mover fichas", "Movimientos invalidos", JOptionPane.INFORMATION_MESSAGE);
+            //Paga 1 apuesta
+            cobrarApuestaBanco(miJugador, 1);
+            //Termina el turno
+            siguienteJugador();
         }
     }
     /**
@@ -726,11 +737,15 @@ public class DialogTablero extends JDialog {
             if (colorBorde.equals(Color.BLUE)) {
                 //Si la ficha tiene borde azul, significa que va a moverse por el tablero
                 
+                //Obtiene la casilla real donde va la ficha
+                int posicionRelativa = getListaFichasPosicionMiJugador().get(numFicha);
+                int casillaTermina = getPosicionReal(posicionRelativa);
+                
                 //Hacer un nuevo label en el tablero
                 JLabel labelAux = new JLabel();
                 labelAux.setBorder(new LineBorder(Color.BLACK, 1)); 
                 labelAux.setOpaque(true); 
-                labelAux.setBackground(casillas.get(getCasillaInicialMiJugador()).getBackground());
+                labelAux.setBackground(casillas.get(casillaTermina).getBackground());
                 labelAux.setIcon(miFicha.getIcon());
                 labelAux.addMouseListener(new MouseAdapter() {
                     @Override
@@ -742,18 +757,10 @@ public class DialogTablero extends JDialog {
                 
                 //Quitar el viejo label del tablero
                 JLabel labelEmpty = new JLabel();
-                labelAux.setBorder(new LineBorder(Color.BLACK, 1)); 
-                labelAux.setOpaque(true); 
-                labelAux.setBackground(casillas.get(getListaFichasPosicionMiJugador().get(numFicha)).getBackground());
-                
-                //Obtiene la casilla real donde va la ficha
-                int casillaTermina = getListaFichasPosicionMiJugador().get(numFicha);
-                casillaTermina=casillasOrdenadas.indexOf(casillaTermina);
-                casillaTermina+=resultadoCañas;
-                casillaTermina = casillaTermina % ((tamaño * 8) + 4);
-                casillaTermina=casillasOrdenadas.get(casillaTermina);
-
-                
+                labelEmpty.setBorder(new LineBorder(Color.BLACK, 1)); 
+                labelEmpty.setOpaque(true); 
+                labelEmpty.setBackground(casillas.get(getListaFichasPosicionMiJugador().get(numFicha)).getBackground());
+      
                 casillas.set(casillaTermina, labelAux);
                 casillas.set(getListaFichasPosicionMiJugador().get(numFicha), labelEmpty);
 
@@ -896,46 +903,6 @@ public class DialogTablero extends JDialog {
         return -1;
     }
     /**
-     * Devuelva la url de la imagen del icono del jugador dueño de la pantalla
-     *
-     * @return
-     */
-    private String getUrlMiJugador() {
-        switch (miJugador) {
-            case 0 -> {
-                return "/cat.png";
-            }
-            case 1 -> {
-                return "/concha.png";
-            }
-            case 2 -> {
-                return "/piramide.png";
-            }
-            case 3 -> {
-                return "/mazorca.png";
-            }
-        }
-        return null;
-    }
-    /**
-     * Devuelve el tamaño de una casilla segun el tamaño del tablero
-     * @return 
-     */
-    private int getTamañoCasilla(){
-        switch(tamaño){
-            case 8 -> {
-                return 25;
-            }
-            case 10 -> {
-                return 15;
-            }
-            case 12 -> {
-                return 12;
-            }
-        }
-        return -1;
-    }
-    /**
      * Obtiene la lista de posiciones de fichas por el jugador dueño de la pantalla
      * @return 
      */
@@ -1002,20 +969,32 @@ public class DialogTablero extends JDialog {
      */
     private Integer getMiMonto() {
         switch (miJugador) {
-            case 0 ->{
+            case 0 -> {
                 return montoJugadores.get(0);
             }
-            case 1 ->{
+            case 1 -> {
                 return montoJugadores.get(1);
             }
-            case 2 ->{
+            case 2 -> {
                 return montoJugadores.get(2);
             }
-            case 3 ->{
+            case 3 -> {
                 return montoJugadores.get(3);
             }
         }
         return null;
+    }
+    /**
+     * 
+     * @param posicionRelativa
+     * @return 
+     */
+    private int getPosicionReal(int posicionRelativa) {
+        int casillaTermina = casillasOrdenadas.indexOf(posicionRelativa);
+        casillaTermina += resultadoCañas;
+        casillaTermina = casillaTermina % ((tamaño * 8) + 4);
+        casillaTermina = casillasOrdenadas.get(casillaTermina);
+        return casillaTermina;
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -9,12 +9,12 @@ public class ControlJuego implements IControlJuego {
 
     @Override
     public boolean salir(int numJugador) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+       return true;
     }
 
     @Override
     public int calcularResultadoCañas() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+       return -1;
     }
 
     

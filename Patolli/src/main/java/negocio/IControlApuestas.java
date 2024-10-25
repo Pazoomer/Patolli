@@ -12,7 +12,7 @@ public interface IControlApuestas {
      * @param cantidad Cantidad que cobra el jugador
      * @return Verdadero si el jugador cobro la apuesta
      */
-    boolean cobrarApuestaBanco(int jugador, int cantidad);
+    Integer cobrarApuestaBanco(int jugador, int cantidad);
 
     /**
      * El jugador cobra la apuesta a otro jugador
@@ -21,5 +21,5 @@ public interface IControlApuestas {
      * @param cantidad Cantidad que se cobra al jugador
      * @return Verdadero se el jugador cobro la apuesta al otro jugador
      */
-    boolean pagarApuestaJugador(int jugadorCobrar, int jugadorPagar, int cantidad);
+    Integer pagarApuestaJugador(int jugadorCobrar, int jugadorPagar, int cantidad);
 }
