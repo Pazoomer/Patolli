@@ -56,6 +56,16 @@ public class DialogUnirseCrear extends JDialog {
         }
     }
     
+    /**
+     * Navega a la pantalla con las instrucciones del juego.
+     * Crea una instancia de FrameComoJugar y cambia a esa pantalla.
+     */
+    public void ComoJugar() {
+        if (parent instanceof FrameInicio frameInicio) {
+            frameInicio.PasarPantallaComoJugar(this);
+        }
+    }
+    
     public void Cerrar() {
         if (parent instanceof FrameInicio frameInicio) {
             frameInicio.CerrarPrograma();
@@ -73,6 +83,8 @@ public class DialogUnirseCrear extends JDialog {
         jPanel6 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         txtCodigo = new javax.swing.JTextArea();
+        pnlComoJugar = new javax.swing.JPanel();
+        lblComoJugar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(102, 102, 0));
@@ -184,6 +196,40 @@ public class DialogUnirseCrear extends JDialog {
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
+        pnlComoJugar.setBackground(new java.awt.Color(192, 160, 123));
+        pnlComoJugar.setMaximumSize(new java.awt.Dimension(300, 75));
+        pnlComoJugar.setMinimumSize(new java.awt.Dimension(300, 75));
+        pnlComoJugar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlComoJugarMouseClicked(evt);
+            }
+        });
+
+        lblComoJugar.setFont(new java.awt.Font("Comic Sans MS", 1, 30)); // NOI18N
+        lblComoJugar.setText("COMO JUGAR");
+        lblComoJugar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblComoJugarMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlComoJugarLayout = new javax.swing.GroupLayout(pnlComoJugar);
+        pnlComoJugar.setLayout(pnlComoJugarLayout);
+        pnlComoJugarLayout.setHorizontalGroup(
+            pnlComoJugarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlComoJugarLayout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(lblComoJugar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlComoJugarLayout.setVerticalGroup(
+            pnlComoJugarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlComoJugarLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(lblComoJugar)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -195,14 +241,21 @@ public class DialogUnirseCrear extends JDialog {
                 .addComponent(pnlCrear, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(152, 152, 152))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(115, 115, 115)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(115, 115, 115)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(242, 242, 242)
+                        .addComponent(pnlComoJugar, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(265, 265, 265)
+                .addGap(20, 20, 20)
+                .addComponent(pnlComoJugar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(170, 170, 170)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(pnlCrear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnlUnirse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -263,15 +316,25 @@ public class DialogUnirseCrear extends JDialog {
     }//GEN-LAST:event_pnlCrearMouseClicked
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-       
+
     }//GEN-LAST:event_formWindowClosed
+
+    private void lblComoJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblComoJugarMouseClicked
+
+    }//GEN-LAST:event_lblComoJugarMouseClicked
+
+    private void pnlComoJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlComoJugarMouseClicked
+        ComoJugar();
+    }//GEN-LAST:event_pnlComoJugarMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel lblComoJugar;
     private javax.swing.JLabel lblCrear;
     private javax.swing.JLabel lblUnirse;
+    private javax.swing.JPanel pnlComoJugar;
     private javax.swing.JPanel pnlCrear;
     private javax.swing.JPanel pnlUnirse;
     private javax.swing.JTextArea txtCodigo;

@@ -2,6 +2,8 @@
 package negocio;
 
 import datos.Partida;
+import java.util.List;
+import javax.swing.JLabel;
 
 /**
  *
@@ -11,16 +13,21 @@ public interface IControlJuego {
     Partida partida=new Partida();
     
     /**
-     * Saca el jugador del juego
-     * @param numJugador Jugador a sacar
-     * @return Verdadero si logro desconectar al jugador
+     * Recibe los cambios de la interfaz del jugador actual
+     * @param casillas Tablero actualizado
+     * @param montoJugadores Monto de apuestas de los jugadores
+     * @param jugador Siguiente Jugador
+     * @param fichasGato Apariencia de fichas gato
+     * @param fichasConcha Apariencia de fichas concha
+     * @param fichasPiramide Apariencia de fichas piramide
+     * @param fichasMazorca Apariencia de fichas mazorca
+     * @param fichasGatoPosicion Posicion de fichas gato
+     * @param fichasConchaPosicion Posicion de fichas concha
+     * @param fichasPiramidePosicion Posicion de fichas piramide
+     * @param fichasMazorcaPosicion Posicion de fichas mazorca
      */
-    public boolean salir(int numJugador);
-    
-    /**
-     * Calcula el resultados de las cañas
-     * @return Entero con el resultado de las cañas
-     */
-    public int calcularResultadoCañas();
+    public void actualizarCambios(List<JLabel> casillas, List<Integer> montoJugadores, int jugador, List<JLabel> fichasGato,
+            List<JLabel> fichasConcha, List<JLabel> fichasPiramide, List<JLabel> fichasMazorca, List<Integer> fichasGatoPosicion,
+            List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion);
     
 }

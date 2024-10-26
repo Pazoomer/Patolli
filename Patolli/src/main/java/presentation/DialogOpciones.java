@@ -53,15 +53,6 @@ public class DialogOpciones extends JDialog {
         }
     }
 
-    /**
-     * Navega a la pantalla con las instrucciones del juego.
-     * Crea una instancia de FrameComoJugar y cambia a esa pantalla.
-     */
-    public void ComoJugar() {
-        if (parent instanceof FrameInicio frameInicio) {
-            frameInicio.PasarPantallaComoJugar(this);
-        }
-    }
     public void Cerrar() {
         if (parent instanceof FrameInicio frameInicio) {
             frameInicio.CerrarPrograma();
@@ -208,8 +199,6 @@ public class DialogOpciones extends JDialog {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        pnlComoJugar = new javax.swing.JPanel();
-        lblComoJugar = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -247,40 +236,6 @@ public class DialogOpciones extends JDialog {
         jPanel1.setMaximumSize(new java.awt.Dimension(800, 600));
         jPanel1.setMinimumSize(new java.awt.Dimension(800, 600));
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
-
-        pnlComoJugar.setBackground(new java.awt.Color(192, 160, 123));
-        pnlComoJugar.setMaximumSize(new java.awt.Dimension(300, 75));
-        pnlComoJugar.setMinimumSize(new java.awt.Dimension(300, 75));
-        pnlComoJugar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                pnlComoJugarMouseClicked(evt);
-            }
-        });
-
-        lblComoJugar.setFont(new java.awt.Font("Comic Sans MS", 1, 30)); // NOI18N
-        lblComoJugar.setText("COMO JUGAR");
-        lblComoJugar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblComoJugarMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pnlComoJugarLayout = new javax.swing.GroupLayout(pnlComoJugar);
-        pnlComoJugar.setLayout(pnlComoJugarLayout);
-        pnlComoJugarLayout.setHorizontalGroup(
-            pnlComoJugarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlComoJugarLayout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(lblComoJugar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        pnlComoJugarLayout.setVerticalGroup(
-            pnlComoJugarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlComoJugarLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(lblComoJugar)
-                .addContainerGap(18, Short.MAX_VALUE))
-        );
 
         jPanel3.setBackground(new java.awt.Color(223, 207, 188));
 
@@ -556,10 +511,6 @@ public class DialogOpciones extends JDialog {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(254, 254, 254)
-                .addComponent(pnlComoJugar, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(44, 44, 44)
@@ -601,9 +552,7 @@ public class DialogOpciones extends JDialog {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(pnlComoJugar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 116, Short.MAX_VALUE)
+                .addContainerGap(218, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -749,25 +698,8 @@ public class DialogOpciones extends JDialog {
     private void lblFichas6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFichas6MouseClicked
         SetFichasJugador(6);
     }//GEN-LAST:event_lblFichas6MouseClicked
-    /**
-     * Método llamado cuando se hace clic en la etiqueta 'Cómo Jugar'.
-     * Abre la pantalla de instrucciones del juego.
-     *
-     * @param evt Evento del mouse que se genera al hacer clic.
-     */
-    private void lblComoJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblComoJugarMouseClicked
-        ComoJugar();
-    }//GEN-LAST:event_lblComoJugarMouseClicked
-    /**
-     * Método llamado cuando se hace clic en el panel 'Cómo Jugar'.
-     * Abre la pantalla de instrucciones del juego.
-     *
-     * @param evt Evento del mouse que se genera al hacer clic.
-     */
-    private void pnlComoJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlComoJugarMouseClicked
-        ComoJugar();
-    }//GEN-LAST:event_pnlComoJugarMouseClicked
-    /**
+
+   /**
      * Método llamado cuando se hace clic en la etiqueta 'Volver'.
      * Regresa a la pantalla anterior.
      *
@@ -802,7 +734,6 @@ public class DialogOpciones extends JDialog {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea3;
-    private javax.swing.JLabel lblComoJugar;
     private javax.swing.JLabel lblFichas2;
     private javax.swing.JLabel lblFichas4;
     private javax.swing.JLabel lblFichas6;
@@ -814,7 +745,6 @@ public class DialogOpciones extends JDialog {
     private javax.swing.JLabel lblTamaño12;
     private javax.swing.JLabel lblTamaño8;
     private javax.swing.JLabel lblVolver;
-    private javax.swing.JPanel pnlComoJugar;
     private javax.swing.JPanel pnlJugar;
     private javax.swing.JPanel pnlVolver;
     // End of variables declaration//GEN-END:variables

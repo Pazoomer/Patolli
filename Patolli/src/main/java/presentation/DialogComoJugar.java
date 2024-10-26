@@ -41,7 +41,7 @@ public class DialogComoJugar extends JDialog {
      */
     public void Volver(){
         if (parent instanceof FrameInicio frameInicio) {
-            frameInicio.PasarPantallaOpciones(this);
+            frameInicio.PasarPantallaUnirseCrear(this);
         }
     }
     
