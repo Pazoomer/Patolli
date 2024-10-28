@@ -35,7 +35,6 @@ public class DialogTablero extends JDialog {
     //Clases (Son iguales para todas las instancias, NO se envian al control)
     private final JFrame parent; //JFrame padre
     private final IControlJuego controlJuego; //Control del juego
-    private final IControlApuestas controlApuestas; //Control de apuestas
     private final Utils utils; //Herramientas para calculos
     
     //Opciones (Se definen en la creacion de la pantalla, NO se envian al control)
@@ -115,7 +114,6 @@ public class DialogTablero extends JDialog {
         this.fichas = fichas;
         this.jugadores = jugadores;
         casillas = new ArrayList<>();
-        controlApuestas=new ControlApuestas();
         controlJuego=new ControlJuego();
         inicializarGui();
         siguienteJugador(); 
@@ -634,6 +632,7 @@ public class DialogTablero extends JDialog {
         int opcion = JOptionPane.showConfirmDialog(null, "¿Realmente quieres salir?", "Confirmar salida", JOptionPane.YES_NO_OPTION);
 
         if (opcion == JOptionPane.YES_OPTION) {
+            this.controlJuego.jugadorSale(miJugador);
             if (parent instanceof FrameInicio frameInicio) {
                 frameInicio.PasarPantallaInicio(this);
             }
@@ -669,12 +668,14 @@ public class DialogTablero extends JDialog {
         }
         this.btnLanzarCañas.setEnabled(false);
         iluminarFichas(true);
+
     }
+
     /**
      * Avanza al siguiente jugador en el turno. Ilumina el jugador del turno
      * actual e ilumina el botón de lanzar cañas.
      */
-    public void siguienteJugador() {
+    public void siguienteJugador() {    
         actualizarTurnosExtra();
         //Si no tiene turnos extra
         if (turnosExtra <= 0) {
@@ -694,6 +695,8 @@ public class DialogTablero extends JDialog {
         actualizarApuestas();
         actualizarSiguienteJugador();
         subirCambios();
+        revisarJugadorSale();
+        
     }
     /**
      * Cierra la ventana y comunica la desconexion del jugador
@@ -712,7 +715,7 @@ public class DialogTablero extends JDialog {
         List<JLabel> fichasIluminables = getListaFichasMiJugador();
         List<Integer> fichasIluminablesPosicion = getListaFichasPosicionMiJugador();
         boolean casillaInicialLibre = casillas.get(getCasillaInicialMiJugador()).getIcon() == null;
-        if (fichasIluminables != null && fichasIluminablesPosicion != null) {
+        if (fichasIluminables != null && fichasIluminablesPosicion != null && this.resultadoCañas!=0) {
             for (int i = 0; i < fichas; i++) {
                 if (iluminar) {
                     //Si la ficha esta fuera del tablero, no se ilumina
@@ -741,6 +744,10 @@ public class DialogTablero extends JDialog {
             //Termina el turno
             siguienteJugador();
         }
+        if (iluminar) {
+            puedeMover = false;
+        }
+
     }
     /**
      * Simula el movimiento de una ficha.
@@ -846,6 +853,18 @@ public class DialogTablero extends JDialog {
         actualizarApuestas();
         actualizarTurnosExtra();
         siguienteJugador();
+    }
+    /**
+     * Si un jugador tiene 0 o menos de monto de apuesta, sale del juego
+     */
+    private boolean revisarJugadorSale() {
+        for (int i = 0; i < montoJugadores.size(); i++) {
+            if (montoJugadores.get(i) <= 0) {
+                controlJuego.jugadorSale(i);
+                return true;
+            }
+        }
+        return false;
     }
     /**
      * Aumenta el valor de turnos Extra
@@ -1052,6 +1071,14 @@ public class DialogTablero extends JDialog {
         lblInicioMazorca = new javax.swing.JLabel();
         lblInicioConcha = new javax.swing.JLabel();
         lblTurnosExtra = new javax.swing.JLabel();
+        lblArrowUp = new javax.swing.JLabel();
+        lblArrowUp2 = new javax.swing.JLabel();
+        lblArrowD1 = new javax.swing.JLabel();
+        lblArrowD2 = new javax.swing.JLabel();
+        lblArrowL1 = new javax.swing.JLabel();
+        lblArrowR1 = new javax.swing.JLabel();
+        lblArrowR2 = new javax.swing.JLabel();
+        lblArrowL2 = new javax.swing.JLabel();
         pnlJugadores = new javax.swing.JPanel();
         pnlConcha = new javax.swing.JPanel();
         iconConcha = new javax.swing.JLabel();
@@ -1185,8 +1212,40 @@ public class DialogTablero extends JDialog {
 
         lblIconJugadorActual.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        lblInicioTigre.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        lblInicioPiramide.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        lblInicioMazorca.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        lblInicioConcha.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
         lblTurnosExtra.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
         lblTurnosExtra.setText("Turnos Extra: 0");
+
+        lblArrowUp.setBackground(new java.awt.Color(0, 0, 0));
+        lblArrowUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ArrowUBlack.png"))); // NOI18N
+
+        lblArrowUp2.setBackground(new java.awt.Color(0, 0, 0));
+        lblArrowUp2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ArrowUBlack.png"))); // NOI18N
+
+        lblArrowD1.setBackground(new java.awt.Color(0, 0, 0));
+        lblArrowD1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ArrowDBlack.png"))); // NOI18N
+
+        lblArrowD2.setBackground(new java.awt.Color(0, 0, 0));
+        lblArrowD2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ArrowDBlack.png"))); // NOI18N
+
+        lblArrowL1.setBackground(new java.awt.Color(0, 0, 0));
+        lblArrowL1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ArrowLBlack.png"))); // NOI18N
+
+        lblArrowR1.setBackground(new java.awt.Color(0, 0, 0));
+        lblArrowR1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ArrowRBlack.png"))); // NOI18N
+
+        lblArrowR2.setBackground(new java.awt.Color(0, 0, 0));
+        lblArrowR2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ArrowRBlack.png"))); // NOI18N
+
+        lblArrowL2.setBackground(new java.awt.Color(0, 0, 0));
+        lblArrowL2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ArrowLBlack.png"))); // NOI18N
 
         javax.swing.GroupLayout pnlTableroLayout = new javax.swing.GroupLayout(pnlTablero);
         pnlTablero.setLayout(pnlTableroLayout);
@@ -1196,11 +1255,6 @@ public class DialogTablero extends JDialog {
                 .addContainerGap()
                 .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tableroIzquierda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTableroLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblInicioMazorca, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblInicioConcha, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(pnlTableroLayout.createSequentialGroup()
                         .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(lblTurnosExtra, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1208,13 +1262,32 @@ public class DialogTablero extends JDialog {
                                 .addComponent(lblTurnoDe)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(lblIconJugadorActual, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(35, 35, 35)
+                        .addComponent(lblArrowD2)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTableroLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTableroLayout.createSequentialGroup()
+                                .addComponent(lblArrowR1)
+                                .addGap(45, 45, 45)
+                                .addComponent(lblInicioConcha, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTableroLayout.createSequentialGroup()
+                                .addComponent(lblArrowL1)
+                                .addGap(46, 46, 46)
+                                .addComponent(lblInicioMazorca, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblArrowD1, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlTableroLayout.createSequentialGroup()
                         .addComponent(tableroAbajo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblInicioPiramide, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlTableroLayout.createSequentialGroup()
+                                .addComponent(lblInicioPiramide, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 37, 37)
+                                .addComponent(lblArrowR2))
+                            .addComponent(lblArrowUp2)))
                     .addGroup(pnlTableroLayout.createSequentialGroup()
                         .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tableroArriba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1222,7 +1295,11 @@ public class DialogTablero extends JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tableroDerecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblInicioTigre, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(pnlTableroLayout.createSequentialGroup()
+                                .addComponent(lblInicioTigre, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(33, 33, 33)
+                                .addComponent(lblArrowL2))
+                            .addComponent(lblArrowUp))))
                 .addContainerGap())
         );
         pnlTableroLayout.setVerticalGroup(
@@ -1237,15 +1314,27 @@ public class DialogTablero extends JDialog {
                             .addGroup(pnlTableroLayout.createSequentialGroup()
                                 .addGap(36, 36, 36)
                                 .addComponent(lblTurnoDe)))
-                        .addGap(18, 18, 18)
-                        .addComponent(lblTurnosExtra)
+                        .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlTableroLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblTurnosExtra))
+                            .addGroup(pnlTableroLayout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addComponent(lblArrowD2)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblInicioMazorca, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblInicioMazorca, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblArrowL1, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(pnlTableroLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(tableroArriba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblInicioTigre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTableroLayout.createSequentialGroup()
+                                .addGap(73, 73, 73)
+                                .addComponent(lblArrowUp)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblInicioTigre, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblArrowL2, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(tableroDerecha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1254,12 +1343,19 @@ public class DialogTablero extends JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlTableroLayout.createSequentialGroup()
-                        .addComponent(lblInicioConcha, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblInicioConcha, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblArrowR1))
+                        .addGap(31, 31, 31)
+                        .addComponent(lblArrowD1))
+                    .addComponent(tableroAbajo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlTableroLayout.createSequentialGroup()
                         .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tableroAbajo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblInicioPiramide, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(6, 6, 6))
+                            .addComponent(lblInicioPiramide, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblArrowR2))
+                        .addGap(27, 27, 27)
+                        .addComponent(lblArrowUp2)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlJugadores.setBackground(new java.awt.Color(102, 102, 0));
@@ -1753,6 +1849,14 @@ public class DialogTablero extends JDialog {
     private javax.swing.JLabel iconGato;
     private javax.swing.JLabel iconMazorca;
     private javax.swing.JLabel iconPiramide;
+    private javax.swing.JLabel lblArrowD1;
+    private javax.swing.JLabel lblArrowD2;
+    private javax.swing.JLabel lblArrowL1;
+    private javax.swing.JLabel lblArrowL2;
+    private javax.swing.JLabel lblArrowR1;
+    private javax.swing.JLabel lblArrowR2;
+    private javax.swing.JLabel lblArrowUp;
+    private javax.swing.JLabel lblArrowUp2;
     private javax.swing.JLabel lblCaña1;
     private javax.swing.JLabel lblCaña2;
     private javax.swing.JLabel lblCaña3;

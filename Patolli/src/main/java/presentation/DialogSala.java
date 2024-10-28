@@ -11,7 +11,7 @@ import utils.Utils;
  * a otras pantallas del juego.
  */
 public class DialogSala extends JDialog {
-    private JFrame parent;
+    private final JFrame parent;
     public int tamaño;      // Tamaño del tablero de juego.
     public int monto;       // Monto de apuestas.
     public int fichas;      // Número de fichas del jugador.

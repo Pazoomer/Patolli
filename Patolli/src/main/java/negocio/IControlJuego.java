@@ -13,7 +13,9 @@ public interface IControlJuego {
     Partida partida=new Partida();
     
     /**
-     * Recibe los cambios de la interfaz del jugador actual
+     * Recibe los cambios de la interfaz del jugador actual y los manda a las
+     * pantallas de los demas jugadores
+     *
      * @param casillas Tablero actualizado
      * @param montoJugadores Monto de apuestas de los jugadores
      * @param jugador Siguiente Jugador
@@ -29,5 +31,11 @@ public interface IControlJuego {
     public void actualizarCambios(List<JLabel> casillas, List<Integer> montoJugadores, int jugador, List<JLabel> fichasGato,
             List<JLabel> fichasConcha, List<JLabel> fichasPiramide, List<JLabel> fichasMazorca, List<Integer> fichasGatoPosicion,
             List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion);
+    
+    /**
+     * Saca del juego al jugador del parametro
+     * @param jugador Jugador a sacar del juego
+     */
+    public void jugadorSale(int jugador);
     
 }

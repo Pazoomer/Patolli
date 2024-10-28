@@ -12,7 +12,7 @@ import javax.swing.JFrame;
  */
 public class DialogComoJugar extends JDialog {
 
-    private JFrame parent;
+    private final JFrame parent;
     // Página actual de las instrucciones
     private int paginaInstrucciones=0;
 
@@ -49,114 +49,61 @@ public class DialogComoJugar extends JDialog {
      * Muestra la siguiente página de las instrucciones.
      * Avanza a la instrucción siguiente y actualiza el texto mostrado.
      * Controla que no se sobrepase el número máximo de páginas.
+     * @param i
      */
-    public void InstruccionDerecha() {
+    public void pasarInstrucciones(int i) {
         // Avanza a la instrucción siguiente
-        paginaInstrucciones++;
-        if (paginaInstrucciones > 6) {
-            paginaInstrucciones = 6; // Limita el valor máximo
-        }
-        // Actualiza el texto de la instrucción según la página
-        switch (paginaInstrucciones) {
-            case 1 -> {
-                this.txtInstruccion.setText("""
-                                            Las apuestas son el punto central de juego, hay varias formas de ganar o perder apuestas, 
-                                            
-                                            Si te quedas sin apuestas o sin fichas, pierdes automaticamente.""");
-            }
-            case 2 -> {
-                this.txtInstruccion.setText("""
-                                            Al inicio del juego tus fichas comenzaran fuera del tablero, para colocar una ficha en el tablero debes lanzar las ca\u00f1as y sacar exactamente 1, si no es el caso pagas una apuesta, estas se colocan en la casilla amarilla del tablero que tienes asignada.
-                                            
-                                            Si la casilla esta ocupada por una ficha, no podras sacar una ficha hasta que se desocupe.""");
-            }
-            case 3 -> {
-                this.txtInstruccion.setText("""
-                                            Una vez dentro del tablero.
-                                            
-                                            Cada jugador deber\u00e1 lanzar las 5 ca\u00f1as en su turno correspondiente y dependiendo como caigan podr\u00e1 avanzar el n\u00famero de
-                                            casillas, excepto en si salen las 5 boca arriba, en cuyo caso se avanzara 10 casillas, si salen 0 no se avanza.
-                                            
-                                            Si logras dar una vuelta completa con una ficha, cobras una apuesta a todos los demas jugadores y vuelves a jugar.
-                                            
-                                            Si no puedes moverte de ninguna forma, pagas 1 apuesta.""");
-            }
-            case 4 -> {
-                this.txtInstruccion.setText("""  
-                                            Si sacas un 1, puedes meter al tablero una ficha que este afuera de este en vez de mover la ficha del turno.""");
-            }
-            case 5 -> {
-                this.txtInstruccion.setText("""
-                                            Si tu tirada terminara en un espacio con una ficha, tu ficha vueve al punto de inicio del tablero, si este punto de inicio esta ocupado por otra ficha entonces tu ficha sale del tablero
-                                            
-                                            Si tu tirada termina en un espacio con una ficha en una casilla central entonces puedes avanzar y sacas del juego la otra ficha.""");
-            }
-            case 6 -> {
-                this.txtInstruccion.setText("""
-                                            Casillas especiales
-                                            
-                                            Si caes en la casilla roja, tendras que pagar dos apuestas.
-                                            
-                                            Si caes en la casilla azul, juegas dos turnos adicionales seguidos.""");
-            }
-        }
-    }
-
-    /**
-     * Muestra la página anterior de las instrucciones.
-     * Retrocede a la instrucción anterior y actualiza el texto mostrado.
-     * Controla que no se retroceda más allá de la primera página.
-     */
-    public void InstruccionIzquierda() {
-        // Retrocede a la instrucción anterior
-        paginaInstrucciones--;
-        if (paginaInstrucciones < 0) {
+        paginaInstrucciones += i;
+        if (paginaInstrucciones > 4) {
+            paginaInstrucciones = 4; // Limita el valor máximo
+        } else if (paginaInstrucciones < 0) {
             paginaInstrucciones = 0; // Limita el valor mínimo
         }
         // Actualiza el texto de la instrucción según la página
         switch (paginaInstrucciones) {
-            case 0 -> {
+            case 0->{
                 this.txtInstruccion.setText("""
-                                            El objetivo del Patolli es ser el primero en darle vueltas al tablero igual a la cantidad de fichas iniciales
-                                            O 
-                                            Ganar todas las apuestas de los demas jugadores.""");
+                                            Objetivo del juego
+                                            
+                                            El objetivo del patolli es dejar a los demas jugadores sin apuestas.
+                                            
+                                            Hay varias formas de ganar o perder apuestas que dependeran de como muevas tus fichas.""");
             }
             case 1 -> {
                 this.txtInstruccion.setText("""
-                                            Las apuestas son el punto central de juego, hay varias formas de ganar o perder apuestas, 
+                                            Para empezar a jugar
                                             
-                                            Si te quedas sin apuestas o sin fichas, pierdes automaticamente.""");
+                                            Al inicio del juego tus fichas comenzaran fuera del tablero, para colocar una ficha en el tablero debes lanzar las ca\u00f1as y sacar exactamente 1, si no es el caso pagas una apuesta, estas se colocan en la casilla amarilla del tablero que tienes asignada.
+                                            
+                                            Si la casilla esta ocupada por una ficha, no podras sacar una ficha hasta que se desocupe.""");
             }
             case 2 -> {
                 this.txtInstruccion.setText("""
-                                            Al inicio del juego tus fichas comenzaran fuera del tablero, para colocar una ficha en el tablero debes lanzar las cañas y sacar exactamente 1, si no es el caso pagas una apuesta, estas se colocan en la casilla central del tablero que tienes asignada.
+                                            Una vez dentro del tablero
                                             
-                                            Si la casilla esta ocupada, no podras sacar una ficha hasta que se desocupe.""");
+                                            Cada jugador deber\u00e1 lanzar las 5 ca\u00f1as en su turno correspondiente y dependiendo como caigan podr\u00e1 avanzar el n\u00famero de casillas, excepto si salen las 5 boca arriba, en cuyo caso se avanzara 10 casillas, si salen 0 no se avanza.
+                                            
+                                            """);
             }
             case 3 -> {
-                this.txtInstruccion.setText("""
-                                            Una vez dentro del tablero.
+                this.txtInstruccion.setText("""  
+                                            Reglas de movimiento
                                             
-                                            Cada jugador deberá lanzar las 5 cañas en su turno correspondiente y dependiendo como caigan podrá avanzar el número de
-                                            casillas, excepto en si salen las 5 boca arriba, en cuyo caso se avanzara 10 casillas, si salen 0 no se avanza.
+                                            Si tu ficha fuera a terminar en una casilla ocupada por otra ficha, no podras mover esa ficha.
+                                                                                        
+                                            Si no puedes moverte de ninguna forma, pagas 1 apuesta.
                                             
-                                            Si logras dar una vuelta completa con una ficha, cobras una apuesta a todos los demas jugadores y vuelves a jugar.
-                                            
-                                            Si no puedes moverte de ninguna forma, pagas 1 apuesta.""");
+                                            Si sacas un 1, puedes meter al tablero una ficha que este afuera del tablero en vez de mover una ficha.""");
             }
             case 4 -> {
                 this.txtInstruccion.setText("""
-                                            Las fichas dentro del tablero siguen un orden para poder moverlas, pero si pagas 1 apuesta, puedes elegir cual de tus fichas mover en vez de la asignada del turno.
+                                            Reglas especiales
                                             
-                                            Si sacas un 1, puedes meter al tablero una ficha que este afuera de este en vez de mover la ficha del turno.""");
-            }
-            case 5 -> {
-                this.txtInstruccion.setText("""
-                                            Si tu tirada terminara en un espacio con una ficha de otro jugador, tu ficha vueve al punto de inicio del tablero, si este punto de inicio esta ocupado por la ficha de otro jugador entonces tu ficha sale del tablero.
+                                            Si logras dar una vuelta completa con una ficha, cobras una apuesta a todos los demas jugadores y vuelves a jugar.
                                             
-                                            Si tu tirada termina en un espacio con una ficha de otro jugador mientras la ficha del otro jugador esta enuna casilla central entonces puedes avanzar y sacas del juego la ficha del otro jugador.
+                                            Si caes en la casilla roja, tendras que pagar dos apuestas.
                                             
-                                            Si tu tirada terminara en un espacio con una de tus fichas, puedes moverte con normalidad.""");
+                                            Si caes en la casilla azul, juegas dos turnos adicionales seguidos.""");
             }
         }
     }
@@ -231,7 +178,7 @@ public class DialogComoJugar extends JDialog {
         txtInstruccion.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         txtInstruccion.setLineWrap(true);
         txtInstruccion.setRows(5);
-        txtInstruccion.setText("El objetivo del Patolli es ser el primero en darle vueltas al tablero igual a la cantidad de fichas iniciales\n                                            O \n Ganar todas las apuestas de los demas jugadores.");
+        txtInstruccion.setText("Objetivo del PATOLLI\n\nEl objetivo del Patolli es dejar a los demas jugadores sin apuestas.\n\nHay varias formas de ganar o perder apuestas que dependeran de como muevas tus fichas.");
         txtInstruccion.setWrapStyleWord(true);
         txtInstruccion.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jScrollPane1.setViewportView(txtInstruccion);
@@ -384,7 +331,7 @@ public class DialogComoJugar extends JDialog {
  * @param evt El evento de clic del ratón.
  */
     private void lblIzquierdaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIzquierdaMouseClicked
-        InstruccionIzquierda();
+        pasarInstrucciones(-1);
     }//GEN-LAST:event_lblIzquierdaMouseClicked
 /**
  * Este método se ejecuta cuando se hace clic en la etiqueta lblDerecha.
@@ -394,7 +341,7 @@ public class DialogComoJugar extends JDialog {
  * @param evt El evento de clic del ratón.
  */
     private void lblDerechaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDerechaMouseClicked
-        InstruccionDerecha();
+        pasarInstrucciones(1);
     }//GEN-LAST:event_lblDerechaMouseClicked
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
