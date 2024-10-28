@@ -1,6 +1,10 @@
 package presentation;
 
+import java.util.List;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
+import negocio.ControlJuego;
+import negocio.IControlJuego;
 
 /**
  * La clase FrameInicio representa la pantalla inicial del juego.
@@ -11,16 +15,102 @@ import javax.swing.JDialog;
  */
 public class FrameInicio extends javax.swing.JFrame {
 
+    private final IControlJuego controlJuego;
+    private boolean isHost;
+    
     /**
      * Constructor de FrameInicio.
      * Inicializa la ventana y desactiva la opción de cambiar el tamaño de la ventana.
      */
     public FrameInicio() {
-        this.setResizable(false); // Evita redimensionar la ventana
+        this.setResizable(false);
         initComponents();
+        controlJuego = new ControlJuego();
     }
-    
+    /**
+     * Detiene el servidor y desconecta a todos los jugadores
+     */
+    public void detenerServidor(){
+        controlJuego.destruirServidor();
+    }
+    /**
+     * 
+     * @param codigoSala
+     * @return 
+     */
+    public boolean crearServidor(String codigoSala) {
+        isHost=true;
+        return controlJuego.crearServidor(codigoSala);
+    }
+    /**
+     * 
+     * @param codigoSala
+     * @return 
+     */
+    public boolean unirseServidor(String codigoSala) {
+        isHost=false;
+        return controlJuego.unirseServidor(codigoSala);
+    }
+    /**
+     * 
+     * @param casillas
+     * @param montoJugadores
+     * @param jugador
+     * @param fichasGato
+     * @param fichasConcha
+     * @param fichasPiramide
+     * @param fichasMazorca
+     * @param fichasGatoPosicion
+     * @param fichasConchaPosicion
+     * @param fichasPiramidePosicion
+     * @param fichasMazorcaPosicion
+     * @return 
+     */
+    public boolean subirCambios(List<JLabel> casillas, List<Integer> montoJugadores, int jugador, List<JLabel> fichasGato,
+            List<JLabel> fichasConcha, List<JLabel> fichasPiramide, List<JLabel> fichasMazorca, List<Integer> fichasGatoPosicion,
+            List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
+        return controlJuego.actualizarCambios(casillas, montoJugadores, jugador, fichasGato, fichasConcha, fichasPiramide, fichasMazorca, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
+    }
+    /**
+     * 
+     * @param casillas
+     * @param montoJugadores
+     * @param jugador
+     * @param fichasGato
+     * @param fichasConcha
+     * @param fichasPiramide
+     * @param fichasMazorca
+     * @param fichasGatoPosicion
+     * @param fichasConchaPosicion
+     * @param fichasPiramidePosicion
+     * @param fichasMazorcaPosicion
+     * @return
+     */
+    public boolean recibirCambios(List<JLabel> casillas, List<Integer> montoJugadores, int jugador, List<JLabel> fichasGato,
+            List<JLabel> fichasConcha, List<JLabel> fichasPiramide, List<JLabel> fichasMazorca, List<Integer> fichasGatoPosicion,
+            List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
+        //TODO:
+        return false;
+    }
+
+    /**
+     *
+     * @param jugador
+     * @return
+     */
+    public boolean jugadorSale(int jugador) {
+        isHost=false;
+        return controlJuego.jugadorSale(jugador);
+    }
+
+    /**
+     * Cierra la aplicacion por completo
+     */
     public void CerrarPrograma() {
+        if (isHost) {
+            //TODO          
+            //detenerServidor();  
+        }
         this.dispose();
     }
     
@@ -36,7 +126,7 @@ public class FrameInicio extends javax.swing.JFrame {
         }
         this.setVisible(false);
         DialogUnirseCrear unirseCrear = new DialogUnirseCrear(this);
-        unirseCrear.setVisible(true); // Muestra la nueva pantalla
+        unirseCrear.setVisible(true);
         
     }
 
@@ -52,7 +142,7 @@ public class FrameInicio extends javax.swing.JFrame {
         }
         this.setVisible(false);
         DialogComoJugar comoJugar = new DialogComoJugar(this);
-        comoJugar.setVisible(true); // Muestra la nueva pantalla
+        comoJugar.setVisible(true); 
         
     } 
     
@@ -71,7 +161,7 @@ public class FrameInicio extends javax.swing.JFrame {
         }
         this.setVisible(false);
         DialogSala sala = new DialogSala(this,tamaño,monto,fichas,codigo);
-        sala.setVisible(true); // Muestra la nueva pantalla
+        sala.setVisible(true); 
         
     } 
     
@@ -86,7 +176,7 @@ public class FrameInicio extends javax.swing.JFrame {
         }
         this.setVisible(false);
         DialogOpciones opciones = new DialogOpciones(this);
-        opciones.setVisible(true); // Muestra la nueva pantalla
+        opciones.setVisible(true); 
         
     } 
     

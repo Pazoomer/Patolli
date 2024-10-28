@@ -5,42 +5,75 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author t1pas
  */
 public class ClientePatolli {
-    public void conectar(String codigoSala){
-        Socket kkSocket = null;
-        PrintWriter out = null;
-        BufferedReader in = null;
-        try {
-            kkSocket = new Socket("localhost", 4444);
-            out = new PrintWriter(kkSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(kkSocket.getInputStream()));
-            try (BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
+
+    private final String codigoSala;
+    private Socket socket;
+    private BufferedReader in;
+    private PrintWriter out;
+
+    public ClientePatolli(String codigoSala) {
+        this.codigoSala = codigoSala;
+    }
+
+    public boolean conectar() {
+        new Thread(() -> {
+            try {
+                socket = new Socket("localhost", 4444);
+                System.out.println("Conectado al servidor en la sala: " + codigoSala);
+
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                out = new PrintWriter(socket.getOutputStream(), true);
+
                 String fromServer;
-                String fromUser;
                 while ((fromServer = in.readLine()) != null) {
-                    System.out.println("Server: " + fromServer);
-                    if (fromServer.equals("Bye."))
-                        break;
-                    
-                    fromUser = stdIn.readLine();
-                    if (fromUser != null) {
-                        System.out.println("Client: " + fromUser);
-                        out.println(fromUser);
-                    }
+
+                    // Parsear los datos recibidos
+                    String[] datos = fromServer.split(",");  // Suponiendo que se envían separados por comas
+
+                    // Llamar al método recibirCambios con los datos recibidos
+                    recibirCambios(datos);
                 }
-                out.close();
-                in.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                // Cerrar socket y flujos al finalizar
+                try {
+                    if (in != null) {
+                        in.close();
+                    }
+                    if (out != null) {
+                        out.close();
+                    }
+                    if (socket != null) {
+                        socket.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-            kkSocket.close();            
-        } catch (IOException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }).start();
+        //Todo
+        return false;
+    }
+
+    // Método que se llama cuando el servidor envía los cambios
+    public void recibirCambios(String[] datos) {
+        // Aquí colocarías la lógica para actualizar la pantalla con los datos recibidos
+        System.out.println("Actualizando pantalla con nuevos cambios del servidor...");
+    }
+    
+    public void jugadorSale(){
+        System.out.println("Jugador salio");
+    }
+    
+    public void unirsePartida(){
+        System.out.println("Unirse a la partida");
     }
 }

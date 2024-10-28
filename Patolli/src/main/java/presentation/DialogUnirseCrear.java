@@ -20,39 +20,46 @@ public class DialogUnirseCrear extends JDialog {
      * @param parent
      */
     public DialogUnirseCrear(JFrame parent) {
-        super(parent, true); // Inicializa el JDialog con modal
+        super(parent, true);
         this.parent = parent;
-        this.setResizable(false); // Desactiva la opción de cambiar el tamaño de la ventana
+        this.setResizable(false); 
         initComponents();
-        // Agregar un WindowListener para manejar el evento de cerrar
+        
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                Cerrar(); // Llama a tu método Cerrar() cuando se intente cerrar la ventana
+                Cerrar();
             }
         });
     }
     
     /**
      * Intenta unirse a una partida existente utilizando el código proporcionado.
-     * Si el código es válido, se muestra un mensaje de éxito. 
-     * De lo contrario, se muestra un mensaje de error indicando que la partida no fue encontrada.
+     * Si el código es válido, se muestra un mensaje de éxito. De
+     * lo contrario, se muestra un mensaje de error indicando que la partida no
+     * fue encontrada.
      */
     public void Unirse() {
-        // Pasa a la pantalla sala con el código 
-        if (this.txtCodigo.getText() != null && !"AAAA".equals(this.txtCodigo.getText())) {
+        if (this.txtCodigo.getText() != null) {
             JOptionPane.showMessageDialog(null, "No se encontró la partida", "Partida no encontrada", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(null, "Uniéndose a la partida", "Partida encontrada", JOptionPane.INFORMATION_MESSAGE);
+            if (parent instanceof FrameInicio frameInicio) { 
+                JOptionPane.showMessageDialog(null, "Uniéndose a la partida", "Partida encontrada", JOptionPane.INFORMATION_MESSAGE);
+                if(frameInicio.unirseServidor(this.txtCodigo.getText())){
+                    //TODO
+                    frameInicio.PasarPantallaSala(this, 8, WIDTH, WIDTH, this.txtCodigo.getText());
+                }
+            }
+            
         }
     }
-    
+
     /**
      * Crea una nueva partida y muestra la pantalla de opciones.
      */
     public void Crear() {
-        if (parent instanceof FrameInicio frameInicio) { // Reemplaza MiFrameClase por la clase real del JFrame que tiene el método
-            frameInicio.PasarPantallaOpciones(this); // Llama al método directamente
+        if (parent instanceof FrameInicio frameInicio) { 
+            frameInicio.PasarPantallaOpciones(this);
         }
     }
     

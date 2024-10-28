@@ -17,9 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import negocio.ControlApuestas;
 import negocio.ControlJuego;
-import negocio.IControlApuestas;
 import negocio.IControlJuego;
 import utils.Utils;
 
@@ -34,7 +32,6 @@ public class DialogTablero extends JDialog {
 
     //Clases (Son iguales para todas las instancias, NO se envian al control)
     private final JFrame parent; //JFrame padre
-    private final IControlJuego controlJuego; //Control del juego
     private final Utils utils; //Herramientas para calculos
     
     //Opciones (Se definen en la creacion de la pantalla, NO se envian al control)
@@ -114,7 +111,6 @@ public class DialogTablero extends JDialog {
         this.fichas = fichas;
         this.jugadores = jugadores;
         casillas = new ArrayList<>();
-        controlJuego=new ControlJuego();
         inicializarGui();
         siguienteJugador(); 
         this.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -632,8 +628,9 @@ public class DialogTablero extends JDialog {
         int opcion = JOptionPane.showConfirmDialog(null, "¿Realmente quieres salir?", "Confirmar salida", JOptionPane.YES_NO_OPTION);
 
         if (opcion == JOptionPane.YES_OPTION) {
-            this.controlJuego.jugadorSale(miJugador);
+            
             if (parent instanceof FrameInicio frameInicio) {
+                frameInicio.jugadorSale(miJugador);
                 frameInicio.PasarPantallaInicio(this);
             }
             
@@ -860,8 +857,11 @@ public class DialogTablero extends JDialog {
     private boolean revisarJugadorSale() {
         for (int i = 0; i < montoJugadores.size(); i++) {
             if (montoJugadores.get(i) <= 0) {
-                controlJuego.jugadorSale(i);
-                return true;
+                if (parent instanceof FrameInicio frameInicio) {
+                    frameInicio.jugadorSale(miJugador);
+                    return true;
+                }
+                
             }
         }
         return false;
@@ -1008,14 +1008,21 @@ public class DialogTablero extends JDialog {
         casillaTermina = casillasOrdenadas.get(casillaTermina);
         return casillaTermina;
     }
+
     /**
-     * Manda el valor del tablero, el monto de los jugadores y el siguientejugador al control del juego
+     * Manda el valor del tablero, el monto de los jugadores y el
+     * siguientejugador al control del juego
+     *
      * @return Verdadero si se actualizo con exito
      */
-    private void subirCambios(){
-        this.controlJuego.actualizarCambios(casillas, montoJugadores,jugador,fichasGato,fichasConcha,fichasPiramide,fichasMazorca,
-        fichasGatoPosicion,fichasConchaPosicion,fichasPiramidePosicion,fichasMazorcaPosicion);
+    private void subirCambios() {
+        if (parent instanceof FrameInicio frameInicio) {
+
+            frameInicio.subirCambios(casillas, montoJugadores, jugador, fichasGato, fichasConcha, fichasPiramide, fichasMazorca,
+                    fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
+        }
     }
+
     /**
      * Recibe los cambios del control y los coloca en la pantalla
      * @param casillas Tablero actualizado

@@ -59,6 +59,14 @@ public class DialogSala extends JDialog {
         this.piramideIcono.setVisible(false);
         this.lblP4.setVisible(false);
         this.mazorcaIcono.setVisible(false);
+        
+        crearServidor();
+    }
+    
+    public void crearServidor(){
+        if (parent instanceof FrameInicio frameInicio) {
+            frameInicio.crearServidor(codigo);
+        }
     }
 
     /**
@@ -130,11 +138,15 @@ public class DialogSala extends JDialog {
         }
     }
     
+    /**
+     * Cierra el programa
+     */
     public void Cerrar() {
         if (parent instanceof FrameInicio frameInicio) {
             frameInicio.CerrarPrograma();
         }
     }
+    
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
