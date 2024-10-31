@@ -39,6 +39,10 @@ public class DialogSala extends JDialog {
                 Cerrar(); // Llama a tu método Cerrar() cuando se intente cerrar la ventana
             }
         });
+        if (parent instanceof FrameInicio frameInicio) {
+            this.lblJugar.setEnabled(frameInicio.isHost);
+        }
+             
         this.parent=parent;
         this.tamaño = tamaño;
         this.monto = monto;
@@ -60,20 +64,23 @@ public class DialogSala extends JDialog {
         this.lblP4.setVisible(false);
         this.mazorcaIcono.setVisible(false);
         
-        crearServidor();
-    }
-    
-    public void crearServidor(){
-        if (parent instanceof FrameInicio frameInicio) {
-            frameInicio.crearServidor(codigo);
-        }
+        intentarCrearServidor();
     }
 
+    public void intentarCrearServidor() {
+        if (parent instanceof FrameInicio frameInicio) {
+            if(frameInicio.isHost){
+               frameInicio.crearServidor(codigo); 
+            }    
+        }
+    }
+    
     /**
      * Método que permite regresar a la pantalla de opciones.
      */
     public void Volver() {
         if (parent instanceof FrameInicio frameInicio) {
+            frameInicio.jugadorSale(miJugador);
             frameInicio.PasarPantallaOpciones(this);
         }
     }
@@ -85,10 +92,16 @@ public class DialogSala extends JDialog {
      * necesitan más jugadores.
      */
     public void Jugar() {
-        // Pasa a la pantalla de tablero
+        if (parent instanceof FrameInicio frameInicio) {
+                if(!frameInicio.isHost){
+                    JOptionPane.showMessageDialog(null, "Solo el creador de la sala puede iniciar el juego", "No eres el host", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+            }
         if (jugadores > 1) {
             if (parent instanceof FrameInicio frameInicio) {
-                frameInicio.PasarPantallaTablero(this,tamaño, monto, fichas,jugadores, miJugador);
+                subirOpciones();
+                frameInicio.PasarPantallaTablero(this, tamaño, monto, fichas, jugadores, miJugador);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Se necesitan dos jugadores para jugar", "Faltan jugadores", JOptionPane.INFORMATION_MESSAGE);
@@ -100,8 +113,10 @@ public class DialogSala extends JDialog {
      * Actualiza la cantidad de jugadores y la visibilidad de los iconos correspondientes.
      *
      * @param numeroJugadores El número de jugadores a añadir (puede ser negativo para restar).
+     * @return Entero con los jugadores actuales despues de agregar
      */
-    public void AñadirJugador(int numeroJugadores) {
+    public int AñadirJugador(int numeroJugadores) {
+        System.out.println("El jugador se añadio con exito: "+jugadores+1);
         jugadores = jugadores + numeroJugadores;
         switch (jugadores) {
             case 0->{
@@ -136,7 +151,9 @@ public class DialogSala extends JDialog {
                 AñadirJugador(-1);
             }
         }
+        return jugadores;
     }
+    
     
     /**
      * Cierra el programa
@@ -147,7 +164,37 @@ public class DialogSala extends JDialog {
         }
     }
     
-
+    /**
+     * Manda el valor del tablero, el monto de los jugadores y el
+     * siguientejugador al control del juego
+     *
+     * @return Verdadero si se actualizo con exito
+     */
+    private boolean subirOpciones() {
+        if (parent instanceof FrameInicio frameInicio) {
+            frameInicio.subirOpciones(tamaño, monto, fichas,jugadores);
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Recibe las ocpiones del control e inicia el tablero con estas
+     *
+     * @param tamaño
+     * @param monto
+     * @param fichas
+     * @param jugadores
+     * @return Verdadero si no hubo ningun problema
+     */
+    public boolean recibirOpciones(int tamaño, int monto, int fichas, int jugadores) {
+  
+        if (parent instanceof FrameInicio frameInicio) {
+            frameInicio.PasarPantallaTablero(this, tamaño, monto, fichas, jugadores, miJugador);
+        }
+        
+        return true;
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -253,6 +300,7 @@ public class DialogSala extends JDialog {
         });
 
         lblJugar.setFont(new java.awt.Font("Comic Sans MS", 1, 30)); // NOI18N
+        lblJugar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblJugar.setText("JUGAR");
         lblJugar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -265,16 +313,12 @@ public class DialogSala extends JDialog {
         pnlJugarLayout.setHorizontalGroup(
             pnlJugarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlJugarLayout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(lblJugar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(lblJugar, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         pnlJugarLayout.setVerticalGroup(
             pnlJugarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlJugarLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(lblJugar)
-                .addContainerGap(18, Short.MAX_VALUE))
+            .addComponent(lblJugar, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
         );
 
         lblP1.setBackground(new java.awt.Color(192, 160, 123));
@@ -474,7 +518,7 @@ public class DialogSala extends JDialog {
     * @param evt el evento de mouse que se ha producido
     */
     private void pnlJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlJugarMouseClicked
-        Jugar();
+    
     }//GEN-LAST:event_pnlJugarMouseClicked
     /**
     * Maneja el evento de clic en el botón para añadir un jugador.

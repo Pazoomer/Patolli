@@ -40,14 +40,13 @@ public class DialogUnirseCrear extends JDialog {
      * fue encontrada.
      */
     public void Unirse() {
-        if (this.txtCodigo.getText() != null) {
+        if (this.txtCodigo.getText() == null) {
             JOptionPane.showMessageDialog(null, "No se encontró la partida", "Partida no encontrada", JOptionPane.INFORMATION_MESSAGE);
         } else {
             if (parent instanceof FrameInicio frameInicio) { 
                 JOptionPane.showMessageDialog(null, "Uniéndose a la partida", "Partida encontrada", JOptionPane.INFORMATION_MESSAGE);
                 if(frameInicio.unirseServidor(this.txtCodigo.getText())){
-                    //TODO
-                    frameInicio.PasarPantallaSala(this, 8, WIDTH, WIDTH, this.txtCodigo.getText());
+                    frameInicio.PasarPantallaSala(this, -1, -1, -1, this.txtCodigo.getText());
                 }
             }
             
@@ -59,6 +58,7 @@ public class DialogUnirseCrear extends JDialog {
      */
     public void Crear() {
         if (parent instanceof FrameInicio frameInicio) { 
+            frameInicio.isHost=true;
             frameInicio.PasarPantallaOpciones(this);
         }
     }
@@ -113,6 +113,7 @@ public class DialogUnirseCrear extends JDialog {
         });
 
         lblUnirse.setFont(new java.awt.Font("Comic Sans MS", 1, 30)); // NOI18N
+        lblUnirse.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblUnirse.setText("UNIRSE");
         lblUnirse.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -125,16 +126,12 @@ public class DialogUnirseCrear extends JDialog {
         pnlUnirseLayout.setHorizontalGroup(
             pnlUnirseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlUnirseLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(lblUnirse)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(lblUnirse, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         pnlUnirseLayout.setVerticalGroup(
             pnlUnirseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlUnirseLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(lblUnirse)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(lblUnirse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pnlCrear.setBackground(new java.awt.Color(192, 160, 123));
@@ -147,6 +144,7 @@ public class DialogUnirseCrear extends JDialog {
         });
 
         lblCrear.setFont(new java.awt.Font("Comic Sans MS", 1, 30)); // NOI18N
+        lblCrear.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblCrear.setText("CREAR");
         lblCrear.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -159,16 +157,15 @@ public class DialogUnirseCrear extends JDialog {
         pnlCrearLayout.setHorizontalGroup(
             pnlCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlCrearLayout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(lblCrear)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(lblCrear, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         pnlCrearLayout.setVerticalGroup(
             pnlCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlCrearLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(lblCrear)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(lblCrear, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel6.setBackground(new java.awt.Color(223, 207, 188));
@@ -301,7 +298,7 @@ public class DialogUnirseCrear extends JDialog {
      * @param evt el evento de clic del mouse generado al hacer clic en el panel
      */
     private void pnlUnirseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlUnirseMouseClicked
-        Unirse();
+        
     }//GEN-LAST:event_pnlUnirseMouseClicked
     /**
      * Maneja el evento de clic del mouse en la etiqueta "Crear".
@@ -319,7 +316,7 @@ public class DialogUnirseCrear extends JDialog {
      * @param evt el evento de clic del mouse generado al hacer clic en el panel
      */
     private void pnlCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlCrearMouseClicked
-        Crear();
+ 
     }//GEN-LAST:event_pnlCrearMouseClicked
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed

@@ -2,7 +2,7 @@
 package negocio;
 
 import java.util.List;
-import javax.swing.JLabel;
+import javax.swing.JFrame;
 
 /**
  *
@@ -10,11 +10,19 @@ import javax.swing.JLabel;
  */
 public class ControlJuego implements IControlJuego {
 
-    Juego juego=new Juego();
+    Juego juego;
+    JFrame frameInicio;
+
+    public ControlJuego(JFrame frameInicio) {
+        this.frameInicio=frameInicio;
+        juego=new Juego();
+    }
+    
 
     @Override
-    public boolean actualizarCambios(List<JLabel> casillas, List<Integer> montoJugadores, int jugador, List<JLabel> fichasGato, List<JLabel> fichasConcha, List<JLabel> fichasPiramide, List<JLabel> fichasMazorca, List<Integer> fichasGatoPosicion, List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
-        return juego.actualizarCambios(casillas, montoJugadores, jugador, fichasGato, fichasConcha, fichasPiramide, fichasMazorca, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
+    public boolean actualizarCambios(List<Integer> montoJugadores, int siguienteJugador, List<Integer> fichasGatoPosicion,
+            List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
+        return juego.actualizarCambios(montoJugadores, siguienteJugador, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
     }
 
     @Override
@@ -24,17 +32,27 @@ public class ControlJuego implements IControlJuego {
 
     @Override
     public boolean crearServidor(String codigoSala) {
-        return juego.crearServidor(codigoSala);
+        return juego.crearServidor(codigoSala, frameInicio);
     }
 
     @Override
     public boolean unirseServidor(String codigoSala) {
-        return juego.unirseServidor(codigoSala);
+        return juego.unirseServidor(codigoSala, frameInicio);
     }
 
     @Override
     public void destruirServidor() {
         juego.destruirServidor();
     }
-    
+
+    @Override
+    public boolean pasarOpciones(int tamaño, int monto, int fichas,int jugadores) {
+        return juego.pasarOpciones(tamaño, monto, fichas,jugadores);
+    }
+
+    @Override
+    public int jugadorEntra() {
+    return juego.jugadorEntra();
+    }
+
 }

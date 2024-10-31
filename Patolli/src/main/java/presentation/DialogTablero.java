@@ -17,8 +17,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import negocio.ControlJuego;
-import negocio.IControlJuego;
 import utils.Utils;
 
 /**
@@ -87,6 +85,7 @@ public class DialogTablero extends JDialog {
     //Doble turno   (Arriba: 0,1,   Abajo: 46,47,    Derecha: 59,71   Izquieda: 72,84)          
     //Pagar apuesta (Arriba: 6,7,   Abajo: 40,41,    Derecha: 56,68   Izquieda: 75,87)         
     //Centrales     (96,97,98,99)
+
     /**
      * Constructor de la clase FrameTablero.
      *
@@ -506,7 +505,7 @@ public class DialogTablero extends JDialog {
         try {
             // Cargar la imagen desde la URL
             ImageIcon icon = new ImageIcon(getClass().getResource(url));
-
+            
             // Escalar la imagen a las dimensiones (x, y)
             Image img = icon.getImage().getScaledInstance(x, y, java.awt.Image.SCALE_SMOOTH);
 
@@ -667,7 +666,6 @@ public class DialogTablero extends JDialog {
         iluminarFichas(true);
 
     }
-
     /**
      * Avanza al siguiente jugador en el turno. Ilumina el jugador del turno
      * actual e ilumina el botón de lanzar cañas.
@@ -804,7 +802,7 @@ public class DialogTablero extends JDialog {
 
                 //Casilla doble turno
                 if (colorCasilla.equals(Color.BLUE)) {
-                    ganaTurnoExtra(2);
+                    turnosExtra = turnosExtra+2;
                     JOptionPane.showMessageDialog(null, "Obtienes 2 turnos extra", "Casilla doble turno", JOptionPane.INFORMATION_MESSAGE);
                 }
 
@@ -867,27 +865,13 @@ public class DialogTablero extends JDialog {
         return false;
     }
     /**
-     * Aumenta el valor de turnos Extra
-     * @param numTurnos entero a aumentar a turnos extra
-     */
-    public void ganaTurnoExtra(int numTurnos){
-        turnosExtra+=numTurnos;
-    }
-    /**
      * Cambia el monto de los jugadores
+     *
      * @param jugadorCobra numero que indica el jugador a cobrar la apuesta
      * @param monto cantidad de la apuesta
      */
     public void cobrarApuesta(int jugadorCobra, int monto) {
         montoJugadores.set(jugadorCobra, montoJugadores.get(jugadorCobra) + monto);
-    }
-    /**
-     * No implementado aun
-     * @param numJugador
-     * @param numFicha 
-     */
-    public void eliminarFicha(int numJugador, int numFicha){
-        //TODO: Lo hace la interfaz
     }
     /**
      * Devuelve la posicion de la casilla inicial del jugador dueño de la
@@ -953,29 +937,33 @@ public class DialogTablero extends JDialog {
         return -1;
     }
     /**
-     * Obtiene la lista de posiciones de fichas por el jugador dueño de la pantalla
-     * @return Lista de Integers que reprsenta las posiciones de las fichas en el tablero
+     * Obtiene la lista de posiciones de fichas por el jugador dueño de la
+     * pantalla
+     *
+     * @return Lista de Integers que reprsenta las posiciones de las fichas en
+     * el tablero
      */
-    private List<Integer> getListaFichasPosicionMiJugador(){
-        List<Integer> listaCasillasPosicion=new ArrayList<>();
+    private List<Integer> getListaFichasPosicionMiJugador() {
+        List<Integer> listaCasillasPosicion = new ArrayList<>();
         switch (miJugador) {
             case 0 -> {
-                listaCasillasPosicion=this.fichasGatoPosicion;
+                listaCasillasPosicion = this.fichasGatoPosicion;
             }
             case 1 -> {
-                listaCasillasPosicion=this.fichasConchaPosicion;
+                listaCasillasPosicion = this.fichasConchaPosicion;
             }
             case 2 -> {
-                listaCasillasPosicion=this.fichasPiramidePosicion;
+                listaCasillasPosicion = this.fichasPiramidePosicion;
             }
             case 3 -> {
-                listaCasillasPosicion=this.fichasMazorcaPosicion;
+                listaCasillasPosicion = this.fichasMazorcaPosicion;
             }
         }
         return listaCasillasPosicion;
     }
     /**
      * Obtiene la lista JLabels de fichas por el jugador dueño de la pantalla
+     *
      * @return la lista JLabels dueño de la pantalla
      */
     private List<JLabel> getListaFichasMiJugador() {
@@ -997,8 +985,11 @@ public class DialogTablero extends JDialog {
         return listaCasillas;
     }
     /**
-     * Transforma la posicion relativa del tablero a su posicion de orden de progreso
-     * @param posicionRelativa numero de Casilla ordenada segun la vista del tablero
+     * Transforma la posicion relativa del tablero a su posicion de orden de
+     * progreso
+     *
+     * @param posicionRelativa numero de Casilla ordenada segun la vista del
+     * tablero
      * @return numero de progreso en el tablero
      */
     private int getPosicionReal(int posicionRelativa) {
@@ -1008,59 +999,53 @@ public class DialogTablero extends JDialog {
         casillaTermina = casillasOrdenadas.get(casillaTermina);
         return casillaTermina;
     }
-
     /**
      * Manda el valor del tablero, el monto de los jugadores y el
      * siguientejugador al control del juego
      *
      * @return Verdadero si se actualizo con exito
      */
-    private void subirCambios() {
+    private boolean subirCambios() {
         if (parent instanceof FrameInicio frameInicio) {
 
-            frameInicio.subirCambios(casillas, montoJugadores, jugador, fichasGato, fichasConcha, fichasPiramide, fichasMazorca,
-                    fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
+            return frameInicio.subirCambios(montoJugadores, jugador, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
         }
+        return false;
     }
-
     /**
      * Recibe los cambios del control y los coloca en la pantalla
-     * @param casillas Tablero actualizado
+     *
      * @param montoJugadores Monto de apuestas de los jugadores
-     * @param jugador Siguiente Jugador
-     * @param fichasGato Apariencia de fichas gato
-     * @param fichasConcha Apariencia de fichas concha
-     * @param fichasPiramide Apariencia de fichas piramide
-     * @param fichasMazorca Apariencia de fichas mazorca
+     * @param siguienteJugador Siguiente Jugador
      * @param fichasGatoPosicion Posicion de fichas gato
      * @param fichasConchaPosicion Posicion de fichas concha
      * @param fichasPiramidePosicion Posicion de fichas piramide
      * @param fichasMazorcaPosicion Posicion de fichas mazorca
+     * @return Verdadero si no hubo ningun problema
      */
-    public void recibirCambios(List<JLabel> casillas, List<Integer> montoJugadores, int jugador, List<JLabel> fichasGato,
-            List<JLabel> fichasConcha, List<JLabel> fichasPiramide, List<JLabel> fichasMazorca, List<Integer> fichasGatoPosicion,
+    public boolean recibirCambios(List<Integer> montoJugadores, int siguienteJugador, List<Integer> fichasGatoPosicion,
             List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
 
-        this.casillas = casillas;
         this.montoJugadores = montoJugadores;
-        this.jugador = jugador;
-        this.fichasGato=fichasGato;
-        this.fichasConcha=fichasConcha;
-        this.fichasPiramide=fichasPiramide;
-        this.fichasMazorca=fichasMazorca;
-        this.fichasGatoPosicion=fichasGatoPosicion;
-        this.fichasConchaPosicion=fichasConchaPosicion;
-        this.fichasPiramidePosicion=fichasPiramidePosicion;
-        this.fichasMazorcaPosicion=fichasMazorcaPosicion;
+        this.jugador = siguienteJugador;
+        this.fichasGatoPosicion = fichasGatoPosicion;
+        this.fichasConchaPosicion = fichasConchaPosicion;
+        this.fichasPiramidePosicion = fichasPiramidePosicion;
+        this.fichasMazorcaPosicion = fichasMazorcaPosicion;
         
-        this.actualizarTablero();
-        this.actualizarApuestas();
-        this.actualizarSiguienteJugador();
+        //TODO
+        //Acomodar la fichas segun las posiciones
+        
+        
+        this.actualizarTablero(); //Actualiza el tablero con la lista de casillas
+        this.actualizarApuestas(); //Coloca el monto de apuestas correspondiente
+        this.actualizarSiguienteJugador(); //Actualiza la vista para el siguiente jugador
 
         //Si es mi turno, habilita el lanzar cañas
-        if(jugador==miJugador){
+        if (jugador == miJugador) {
             this.btnLanzarCañas.setEnabled(true);
         }
+        return true;
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

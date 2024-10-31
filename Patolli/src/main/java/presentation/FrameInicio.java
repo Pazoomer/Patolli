@@ -2,7 +2,6 @@ package presentation;
 
 import java.util.List;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import negocio.ControlJuego;
 import negocio.IControlJuego;
 
@@ -16,91 +15,125 @@ import negocio.IControlJuego;
 public class FrameInicio extends javax.swing.JFrame {
 
     private final IControlJuego controlJuego;
-    private boolean isHost;
+    DialogTablero tablero;
+    DialogSala sala;
+    public boolean isHost;
     
     /**
      * Constructor de FrameInicio.
-     * Inicializa la ventana y desactiva la opción de cambiar el tamaño de la ventana.
+     * Inicializa la ventana y desactiva la opción
+     * de cambiar el tamaño de la ventana.
      */
     public FrameInicio() {
         this.setResizable(false);
         initComponents();
-        controlJuego = new ControlJuego();
+        controlJuego = new ControlJuego(this);
     }
+
     /**
      * Detiene el servidor y desconecta a todos los jugadores
      */
-    public void detenerServidor(){
+    public void detenerServidor() {
         controlJuego.destruirServidor();
     }
+
     /**
-     * 
+     * Crea un nuevo servidor
+     *
      * @param codigoSala
-     * @return 
+     * @return
      */
     public boolean crearServidor(String codigoSala) {
-        isHost=true;
+        isHost = true;
         return controlJuego.crearServidor(codigoSala);
     }
+
     /**
-     * 
+     * Se une al servidor
+     *
      * @param codigoSala
-     * @return 
+     * @return
      */
     public boolean unirseServidor(String codigoSala) {
-        isHost=false;
+        isHost = false;
         return controlJuego.unirseServidor(codigoSala);
     }
+
     /**
-     * 
-     * @param casillas
+     * Sube los cambios para los demas jugadores
+     *
+     * @param siguienteJugador
      * @param montoJugadores
-     * @param jugador
-     * @param fichasGato
-     * @param fichasConcha
-     * @param fichasPiramide
-     * @param fichasMazorca
-     * @param fichasGatoPosicion
-     * @param fichasConchaPosicion
-     * @param fichasPiramidePosicion
-     * @param fichasMazorcaPosicion
-     * @return 
-     */
-    public boolean subirCambios(List<JLabel> casillas, List<Integer> montoJugadores, int jugador, List<JLabel> fichasGato,
-            List<JLabel> fichasConcha, List<JLabel> fichasPiramide, List<JLabel> fichasMazorca, List<Integer> fichasGatoPosicion,
-            List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
-        return controlJuego.actualizarCambios(casillas, montoJugadores, jugador, fichasGato, fichasConcha, fichasPiramide, fichasMazorca, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
-    }
-    /**
-     * 
-     * @param casillas
-     * @param montoJugadores
-     * @param jugador
-     * @param fichasGato
-     * @param fichasConcha
-     * @param fichasPiramide
-     * @param fichasMazorca
      * @param fichasGatoPosicion
      * @param fichasConchaPosicion
      * @param fichasPiramidePosicion
      * @param fichasMazorcaPosicion
      * @return
      */
-    public boolean recibirCambios(List<JLabel> casillas, List<Integer> montoJugadores, int jugador, List<JLabel> fichasGato,
-            List<JLabel> fichasConcha, List<JLabel> fichasPiramide, List<JLabel> fichasMazorca, List<Integer> fichasGatoPosicion,
+    public boolean subirCambios(List<Integer> montoJugadores, int siguienteJugador, List<Integer> fichasGatoPosicion,
             List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
-        //TODO:
-        return false;
+        return controlJuego.actualizarCambios(montoJugadores, siguienteJugador, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
     }
 
     /**
+     * Recibe los cambios de otro jugador
+     *
+     * @param montoJugadores
+     * @param siguienteJugador
+     * @param fichasGatoPosicion
+     * @param fichasConchaPosicion
+     * @param fichasPiramidePosicion
+     * @param fichasMazorcaPosicion
+     * @return
+     */
+    public boolean recibirCambios(List<Integer> montoJugadores, int siguienteJugador, List<Integer> fichasGatoPosicion,
+            List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
+        return tablero.recibirCambios(montoJugadores, siguienteJugador, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
+    }
+
+    /**
+     * El jugador sale de la partida
      *
      * @param jugador
      * @return
      */
     public boolean jugadorSale(int jugador) {
-        isHost=false;
         return controlJuego.jugadorSale(jugador);
+    }
+    
+    /**
+     * Un jugador entra a la partida
+     * @return 
+     */
+    public int jugadorEntra() {
+        if (sala != null) {
+            return sala.AñadirJugador(1);
+        }
+        return -1;
+    }
+    
+    /**
+     * Pasa los ajustes de una partida
+     * @param tamaño
+     * @param monto
+     * @param fichas
+     * @param jugadores
+     * @return 
+     */
+    public boolean subirOpciones(int tamaño, int monto, int fichas,int jugadores){
+        return controlJuego.pasarOpciones(tamaño, monto, fichas,jugadores);
+    }
+    
+    /**
+     * Pasa los ajustes de una partida
+     * @param tamaño
+     * @param monto
+     * @param fichas
+     * @param jugadores
+     * @return 
+     */
+    public boolean recibirOpciones(int tamaño, int monto, int fichas,int jugadores){
+        return sala.recibirOpciones(tamaño, monto, fichas, jugadores);
     }
 
     /**
@@ -108,8 +141,8 @@ public class FrameInicio extends javax.swing.JFrame {
      */
     public void CerrarPrograma() {
         if (isHost) {
-            //TODO          
-            //detenerServidor();  
+            //TODO
+            //controlJuego.destruirServidor();
         }
         this.dispose();
     }
@@ -206,7 +239,7 @@ public class FrameInicio extends javax.swing.JFrame {
             children.dispose();
         }
         this.setVisible(false);
-        DialogTablero tablero = new DialogTablero(this,tamaño,fichas,monto, jugadores, miJugador);
+        tablero = new DialogTablero(this,tamaño,fichas,monto, jugadores, miJugador);
         tablero.setVisible(true);
     } 
 
