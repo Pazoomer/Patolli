@@ -15,9 +15,10 @@ public class DialogSala extends JDialog {
     public int tamaño;      // Tamaño del tablero de juego.
     public int monto;       // Monto de apuestas.
     public int fichas;      // Número de fichas del jugador.
-    public int jugadores = 1; // Contador de jugadores en la sala.
+    public int jugadores = 0; // Contador de jugadores en la sala.
     public int miJugador; //Representa el jugador dueño de la pantalla
     public String codigo;   // Código de la sala.
+    private boolean banderaMiJugador=true; //Sirve como candado para que solo se pueda modificar miJugador cuando se conecta a un juego
 
     /**
      * Constructor de la clase FrameSala.
@@ -64,14 +65,20 @@ public class DialogSala extends JDialog {
         this.lblP4.setVisible(false);
         this.mazorcaIcono.setVisible(false);
         
-        intentarCrearServidor();
+        ajustesHost();
     }
-
-    public void intentarCrearServidor() {
+    
+    /**
+     * Ajusta la pantalla dependiendo si es o no el host
+     */
+    private void ajustesHost() {
         if (parent instanceof FrameInicio frameInicio) {
-            if(frameInicio.isHost){
-               frameInicio.crearServidor(codigo); 
-            }    
+            if (frameInicio.isHost) {
+                frameInicio.crearServidor(codigo);
+            } else {
+                this.lblContexto.setText("Espera a que el host inicie la partida");
+                this.lblCodigo.setText("------");
+            }
         }
     }
     
@@ -107,7 +114,15 @@ public class DialogSala extends JDialog {
             JOptionPane.showMessageDialog(null, "Se necesitan dos jugadores para jugar", "Faltan jugadores", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-
+    
+    public int setMiJugador(int numeroJugadores){
+        System.out.println("Numero de jugadores: "+numeroJugadores);
+        if(banderaMiJugador){
+            banderaMiJugador=false;
+            this.miJugador=numeroJugadores;
+        }
+        return numeroJugadores;
+    }
     /**
      * Método para añadir un jugador a la sala.
      * Actualiza la cantidad de jugadores y la visibilidad de los iconos correspondientes.
@@ -116,7 +131,6 @@ public class DialogSala extends JDialog {
      * @return Entero con los jugadores actuales despues de agregar
      */
     public int AñadirJugador(int numeroJugadores) {
-        System.out.println("El jugador se añadio con exito: "+jugadores+1);
         jugadores = jugadores + numeroJugadores;
         switch (jugadores) {
             case 0->{
@@ -213,7 +227,7 @@ public class DialogSala extends JDialog {
         piramideIcono = new javax.swing.JLabel();
         mazorcaIcono = new javax.swing.JLabel();
         conchaIcono = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        lblContexto = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         TODObtnAñadirJugador = new javax.swing.JButton();
         TODObtnEliminarJugador = new javax.swing.JButton();
@@ -266,6 +280,7 @@ public class DialogSala extends JDialog {
         });
 
         lblVolver.setFont(new java.awt.Font("Comic Sans MS", 1, 30)); // NOI18N
+        lblVolver.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblVolver.setText("VOLVER");
         lblVolver.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -278,16 +293,16 @@ public class DialogSala extends JDialog {
         pnlVolverLayout.setHorizontalGroup(
             pnlVolverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlVolverLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(lblVolver)
+                .addContainerGap()
+                .addComponent(lblVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlVolverLayout.setVerticalGroup(
             pnlVolverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlVolverLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(lblVolver)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(lblVolver, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pnlJugar.setBackground(new java.awt.Color(192, 160, 123));
@@ -357,8 +372,8 @@ public class DialogSala extends JDialog {
 
         conchaIcono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/concha.png"))); // NOI18N
 
-        jLabel10.setFont(new java.awt.Font("Comic Sans MS", 1, 36)); // NOI18N
-        jLabel10.setText("Se necesitan 2 jugadores para");
+        lblContexto.setFont(new java.awt.Font("Comic Sans MS", 1, 36)); // NOI18N
+        lblContexto.setText("Se necesitan 2 jugadores para");
 
         jLabel13.setFont(new java.awt.Font("Comic Sans MS", 1, 36)); // NOI18N
         jLabel13.setText("iniciar");
@@ -393,7 +408,7 @@ public class DialogSala extends JDialog {
                 .addGap(77, 77, 77))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(131, 131, 131)
-                .addComponent(jLabel10)
+                .addComponent(lblContexto)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
@@ -453,7 +468,7 @@ public class DialogSala extends JDialog {
                                 .addComponent(conchaIcono, javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(gatoIcon)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel10)
+                        .addComponent(lblContexto)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
@@ -478,11 +493,10 @@ public class DialogSala extends JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     /**
     * Maneja el evento de clic en la etiqueta "Volver".
@@ -500,7 +514,7 @@ public class DialogSala extends JDialog {
     * @param evt el evento de mouse que se ha producido
     */
     private void pnlVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlVolverMouseClicked
-        Volver();
+       
     }//GEN-LAST:event_pnlVolverMouseClicked
     /**
     * Maneja el evento de clic en la etiqueta "Jugar".
@@ -550,11 +564,11 @@ public class DialogSala extends JDialog {
     private javax.swing.JButton TODObtnEliminarJugador;
     private javax.swing.JLabel conchaIcono;
     private javax.swing.JLabel gatoIcon;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblCodigo;
+    private javax.swing.JLabel lblContexto;
     private javax.swing.JLabel lblJugar;
     private javax.swing.JLabel lblP1;
     private javax.swing.JLabel lblP2;

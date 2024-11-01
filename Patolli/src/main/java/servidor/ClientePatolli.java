@@ -49,11 +49,12 @@ public class ClientePatolli {
                 String fromServer;
                 while ((fromServer = in.readLine()) != null) {
                     Gson gson = new Gson();
-
                     JsonElement jsonElement = gson.fromJson(fromServer, JsonElement.class);
 
                     if (jsonElement.isJsonArray()) {
+                        
                         String[] datos = gson.fromJson(jsonElement, String[].class);
+                        System.out.println(datos[0]);
                         switch (datos[0]) {
                             case "pasarOpciones" -> {
                                 int tamaño = gson.fromJson(datos[1], Integer.class);
@@ -78,15 +79,20 @@ public class ClientePatolli {
 
                                 recibirCambios(montoJugadores, siguienteJugador, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
                             }
+                            case "jugadorEntra"->{
+                                int numeroJugadores = gson.fromJson(datos[1], Integer.class);
+                                jugadorEntra(numeroJugadores);
+                            }
                         }
                     } else if (jsonElement.isJsonPrimitive() && jsonElement.getAsJsonPrimitive().isString()) {
                         String dato = jsonElement.getAsString();
+                        System.out.println(dato);
                         switch (dato) {
                             case "jugadorSale" -> {
                                 jugadorSale();
                             }
                             case "jugadorEntra" -> {
-                                jugadorEntra();
+                                
                             }
                         }
                     } else {
@@ -112,7 +118,6 @@ public class ClientePatolli {
                 }
             }
         }).start();
-        jugadorEntra();
         return true;
     }
 
@@ -171,12 +176,13 @@ public class ClientePatolli {
         }
     }
     /**
-     * 
+     * Recibe la notificacion de que un jugador entro
+     * @param numeroJugadores
      */
-    public void jugadorEntra(){
+    public void jugadorEntra(int numeroJugadores){
         System.out.println("Jugador entro");
         if (frameInicio instanceof FrameInicio inicio) {
-            inicio.jugadorEntra();
+            inicio.jugadorEntra(numeroJugadores);
         }
     }
     /**

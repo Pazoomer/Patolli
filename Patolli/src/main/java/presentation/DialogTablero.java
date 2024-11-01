@@ -104,9 +104,7 @@ public class DialogTablero extends JDialog {
         utils = new Utils();
         this.tamaño = tamaño;
         this.monto = monto;
-        //TODO
-        //this.miJugador=miJugador;
-        this.miJugador=0;
+        this.miJugador=miJugador; //TODO: Los jugadores invitados no se les coloca correctamente el miJugador
         this.fichas = fichas;
         this.jugadores = jugadores;
         casillas = new ArrayList<>();
@@ -294,8 +292,23 @@ public class DialogTablero extends JDialog {
                 }
             }
         }
-        
+        //Label mi jugador
+        switch (miJugador) {
+            case 0 -> {
+                this.inicializarImagen(this.lblMiJugador, "/cat.png", 64, 60);
+            }
+            case 1 -> {
+                this.inicializarImagen(this.lblMiJugador, "/concha.png", 64, 60);
+            }
+            case 2 -> {
+                this.inicializarImagen(this.lblMiJugador, "/piramide.png", 64, 60);
+            }
+            case 3 -> {
+                this.inicializarImagen(this.lblMiJugador, "/mazorca.png", 64, 60);
+            }
+        }
     }
+
     /**
      * Le da un orden logico a la lista de casillas para mejor manipulacion
      */
@@ -1007,7 +1020,7 @@ public class DialogTablero extends JDialog {
      */
     private boolean subirCambios() {
         if (parent instanceof FrameInicio frameInicio) {
-
+            System.out.println("Subir cambios");
             return frameInicio.subirCambios(montoJugadores, jugador, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
         }
         return false;
@@ -1026,6 +1039,7 @@ public class DialogTablero extends JDialog {
     public boolean recibirCambios(List<Integer> montoJugadores, int siguienteJugador, List<Integer> fichasGatoPosicion,
             List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
 
+        System.out.println("Cambios recibidos");
         this.montoJugadores = montoJugadores;
         this.jugador = siguienteJugador;
         this.fichasGatoPosicion = fichasGatoPosicion;
@@ -1035,7 +1049,6 @@ public class DialogTablero extends JDialog {
         
         //TODO
         //Acomodar la fichas segun las posiciones
-        
         
         this.actualizarTablero(); //Actualiza el tablero con la lista de casillas
         this.actualizarApuestas(); //Coloca el monto de apuestas correspondiente
@@ -1071,6 +1084,8 @@ public class DialogTablero extends JDialog {
         lblArrowR1 = new javax.swing.JLabel();
         lblArrowR2 = new javax.swing.JLabel();
         lblArrowL2 = new javax.swing.JLabel();
+        lblMiJugador = new javax.swing.JLabel();
+        lblTuJugador = new javax.swing.JLabel();
         pnlJugadores = new javax.swing.JPanel();
         pnlConcha = new javax.swing.JPanel();
         iconConcha = new javax.swing.JLabel();
@@ -1192,7 +1207,7 @@ public class DialogTablero extends JDialog {
         tableroIzquierda.setLayout(tableroIzquierdaLayout);
         tableroIzquierdaLayout.setHorizontalGroup(
             tableroIzquierdaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 202, Short.MAX_VALUE)
+            .addGap(0, 219, Short.MAX_VALUE)
         );
         tableroIzquierdaLayout.setVerticalGroup(
             tableroIzquierdaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1239,6 +1254,11 @@ public class DialogTablero extends JDialog {
         lblArrowL2.setBackground(new java.awt.Color(0, 0, 0));
         lblArrowL2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ArrowLBlack.png"))); // NOI18N
 
+        lblMiJugador.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        lblTuJugador.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
+        lblTuJugador.setText("Tu jugador:");
+
         javax.swing.GroupLayout pnlTableroLayout = new javax.swing.GroupLayout(pnlTablero);
         pnlTablero.setLayout(pnlTableroLayout);
         pnlTableroLayout.setHorizontalGroup(
@@ -1249,14 +1269,14 @@ public class DialogTablero extends JDialog {
                     .addComponent(tableroIzquierda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pnlTableroLayout.createSequentialGroup()
                         .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(lblTurnosExtra, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblTurnosExtra, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlTableroLayout.createSequentialGroup()
                                 .addComponent(lblTurnoDe)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblIconJugadorActual, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(lblIconJugadorActual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGap(35, 35, 35)
                         .addComponent(lblArrowD2)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 21, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTableroLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1272,6 +1292,28 @@ public class DialogTablero extends JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlTableroLayout.createSequentialGroup()
+                        .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tableroArriba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tableroCentro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTableroLayout.createSequentialGroup()
+                                .addGap(29, 29, 29)
+                                .addComponent(lblTuJugador)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblMiJugador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(19, 19, 19))
+                            .addGroup(pnlTableroLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(tableroDerecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(pnlTableroLayout.createSequentialGroup()
+                                        .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblInicioTigre, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(lblArrowUp))
+                                        .addGap(33, 33, 33)
+                                        .addComponent(lblArrowL2)))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(pnlTableroLayout.createSequentialGroup()
                         .addComponent(tableroAbajo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1279,26 +1321,14 @@ public class DialogTablero extends JDialog {
                                 .addComponent(lblInicioPiramide, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(37, 37, 37)
                                 .addComponent(lblArrowR2))
-                            .addComponent(lblArrowUp2)))
-                    .addGroup(pnlTableroLayout.createSequentialGroup()
-                        .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tableroArriba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tableroCentro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tableroDerecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(pnlTableroLayout.createSequentialGroup()
-                                .addComponent(lblInicioTigre, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(33, 33, 33)
-                                .addComponent(lblArrowL2))
-                            .addComponent(lblArrowUp))))
-                .addContainerGap())
+                            .addComponent(lblArrowUp2))
+                        .addContainerGap())))
         );
         pnlTableroLayout.setVerticalGroup(
             pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTableroLayout.createSequentialGroup()
-                .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(pnlTableroLayout.createSequentialGroup()
+                .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlTableroLayout.createSequentialGroup()
                         .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlTableroLayout.createSequentialGroup()
                                 .addGap(18, 18, 18)
@@ -1317,16 +1347,24 @@ public class DialogTablero extends JDialog {
                         .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblInicioMazorca, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblArrowL1, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addGroup(pnlTableroLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlTableroLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(tableroArriba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTableroLayout.createSequentialGroup()
-                                .addGap(73, 73, 73)
+                        .addComponent(tableroArriba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlTableroLayout.createSequentialGroup()
+                        .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlTableroLayout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(lblMiJugador, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlTableroLayout.createSequentialGroup()
+                                .addGap(43, 43, 43)
+                                .addComponent(lblTuJugador)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblArrowL2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(pnlTableroLayout.createSequentialGroup()
                                 .addComponent(lblArrowUp)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblInicioTigre, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblArrowL2, javax.swing.GroupLayout.Alignment.TRAILING))))
+                                .addComponent(lblInicioTigre, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(tableroDerecha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1632,7 +1670,7 @@ public class DialogTablero extends JDialog {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(pnlGato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlJugadoresLayout.createSequentialGroup()
-                        .addContainerGap(29, Short.MAX_VALUE)
+                        .addContainerGap(17, Short.MAX_VALUE)
                         .addGroup(pnlJugadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pnlConcha, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(pnlPiramide, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1709,7 +1747,7 @@ public class DialogTablero extends JDialog {
                 .addComponent(lblCaña2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11)
                 .addComponent(lblCaña3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addComponent(lblCaña4, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblCaña5, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1767,7 +1805,6 @@ public class DialogTablero extends JDialog {
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     /**
     * Maneja el evento de acción cuando se hace clic en el botón "Salir".
@@ -1862,7 +1899,9 @@ public class DialogTablero extends JDialog {
     private javax.swing.JLabel lblInicioPiramide;
     private javax.swing.JLabel lblInicioTigre;
     private javax.swing.JLabel lblMazorcaApuesta;
+    private javax.swing.JLabel lblMiJugador;
     private javax.swing.JLabel lblPiramideApuesta;
+    private javax.swing.JLabel lblTuJugador;
     private javax.swing.JLabel lblTurnoDe;
     private javax.swing.JLabel lblTurnosExtra;
     private javax.swing.JPanel pnlBotones;

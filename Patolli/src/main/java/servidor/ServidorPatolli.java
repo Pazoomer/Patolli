@@ -41,7 +41,6 @@ public class ServidorPatolli {
                     try {
                         Socket cliente = serverSocket.accept();
                         clientesConectados.add(cliente);  
-                        System.out.println("Nuevo jugador conectado.");
                         jugadorEntra();
 
                         new Thread(() -> manejarCliente(cliente)).start();
@@ -98,12 +97,20 @@ public class ServidorPatolli {
         }
     }
     /**
-     * 
-     * @return 
+     * Notifica a todos los jugadores que un jugador entro
+     * @return Entero con el numero de jugadores
      */
-    public int jugadorEntra(){
+    public int jugadorEntra() {
 
-        String mensaje="jugadorEntra";
+        int jugadoresConectados = clientesConectados.size();
+
+        Gson gson = new Gson();
+        String jugadoresConectadosJson = gson.toJson(jugadoresConectados);
+
+        String mensaje = gson.toJson(new String[]{
+            "jugadorEntra",
+            jugadoresConectadosJson
+        });
         
         for (Socket cliente : clientesConectados) {
             try {
@@ -114,7 +121,7 @@ public class ServidorPatolli {
             }
         }
         System.out.println("Numero de jugador:"+ clientesConectados.size());
-        return clientesConectados.size();
+        return jugadoresConectados-1;
     }
     /**
      * 
@@ -157,7 +164,7 @@ public class ServidorPatolli {
         String fichasConchaPosicionJson = gson.toJson(fichasConchaPosicion);
         String fichasPiramidePosicionJson = gson.toJson(fichasPiramidePosicion);
         String fichasMazorcaPosicionJson = gson.toJson(fichasMazorcaPosicion);
-
+        
         String mensaje = gson.toJson(new String[]{
             "recibirCambios",
             montoJugadoresJson,
@@ -167,11 +174,14 @@ public class ServidorPatolli {
             fichasPiramidePosicionJson,
             fichasMazorcaPosicionJson
         });
-
+        System.out.println("A punto de subir cambios");
+        //TODO: Los jugadores invitados no estan enviando los cambios, el host los esta enviando dos veces
+        //Ninguno lo esta recibiendo
         for (Socket cliente : clientesConectados) {
             try {
                 PrintWriter out = new PrintWriter(cliente.getOutputStream(), true);
                 out.println(mensaje); 
+                System.out.println("Cambios enviados");
             } catch (IOException e) {
                 e.printStackTrace();
                 return false;

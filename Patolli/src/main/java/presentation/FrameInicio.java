@@ -103,11 +103,14 @@ public class FrameInicio extends javax.swing.JFrame {
     
     /**
      * Un jugador entra a la partida
+     * @param numeroJugadores
      * @return 
      */
-    public int jugadorEntra() {
+    public int jugadorEntra(int numeroJugadores) {
+        System.out.println("Soy el inicio: "+numeroJugadores);
         if (sala != null) {
-            return sala.AñadirJugador(1);
+            sala.AñadirJugador(1);
+            return sala.setMiJugador(numeroJugadores-1);
         }
         return -1;
     }
@@ -154,13 +157,21 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param children
      */
     public void PasarPantallaUnirseCrear(JDialog children) {
+        
+        double x;
+        double y;
         if (children != null) {
+            x = children.getX();
+            y = children.getY();
             children.dispose();
+        } else {
+            x = this.getLocation().getX();
+            y = this.getLocation().getY();
         }
         this.setVisible(false);
         DialogUnirseCrear unirseCrear = new DialogUnirseCrear(this);
+        unirseCrear.setLocation((int)x, (int)y);
         unirseCrear.setVisible(true);
-        
     }
 
     /**
@@ -170,13 +181,17 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param children
      */
     public void PasarPantallaComoJugar(JDialog children) {
+        int x=0;
+        int y=0;
         if (children != null) {
+            x = children.getX();
+            y = children.getY();
             children.dispose();
         }
         this.setVisible(false);
         DialogComoJugar comoJugar = new DialogComoJugar(this);
+        comoJugar.setLocation(x, y);
         comoJugar.setVisible(true); 
-        
     } 
     
     /**
@@ -189,13 +204,17 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param codigo
      */
     public void PasarPantallaSala(JDialog children,int tamaño, int monto, int fichas, String codigo) {
+        int x=0;
+        int y=0;
         if (children != null) {
+            x = children.getX();
+            y = children.getY();
             children.dispose();
         }
         this.setVisible(false);
-        DialogSala sala = new DialogSala(this,tamaño,monto,fichas,codigo);
+        sala = new DialogSala(this,tamaño,monto,fichas,codigo);
+        sala.setLocation(x, y);
         sala.setVisible(true); 
-        
     } 
     
     /**
@@ -204,13 +223,17 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param children
      */
     public void PasarPantallaOpciones(JDialog children) {
+        int x=0;
+        int y=0;
         if (children != null) {
+            x = children.getX();
+            y = children.getY();
             children.dispose();
         }
         this.setVisible(false);
         DialogOpciones opciones = new DialogOpciones(this);
-        opciones.setVisible(true); 
-        
+        opciones.setLocation(x, y);
+        opciones.setVisible(true);       
     } 
     
     /**
@@ -218,9 +241,14 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param children
      */
     public void PasarPantallaInicio(JDialog children) {
+        int x=0;
+        int y=0;
         if (children != null) {
+            x = children.getX();
+            y = children.getY();
             children.dispose();
         }
+        this.setLocation(x, y);
         this.setVisible(true);
     } 
     
@@ -235,11 +263,16 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param miJugador
      */
     public void PasarPantallaTablero(JDialog children,int tamaño, int fichas, int monto, int jugadores, int miJugador) {
+        int x=0;
+        int y=0;
         if (children != null) {
+            x = children.getX();
+            y = children.getY();
             children.dispose();
         }
         this.setVisible(false);
         tablero = new DialogTablero(this,tamaño,fichas,monto, jugadores, miJugador);
+        tablero.setLocation(x, y);
         tablero.setVisible(true);
     } 
 
@@ -297,8 +330,7 @@ public class FrameInicio extends javax.swing.JFrame {
             .addGroup(pnlTodoLayout.createSequentialGroup()
                 .addComponent(lblLogo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblInstrucccion)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addComponent(lblInstrucccion))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -312,8 +344,9 @@ public class FrameInicio extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlTodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(pnlTodo, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
