@@ -11,7 +11,7 @@ import utils.Utils;
  * a otras pantallas del juego.
  */
 public class DialogSala extends JDialog {
-    private final JFrame parent;
+    private final FrameInicio parent;
     public int tamaño;      // Tamaño del tablero de juego.
     public int monto;       // Monto de apuestas.
     public int fichas;      // Número de fichas del jugador.
@@ -30,7 +30,7 @@ public class DialogSala extends JDialog {
      * @param fichas Número de fichas del jugador.
      * @param codigo Código de la sala. Si es null, se genera uno nuevo.
      */
-    public DialogSala(JFrame parent, int tamaño, int monto, int fichas, String codigo) {
+    public DialogSala(FrameInicio parent, int tamaño, int monto, int fichas, String codigo) {
         this.setResizable(false);
         initComponents();
         // Agregar un WindowListener para manejar el evento de cerrar
@@ -40,14 +40,14 @@ public class DialogSala extends JDialog {
                 Cerrar(); // Llama a tu método Cerrar() cuando se intente cerrar la ventana
             }
         });
-        if (parent instanceof FrameInicio frameInicio) {
-            this.lblJugar.setEnabled(frameInicio.isHost);
-        }
-             
-        this.parent=parent;
+        
+
+        this.parent = parent;
         this.tamaño = tamaño;
         this.monto = monto;
         this.fichas = fichas;
+        
+        this.lblJugar.setEnabled(parent.isHost);
 
         // Si se proporciona un código, se utiliza; de lo contrario, se genera uno nuevo.
         if (codigo != null) {
@@ -72,24 +72,21 @@ public class DialogSala extends JDialog {
      * Ajusta la pantalla dependiendo si es o no el host
      */
     private void ajustesHost() {
-        if (parent instanceof FrameInicio frameInicio) {
-            if (frameInicio.isHost) {
-                frameInicio.crearServidor(codigo);
-            } else {
-                this.lblContexto.setText("Espera a que el host inicie la partida");
-                this.lblCodigo.setText("------");
-            }
+        if (parent.isHost) {
+            parent.crearServidor(codigo);
+        } else {
+            this.lblContexto.setText("Espera a que el host inicie la partida");
+            this.lblCodigo.setText("------");
         }
+
     }
     
     /**
      * Método que permite regresar a la pantalla de opciones.
      */
     public void Volver() {
-        if (parent instanceof FrameInicio frameInicio) {
-            frameInicio.jugadorSale(miJugador);
-            frameInicio.PasarPantallaOpciones(this);
-        }
+            parent.jugadorSale(miJugador);
+            parent.PasarPantallaOpciones(this);
     }
 
     /**
@@ -99,24 +96,20 @@ public class DialogSala extends JDialog {
      * necesitan más jugadores.
      */
     public void Jugar() {
-        if (parent instanceof FrameInicio frameInicio) {
-                if(!frameInicio.isHost){
-                    JOptionPane.showMessageDialog(null, "Solo el creador de la sala puede iniciar el juego", "No eres el host", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-            }
+        if (!parent.isHost) {
+            JOptionPane.showMessageDialog(null, "Solo el creador de la sala puede iniciar el juego", "No eres el host", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         if (jugadores > 1) {
-            if (parent instanceof FrameInicio frameInicio) {
-                subirOpciones();
-                frameInicio.PasarPantallaTablero(this, tamaño, monto, fichas, jugadores, miJugador);
-            }
+            subirOpciones();
+            parent.PasarPantallaTablero(this, tamaño, monto, fichas, jugadores, miJugador);
+
         } else {
             JOptionPane.showMessageDialog(null, "Se necesitan dos jugadores para jugar", "Faltan jugadores", JOptionPane.INFORMATION_MESSAGE);
         }
     }
     
     public int setMiJugador(int numeroJugadores){
-        System.out.println("Numero de jugadores: "+numeroJugadores);
         if(banderaMiJugador){
             banderaMiJugador=false;
             this.miJugador=numeroJugadores;
@@ -173,11 +166,9 @@ public class DialogSala extends JDialog {
      * Cierra el programa
      */
     public void Cerrar() {
-        if (parent instanceof FrameInicio frameInicio) {
-            frameInicio.CerrarPrograma();
-        }
+            parent.CerrarPrograma();
     }
-    
+
     /**
      * Manda el valor del tablero, el monto de los jugadores y el
      * siguientejugador al control del juego
@@ -185,12 +176,10 @@ public class DialogSala extends JDialog {
      * @return Verdadero si se actualizo con exito
      */
     private boolean subirOpciones() {
-        if (parent instanceof FrameInicio frameInicio) {
-            frameInicio.subirOpciones(tamaño, monto, fichas,jugadores);
-            return true;
-        }
-        return false;
+        parent.subirOpciones(tamaño, monto, fichas, jugadores);
+        return true;
     }
+
     /**
      * Recibe las ocpiones del control e inicia el tablero con estas
      *
@@ -198,15 +187,9 @@ public class DialogSala extends JDialog {
      * @param monto
      * @param fichas
      * @param jugadores
-     * @return Verdadero si no hubo ningun problema
      */
-    public boolean recibirOpciones(int tamaño, int monto, int fichas, int jugadores) {
-  
-        if (parent instanceof FrameInicio frameInicio) {
-            frameInicio.PasarPantallaTablero(this, tamaño, monto, fichas, jugadores, miJugador);
-        }
-        
-        return true;
+    public void recibirOpciones(int tamaño, int monto, int fichas, int jugadores) {
+        parent.PasarPantallaTablero(this, tamaño, monto, fichas, jugadores, miJugador);
     }
     
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

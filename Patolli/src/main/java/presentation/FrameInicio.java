@@ -2,6 +2,7 @@ package presentation;
 
 import java.util.List;
 import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
 import negocio.ControlJuego;
 import negocio.IControlJuego;
 
@@ -84,10 +85,13 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param fichasConchaPosicion
      * @param fichasPiramidePosicion
      * @param fichasMazorcaPosicion
-     * @return
+     * @return Verdadero si los cambios se recibieron con exito
      */
     public boolean recibirCambios(List<Integer> montoJugadores, int siguienteJugador, List<Integer> fichasGatoPosicion,
             List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
+        if (tablero==null){
+            return false;
+        }
         return tablero.recibirCambios(montoJugadores, siguienteJugador, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
     }
 
@@ -107,7 +111,6 @@ public class FrameInicio extends javax.swing.JFrame {
      * @return 
      */
     public int jugadorEntra(int numeroJugadores) {
-        System.out.println("Soy el inicio: "+numeroJugadores);
         if (sala != null) {
             sala.AñadirJugador(1);
             return sala.setMiJugador(numeroJugadores-1);
@@ -132,11 +135,11 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param tamaño
      * @param monto
      * @param fichas
-     * @param jugadores
-     * @return 
+     * @param jugadores 
      */
-    public boolean recibirOpciones(int tamaño, int monto, int fichas,int jugadores){
-        return sala.recibirOpciones(tamaño, monto, fichas, jugadores);
+    public void recibirOpciones(int tamaño, int monto, int fichas,int jugadores){
+        sala.recibirOpciones(tamaño, monto, fichas, jugadores);
+        System.out.println("Termine inicio");
     }
 
     /**
@@ -157,20 +160,14 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param children
      */
     public void PasarPantallaUnirseCrear(JDialog children) {
-        
-        double x;
-        double y;
-        if (children != null) {
-            x = children.getX();
-            y = children.getY();
-            children.dispose();
-        } else {
-            x = this.getLocation().getX();
-            y = this.getLocation().getY();
-        }
         this.setVisible(false);
         DialogUnirseCrear unirseCrear = new DialogUnirseCrear(this);
-        unirseCrear.setLocation((int)x, (int)y);
+        if (children != null) {
+            unirseCrear.setLocationRelativeTo(children);
+            children.setVisible(false);
+        } else {
+            unirseCrear.setLocationRelativeTo(this);
+        }
         unirseCrear.setVisible(true);
     }
 
@@ -181,16 +178,12 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param children
      */
     public void PasarPantallaComoJugar(JDialog children) {
-        int x=0;
-        int y=0;
-        if (children != null) {
-            x = children.getX();
-            y = children.getY();
-            children.dispose();
-        }
         this.setVisible(false);
         DialogComoJugar comoJugar = new DialogComoJugar(this);
-        comoJugar.setLocation(x, y);
+        comoJugar.setLocationRelativeTo(children);
+        if (children != null) {
+            children.setVisible(false);
+        }
         comoJugar.setVisible(true); 
     } 
     
@@ -204,16 +197,12 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param codigo
      */
     public void PasarPantallaSala(JDialog children,int tamaño, int monto, int fichas, String codigo) {
-        int x=0;
-        int y=0;
-        if (children != null) {
-            x = children.getX();
-            y = children.getY();
-            children.dispose();
-        }
         this.setVisible(false);
         sala = new DialogSala(this,tamaño,monto,fichas,codigo);
-        sala.setLocation(x, y);
+        sala.setLocationRelativeTo(children);
+        if (children != null) {
+            children.setVisible(false);
+        }
         sala.setVisible(true); 
     } 
     
@@ -223,16 +212,12 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param children
      */
     public void PasarPantallaOpciones(JDialog children) {
-        int x=0;
-        int y=0;
-        if (children != null) {
-            x = children.getX();
-            y = children.getY();
-            children.dispose();
-        }
         this.setVisible(false);
         DialogOpciones opciones = new DialogOpciones(this);
-        opciones.setLocation(x, y);
+        opciones.setLocationRelativeTo(children);
+        if (children != null) {
+            children.setVisible(false);
+        }
         opciones.setVisible(true);       
     } 
     
@@ -241,14 +226,10 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param children
      */
     public void PasarPantallaInicio(JDialog children) {
-        int x=0;
-        int y=0;
+        this.setLocationRelativeTo(children);
         if (children != null) {
-            x = children.getX();
-            y = children.getY();
-            children.dispose();
+            children.setVisible(false);
         }
-        this.setLocation(x, y);
         this.setVisible(true);
     } 
     
@@ -263,18 +244,15 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param miJugador
      */
     public void PasarPantallaTablero(JDialog children,int tamaño, int fichas, int monto, int jugadores, int miJugador) {
-        int x=0;
-        int y=0;
-        if (children != null) {
-            x = children.getX();
-            y = children.getY();
-            children.dispose();
-        }
         this.setVisible(false);
-        tablero = new DialogTablero(this,tamaño,fichas,monto, jugadores, miJugador);
-        tablero.setLocation(x, y);
+        tablero = new DialogTablero(this, tamaño, fichas, monto, jugadores, miJugador);
+        tablero.setLocationRelativeTo(children);
+        tablero.setModal(false);
+        if (children != null) {
+            children.setVisible(false);
+        }
         tablero.setVisible(true);
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -15,7 +15,7 @@ import javax.swing.JLabel;
  */
 public class DialogOpciones extends JDialog {
 
-    private JFrame parent;
+    private FrameInicio parent;
     public int tamaño; // Almacena el tamaño del tablero
     public int monto;  // Almacena el monto de las apuestas
     public int fichas; // Almacena la cantidad de fichas por jugador
@@ -25,7 +25,7 @@ public class DialogOpciones extends JDialog {
      * Inicializa la ventana y asigna valores predeterminados al tamaño del tablero, monto de las apuestas y fichas.
      * @param parent
      */
-    public DialogOpciones(JFrame parent) {
+    public DialogOpciones(FrameInicio parent) {
         super(parent, true); // Inicializa el JDialog con modal
         this.parent=parent;
         this.setResizable(false); // Desactiva la opción de cambiar el tamaño de la ventana
@@ -44,30 +44,23 @@ public class DialogOpciones extends JDialog {
     }
 
     /**
-     * Navega a la pantalla de la sala de juego.
-     * Crea una instancia de FrameSala, pasándole los valores seleccionados de tamaño, monto y fichas.
+     * Navega a la pantalla de la sala de juego. Crea una instancia de
+     * FrameSala, pasándole los valores seleccionados de tamaño, monto y fichas.
      */
     public void Jugar() {
-        if (parent instanceof FrameInicio frameInicio) {
-            frameInicio.PasarPantallaSala(this,tamaño, monto, fichas, null);
-        }
+        parent.PasarPantallaSala(this, tamaño, monto, fichas, null);
     }
 
     public void Cerrar() {
-        if (parent instanceof FrameInicio frameInicio) {
-            frameInicio.CerrarPrograma();
-        }
+        parent.CerrarPrograma();
     }
-    
+
     /**
-     * Vuelve a la pantalla anterior de unirse o crear partida.
-     * Crea una
+     * Vuelve a la pantalla anterior de unirse o crear partida. Crea una
      * instancia de FrameUnirseCrear y cambia a esa pantalla.
      */
     public void Volver() {
-        if (parent instanceof FrameInicio frameInicio) {
-            frameInicio.PasarPantallaUnirseCrear(this);
-        }
+        parent.PasarPantallaUnirseCrear(this);
     }
 
     /**

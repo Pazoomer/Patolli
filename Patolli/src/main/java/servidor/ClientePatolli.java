@@ -27,11 +27,11 @@ public class ClientePatolli {
     /**
      * Constructor que inicializa el codigo de la sala
      * @param codigoSala 
-     * @param frameInicio 
+     * @param frameInicio
      */
     public ClientePatolli(String codigoSala, JFrame frameInicio) {
         this.codigoSala = codigoSala;
-        this.frameInicio=frameInicio;
+        this.frameInicio = frameInicio;
     }
 
     /**
@@ -42,12 +42,13 @@ public class ClientePatolli {
         new Thread(() -> {
             try {
                 socket = new Socket("localhost", 4444);
-
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new PrintWriter(socket.getOutputStream(), true);
 
                 String fromServer;
                 while ((fromServer = in.readLine()) != null) {
+                    System.out.println();
+                    System.out.println("Mensaje Recibido");
                     Gson gson = new Gson();
                     JsonElement jsonElement = gson.fromJson(fromServer, JsonElement.class);
 
@@ -62,7 +63,7 @@ public class ClientePatolli {
                                 int fichas = gson.fromJson(datos[3], Integer.class);
                                 int jugadores = gson.fromJson(datos[4], Integer.class);
 
-                                pasarOpciones(tamaño, monto, fichas, jugadores);
+                                recibirOpciones(tamaño, monto, fichas, jugadores);
                             }
                             case "recibirCambios" -> {
                                 List<Integer> montoJugadores = gson.fromJson(datos[1], new TypeToken<List<Integer>>() {
@@ -81,28 +82,21 @@ public class ClientePatolli {
                             }
                             case "jugadorEntra"->{
                                 int numeroJugadores = gson.fromJson(datos[1], Integer.class);
-                                jugadorEntra(numeroJugadores);
+                                recibirJugadorEntra(numeroJugadores);
                             }
-                        }
-                    } else if (jsonElement.isJsonPrimitive() && jsonElement.getAsJsonPrimitive().isString()) {
-                        String dato = jsonElement.getAsString();
-                        System.out.println(dato);
-                        switch (dato) {
-                            case "jugadorSale" -> {
-                                jugadorSale();
-                            }
-                            case "jugadorEntra" -> {
-                                
+                            case "jugadorSale"->{
+                                int numeroJugadores = gson.fromJson(datos[1], Integer.class);
+                                recibirJugadorSale(numeroJugadores);
                             }
                         }
                     } else {
                         System.out.println("Formato JSON inesperado");
                     }
+                    System.out.println("Fin del mensaje");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                // Cerrar socket y flujos al finalizar
                 try {
                     if (in != null) {
                         in.close();
@@ -120,9 +114,104 @@ public class ClientePatolli {
         }).start();
         return true;
     }
+    
+    /**
+     * Envia un mensaje al servidor
+     * @param mensaje Cadena a enviar
+     */
+    public void enviarMensaje(String mensaje) {
+        if (out != null) {
+            out.println(mensaje); 
+        }
+    }
+
+    /**
+     * Notifica a todos los jugadores que un jugador salio
+     *
+     * @param jugador Posicion del jugador a sacar
+     * @return 
+     */
+    public boolean enviarJugadorSale(int jugador) {
+        Gson gson = new Gson();
+       
+        String jugadorJson = gson.toJson(jugador);
+        
+        String mensaje = gson.toJson(new String[]{
+            "jugadorSale",
+            jugadorJson
+        });
+        enviarMensaje(mensaje);
+        return true;
+    }
+
+    /**
+     * Metodo para actualizar a los clientes conectados
+     * @param siguienteJugador
+     * @param montoJugadores
+     * @param fichasGatoPosicion
+     * @param fichasConchaPosicion
+     * @param fichasPiramidePosicion
+     * @param fichasMazorcaPosicion 
+     * @return  
+     */
+    public boolean enviarCambiosAClientes(List<Integer> montoJugadores, int siguienteJugador, List<Integer> fichasGatoPosicion,
+            List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
+
+        Gson gson = new Gson();
+       
+        String montoJugadoresJson = gson.toJson(montoJugadores);
+        String jugadorJson = gson.toJson(siguienteJugador);
+        String fichasGatoPosicionJson = gson.toJson(fichasGatoPosicion);
+        String fichasConchaPosicionJson = gson.toJson(fichasConchaPosicion);
+        String fichasPiramidePosicionJson = gson.toJson(fichasPiramidePosicion);
+        String fichasMazorcaPosicionJson = gson.toJson(fichasMazorcaPosicion);
+        
+        String mensaje = gson.toJson(new String[]{
+            "recibirCambios",
+            montoJugadoresJson,
+            jugadorJson,
+            fichasGatoPosicionJson,
+            fichasConchaPosicionJson,
+            fichasPiramidePosicionJson,
+            fichasMazorcaPosicionJson
+        });
+        
+        enviarMensaje(mensaje);
+        return true;
+    }
+    
+    /**
+     * Envia las opciones de la partida
+     * @param tamaño Tamaño del tablero
+     * @param monto Monto inicial de apuestas
+     * @param fichas Fichas de los jugadores
+     * @param jugadores Numero de jugadores iniciales
+     * @return 
+     */
+    public boolean enviarOpciones(int tamaño, int monto, int fichas, int jugadores) {
+        Gson gson = new Gson();
+
+        String tamañoJson = gson.toJson(tamaño);
+        String montoJson = gson.toJson(monto);
+        String fichasJson = gson.toJson(fichas);
+        String jugadoresJson = gson.toJson(jugadores);
+
+        String mensaje = gson.toJson(new String[]{
+            "pasarOpciones",
+            tamañoJson,
+            montoJson,
+            fichasJson,
+            jugadoresJson
+        });
+
+        enviarMensaje(mensaje);
+        
+        return true;
+    }
 
     /**
      * Recibe los cambios de un jugador y los manda a todos los otros jugadores
+     *
      * @param montoJugadores
      * @param siguienteJugador
      * @param fichasGatoPosicion
@@ -132,7 +221,7 @@ public class ClientePatolli {
      */
     public void recibirCambios(List<Integer> montoJugadores, int siguienteJugador, List<Integer> fichasGatoPosicion,
             List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
-        
+
         System.out.println("Monto de jugadores");
         for (Integer integer : montoJugadores) {
             System.out.println("Monto de jugador: " + integer);
@@ -159,14 +248,15 @@ public class ClientePatolli {
             inicio.recibirCambios(montoJugadores, siguienteJugador, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
         }
     }
+
     /**
-     * 
-     * @param tamaño
-     * @param monto
-     * @param fichas
-     * @param jugadores 
+     * Recibe las opciones de la partida
+     * @param tamaño Tamaño del tablero
+     * @param monto Monto inicial de apuestas
+     * @param fichas Fichas de los jugadores
+     * @param jugadores Numero de jugadores iniciales
      */
-    public void pasarOpciones(int tamaño, int monto, int fichas, int jugadores) {
+    public void recibirOpciones(int tamaño, int monto, int fichas, int jugadores) {
         System.out.println("Tamaño: " + tamaño);
         System.out.println("Monto: " + monto);
         System.out.println("Fichas: " + fichas);
@@ -175,20 +265,26 @@ public class ClientePatolli {
             inicio.recibirOpciones(tamaño, monto, fichas, jugadores);
         }
     }
+
     /**
      * Recibe la notificacion de que un jugador entro
+     *
      * @param numeroJugadores
      */
-    public void jugadorEntra(int numeroJugadores){
-        System.out.println("Jugador entro");
+    public void recibirJugadorEntra(int numeroJugadores) {
         if (frameInicio instanceof FrameInicio inicio) {
             inicio.jugadorEntra(numeroJugadores);
         }
     }
+
     /**
-     * Notifica la salida de un jugador
+     * Recibe la notificacion de que un jugador salio
+     *
+     * @param numeroJugadores
      */
-    public void jugadorSale(){
-        System.out.println("Jugador salio");
+    public void recibirJugadorSale(int numeroJugadores) {
+        if (frameInicio instanceof FrameInicio inicio) {
+            inicio.jugadorSale(numeroJugadores);
+        }
     }
 }

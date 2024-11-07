@@ -1,7 +1,6 @@
 package presentation;
 
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,13 +12,13 @@ import javax.swing.JOptionPane;
  */
 public class DialogUnirseCrear extends JDialog {
 
-    JFrame parent;
+    FrameInicio parent;
     /**
      * Crea una nueva instancia de FrameUnirseCrear.
      * Inicializa los componentes de la interfaz gráfica.
      * @param parent
      */
-    public DialogUnirseCrear(JFrame parent) {
+    public DialogUnirseCrear(FrameInicio parent) {
         super(parent, true);
         this.parent = parent;
         this.setResizable(false); 
@@ -43,12 +42,10 @@ public class DialogUnirseCrear extends JDialog {
         if (this.txtCodigo.getText() == null) {
             JOptionPane.showMessageDialog(null, "No se encontró la partida", "Partida no encontrada", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            if (parent instanceof FrameInicio frameInicio) { 
                 JOptionPane.showMessageDialog(null, "Uniéndose a la partida", "Partida encontrada", JOptionPane.INFORMATION_MESSAGE);
-                if(frameInicio.unirseServidor(this.txtCodigo.getText())){
-                    frameInicio.PasarPantallaSala(this, -1, -1, -1, this.txtCodigo.getText());
+                if(parent.unirseServidor(this.txtCodigo.getText())){
+                    parent.PasarPantallaSala(this, -1, -1, -1, this.txtCodigo.getText());
                 }
-            }
             
         }
     }
@@ -57,10 +54,8 @@ public class DialogUnirseCrear extends JDialog {
      * Crea una nueva partida y muestra la pantalla de opciones.
      */
     public void Crear() {
-        if (parent instanceof FrameInicio frameInicio) { 
-            frameInicio.isHost=true;
-            frameInicio.PasarPantallaOpciones(this);
-        }
+            parent.isHost=true;
+            parent.PasarPantallaOpciones(this);
     }
     
     /**
@@ -68,15 +63,11 @@ public class DialogUnirseCrear extends JDialog {
      * Crea una instancia de FrameComoJugar y cambia a esa pantalla.
      */
     public void ComoJugar() {
-        if (parent instanceof FrameInicio frameInicio) {
-            frameInicio.PasarPantallaComoJugar(this);
-        }
+            parent.PasarPantallaComoJugar(this);
     }
     
     public void Cerrar() {
-        if (parent instanceof FrameInicio frameInicio) {
-            frameInicio.CerrarPrograma();
-        }
+            parent.CerrarPrograma();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

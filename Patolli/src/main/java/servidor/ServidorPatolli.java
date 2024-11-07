@@ -32,10 +32,9 @@ public class ServidorPatolli {
      * Crea un nuevo servidor
      */
     public void crearServidor() {
+        System.out.println("SOY EL SERVIDOR");
         try {
             serverSocket = new ServerSocket(4444);
-            System.out.println("Servidor creado, esperando jugadores...");
-
             new Thread(() -> {
                 while (true) {
                     try {
@@ -79,8 +78,8 @@ public class ServidorPatolli {
     }
     
     /**
-     * Maneja
-     * @param cliente 
+     * Escucha los cambios del cliente y manda a que se procesen
+     * @param cliente Socket de este cliente
      */
     private void manejarCliente(Socket cliente) {
         try {
@@ -89,15 +88,57 @@ public class ServidorPatolli {
 
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                System.out.println("Recibido del cliente: " + inputLine);
+                procesarMensaje(inputLine);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Procesa los mensajes recibidos de los clientes y ejecuta la acción
+     * correspondiente.
+     * @param mensaje Cadena que representa la accion a tomar
+     */
+    private void procesarMensaje(String mensaje) {
+        System.out.println("Procesando mensaje: "+mensaje);
+        Gson gson = new Gson();
+        String[] partesMensaje = gson.fromJson(mensaje, String[].class);
+
+        String comando = partesMensaje[0];
+        
+        switch (comando) {
+            case "recibirCambios" -> {
+                List<Integer> montoJugadores = gson.fromJson(partesMensaje[1], List.class);
+                int siguienteJugador = Integer.parseInt(partesMensaje[2]);
+                List<Integer> fichasGatoPosicion = gson.fromJson(partesMensaje[3], List.class);
+                List<Integer> fichasConchaPosicion = gson.fromJson(partesMensaje[4], List.class);
+                List<Integer> fichasPiramidePosicion = gson.fromJson(partesMensaje[5], List.class);
+                List<Integer> fichasMazorcaPosicion = gson.fromJson(partesMensaje[6], List.class);
+
+                enviarCambiosAClientes(montoJugadores, siguienteJugador, fichasGatoPosicion,
+                        fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
+            }
+            case "jugadorSale"->{
+                int jugadorSale = Integer.parseInt(partesMensaje[1]);
+                enviarJugadorSale(jugadorSale);
+            }
+            case "pasarOpciones"->{
+                int tamaño = Integer.parseInt(partesMensaje[1]);
+                int monto = Integer.parseInt(partesMensaje[2]);
+                int fichas = Integer.parseInt(partesMensaje[3]);
+                int jugadores = Integer.parseInt(partesMensaje[4]);
+                enviarOpciones(tamaño, monto, fichas, jugadores);
+            }
+            default ->
+                System.out.println("Comando desconocido: " + comando);
+        }
+    }
+
     /**
      * Notifica a todos los jugadores que un jugador entro
+     *
      * @return Entero con el numero de jugadores
      */
     public int jugadorEntra() {
@@ -111,30 +152,32 @@ public class ServidorPatolli {
             "jugadorEntra",
             jugadoresConectadosJson
         });
-        
+
         for (Socket cliente : clientesConectados) {
             try {
                 PrintWriter out = new PrintWriter(cliente.getOutputStream(), true);
-                out.println(mensaje);  
+                out.println(mensaje);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println("Numero de jugador:"+ clientesConectados.size());
-        return jugadoresConectados-1;
+        System.out.println("Numero de jugador: " + clientesConectados.size());
+        return jugadoresConectados - 1;
     }
+
     /**
-     * 
-     * @param jugador
-     * @return 
+     * Notifica a todos los jugadores que un jugador salio
+     *
+     * @param jugador Posicion del jugador a sacar
+     * @return Verdad si salio el jugador con exito
      */
-    public boolean jugadorSale(int jugador){
+    public boolean enviarJugadorSale(int jugador) {
         String mensaje = "jugadorSale";
 
         for (Socket cliente : clientesConectados) {
             try {
                 PrintWriter out = new PrintWriter(cliente.getOutputStream(), true);
-                out.println(mensaje); 
+                out.println(mensaje);
             } catch (IOException e) {
                 e.printStackTrace();
                 return false;
@@ -174,14 +217,10 @@ public class ServidorPatolli {
             fichasPiramidePosicionJson,
             fichasMazorcaPosicionJson
         });
-        System.out.println("A punto de subir cambios");
-        //TODO: Los jugadores invitados no estan enviando los cambios, el host los esta enviando dos veces
-        //Ninguno lo esta recibiendo
         for (Socket cliente : clientesConectados) {
             try {
-                PrintWriter out = new PrintWriter(cliente.getOutputStream(), true);
-                out.println(mensaje); 
-                System.out.println("Cambios enviados");
+                PrintWriter out = new PrintWriter(cliente.getOutputStream(), true);   
+                out.println(mensaje);
             } catch (IOException e) {
                 e.printStackTrace();
                 return false;
@@ -191,14 +230,14 @@ public class ServidorPatolli {
     }
     
     /**
-     * 
-     * @param tamaño
-     * @param monto
-     * @param fichas
-     * @param jugadores
-     * @return 
+     * Envia las opciones del juego a todos los clientes
+     * @param tamaño Tamaño del tablero
+     * @param monto Monto de apuestas inicial
+     * @param fichas Fichas por jugador
+     * @param jugadores Numero de jugadores inicial
+     * @return Verdadero si los envio con exito 
      */
-    public boolean pasarOpciones(int tamaño, int monto, int fichas,int jugadores){
+    public boolean enviarOpciones(int tamaño, int monto, int fichas,int jugadores){
         Gson gson = new Gson();
        
         String tamañoJson = gson.toJson(tamaño);

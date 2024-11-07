@@ -13,29 +13,29 @@ import servidor.ServidorPatolli;
 public class Juego {
     
     ServidorPatolli servidor=new ServidorPatolli("------");
+    ClientePatolli cliente;
 
     public boolean actualizarCambios(List<Integer> montoJugadores, int siguienteJugador, List<Integer> fichasGatoPosicion,
             List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
-        return servidor.enviarCambiosAClientes(montoJugadores, siguienteJugador,
+        return cliente.enviarCambiosAClientes(montoJugadores, siguienteJugador,
                 fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion,
                 fichasMazorcaPosicion);
     }
 
     public boolean jugadorSale(int jugador) {
-        System.out.println("Jugador sale del juego: " + jugador);
-        return servidor.jugadorSale(jugador);
+        return cliente.enviarJugadorSale(jugador);
     }
 
     public boolean crearServidor(String codigoSala, JFrame frameInicio) {
         servidor = new ServidorPatolli(codigoSala);
         servidor.crearServidor();
 
-        ClientePatolli cliente = new ClientePatolli(codigoSala, frameInicio);
+        cliente = new ClientePatolli(codigoSala, frameInicio);
         return cliente.conectar();
     }
 
     public boolean unirseServidor(String codigoSala, JFrame frameInicio) {
-        ClientePatolli cliente = new ClientePatolli(codigoSala, frameInicio);
+        cliente = new ClientePatolli(codigoSala, frameInicio);
         return cliente.conectar();
     }
     
@@ -44,7 +44,7 @@ public class Juego {
     }
     
     public boolean pasarOpciones(int tamaño, int monto, int fichas,int jugadores){
-        return servidor.pasarOpciones(tamaño, monto, fichas,jugadores);
+         return cliente.enviarOpciones(tamaño, monto, fichas,jugadores);
     }
     
     public int jugadorEntra(){

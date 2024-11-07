@@ -12,7 +12,7 @@ import javax.swing.JFrame;
  */
 public class DialogComoJugar extends JDialog {
 
-    private final JFrame parent;
+    private final FrameInicio parent;
     // Página actual de las instrucciones
     private int paginaInstrucciones=0;
 
@@ -21,7 +21,7 @@ public class DialogComoJugar extends JDialog {
      * Inicializa la ventana y desactiva la opción de cambiar el tamaño de la ventana.
      * @param parent
      */
-    public DialogComoJugar(JFrame parent) {
+    public DialogComoJugar(FrameInicio parent) {
         super(parent, true); // Inicializa el JDialog con modal
         this.parent=parent;
         this.setResizable(false); // Desactiva la opción de cambiar el tamaño de la ventana
@@ -37,14 +37,13 @@ public class DialogComoJugar extends JDialog {
     
     /**
      * Cierra la ventana actual y regresa a la pantalla de opciones.
-     * Instancia una nueva ventana de FrameOpciones.
+     * Instancia
+     * una nueva ventana de FrameOpciones.
      */
-    public void Volver(){
-        if (parent instanceof FrameInicio frameInicio) {
-            frameInicio.PasarPantallaUnirseCrear(this);
-        }
+    public void Volver() {
+        parent.PasarPantallaUnirseCrear(this);
     }
-    
+
     /**
      * Muestra la siguiente página de las instrucciones.
      * Avanza a la instrucción siguiente y actualiza el texto mostrado.
@@ -107,11 +106,9 @@ public class DialogComoJugar extends JDialog {
             }
         }
     }
-    
+
     public void Cerrar() {
-        if (parent instanceof FrameInicio frameInicio) {
-            frameInicio.CerrarPrograma();
-        }
+        parent.CerrarPrograma();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
