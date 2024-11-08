@@ -159,8 +159,7 @@ public class FrameInicio extends javax.swing.JFrame {
      *
      * @param children
      */
-    public void PasarPantallaUnirseCrear(JDialog children) {
-        this.setVisible(false);
+    public void PasarPantallaUnirseCrear(JDialog children) {  
         DialogUnirseCrear unirseCrear = new DialogUnirseCrear(this);
         if (children != null) {
             unirseCrear.setLocationRelativeTo(children);
@@ -168,6 +167,7 @@ public class FrameInicio extends javax.swing.JFrame {
         } else {
             unirseCrear.setLocationRelativeTo(this);
         }
+        this.setVisible(false);
         unirseCrear.setVisible(true);
     }
 
@@ -178,12 +178,12 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param children
      */
     public void PasarPantallaComoJugar(JDialog children) {
-        this.setVisible(false);
         DialogComoJugar comoJugar = new DialogComoJugar(this);
         comoJugar.setLocationRelativeTo(children);
         if (children != null) {
             children.setVisible(false);
         }
+        this.setVisible(false);
         comoJugar.setVisible(true); 
     } 
     
@@ -197,12 +197,12 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param codigo
      */
     public void PasarPantallaSala(JDialog children,int tamaño, int monto, int fichas, String codigo) {
-        this.setVisible(false);
         sala = new DialogSala(this,tamaño,monto,fichas,codigo);
         sala.setLocationRelativeTo(children);
         if (children != null) {
             children.setVisible(false);
         }
+        this.setVisible(false);
         sala.setVisible(true); 
     } 
     
@@ -212,12 +212,14 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param children
      */
     public void PasarPantallaOpciones(JDialog children) {
-        this.setVisible(false);
+        
         DialogOpciones opciones = new DialogOpciones(this);
+        System.out.println(children);
         opciones.setLocationRelativeTo(children);
         if (children != null) {
             children.setVisible(false);
         }
+        this.setVisible(false);
         opciones.setVisible(true);       
     } 
     
@@ -244,13 +246,13 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param miJugador
      */
     public void PasarPantallaTablero(JDialog children,int tamaño, int fichas, int monto, int jugadores, int miJugador) {
-        this.setVisible(false);
         tablero = new DialogTablero(this, tamaño, fichas, monto, jugadores, miJugador);
         tablero.setLocationRelativeTo(children);
         tablero.setModal(false);
         if (children != null) {
             children.setVisible(false);
         }
+        this.setVisible(false);
         tablero.setVisible(true);
     }
 

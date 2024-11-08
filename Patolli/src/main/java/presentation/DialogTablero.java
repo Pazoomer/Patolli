@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -17,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import javax.swing.plaf.ColorUIResource;
 import utils.Utils;
 
 /**
@@ -109,7 +111,13 @@ public class DialogTablero extends JDialog {
         this.jugadores = jugadores;
         casillas = new ArrayList<>();
         inicializarGui();
-        siguienteJugador(); 
+        
+        if(parent.isHost){
+            this.btnLanzarCañas.setEnabled(true);
+        }else{
+            this.btnLanzarCañas.setEnabled(false);
+        }
+        
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -346,8 +354,13 @@ public class DialogTablero extends JDialog {
      */
     private void clickearFicha(int numeroFicha, int numJugador) {
         System.out.println("Ficha " + numeroFicha + " Jugador " + numJugador);
-        moverFicha(numeroFicha, numJugador);
+        if (jugador == numJugador && jugador == miJugador) {
+            moverFicha(numeroFicha, numJugador);
+        }else{
+              JOptionPane.showMessageDialog(null, "No es tu turno", "No puedes mover", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
+
     /**
      * Inicializa un tablero específico con un diseño de cuadrícula.
      *
@@ -621,28 +634,24 @@ public class DialogTablero extends JDialog {
      * Avanza al siguiente jugador en el turno. Ilumina el jugador del turno
      * actual e ilumina el botón de lanzar cañas.
      */
-    public void siguienteJugador() {    
+    public void siguienteJugador() {
         actualizarTurnosExtra();
         //Si no tiene turnos extra
         if (turnosExtra <= 0) {
             //Pasa el turno al siguiente jugador
             jugador++;
-            if (jugador >= jugadores + 1) {
+            if (jugador >= jugadores) {
                 jugador = 0;
             }
-            //TODO: Borrar esta linea
-            this.btnLanzarCañas.setEnabled(true);
 
         } else {
             turnosExtra--;
             this.btnLanzarCañas.setEnabled(true);
         }
-
         actualizarApuestas();
         actualizarSiguienteJugador();
         subirCambios();
         revisarJugadorSale();
-        
     }
     /**
      * Cierra la ventana y comunica la desconexion del jugador
@@ -667,31 +676,26 @@ public class DialogTablero extends JDialog {
                         //Si la ficha fuera a terminar en una casilla ocupada, no se ilumina
                         if (casillas.get(getPosicionReal(fichasIluminablesPosicion.get(i))).getIcon() == null) {
                             puedeMover = true;
-                            fichasIluminables.get(i).setBorder(BorderFactory.createLineBorder(Color.BLUE, 3)); // Borde azul
+                            fichasIluminables.get(i).setBorder(BorderFactory.createLineBorder(Color.BLUE, 3)); 
                         } 
                         //A menos que haya sacado un 1 en las cañas, siempre y cuando la casilla de inicio este despejada
                     } else if (this.resultadoCañas == 1 && casillaInicialLibre) {
-                        fichasIluminables.get(i).setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3)); // Borde amarillo 
+                        fichasIluminables.get(i).setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
                         puedeMover = true;
                     }
                 } else {
-                    fichasIluminables.get(i).setBorder(null); // Sin borde
+                    fichasIluminables.get(i).setBorder(null); 
                 }
             }
         }
-        //Si no puede mover nada
         if (!puedeMover && iluminar) {
-            //Paga 1 apuesta
             cobrarApuesta(miJugador, -1);
             JOptionPane.showMessageDialog(null, "Pagas 1 apuesta", "No puedes moverte", JOptionPane.INFORMATION_MESSAGE);
- 
-            //Termina el turno
             siguienteJugador();
         }
         if (iluminar) {
             puedeMover = false;
         }
-
     }
     /**
      * Simula el movimiento de una ficha.
@@ -765,11 +769,8 @@ public class DialogTablero extends JDialog {
                     }
                     JOptionPane.showMessageDialog(null, "Cobraste 1 apuesta a todos los demas jugadores", "Vuelta al tablero", JOptionPane.INFORMATION_MESSAGE);
                 }
-
             } else if (colorBorde.equals(Color.YELLOW)) {
                 //Si la ficha tiene borde amarillo, significa que va a entrar al tablero
-                
-                //Hacer un nuevo label en el tablero
                 JLabel labelAux = new JLabel();
                 labelAux.setBorder(new LineBorder(Color.BLACK, 1)); 
                 labelAux.setOpaque(true); 
@@ -783,11 +784,9 @@ public class DialogTablero extends JDialog {
                     }
                 });
                 casillas.set(getCasillaInicialMiJugador(), labelAux);
-
                 //Actualizar la posicion en la lista
                 getListaFichasPosicionMiJugador().set(numFicha, getCasillaInicialMiJugador());
-                getListaFichasMiJugador().set(numFicha, labelAux);
-                
+                getListaFichasMiJugador().set(numFicha, labelAux);           
                 //Esconder la ficha del tablero del jugador
                 miFicha.setVisible(false);
             }
@@ -976,7 +975,7 @@ public class DialogTablero extends JDialog {
         this.fichasPiramidePosicion = fichasPiramidePosicion;
         this.fichasMazorcaPosicion = fichasMazorcaPosicion;
         
-        this.actualizarCasillas(); //Actualiza el valor de la lista de casillas
+        this.actualizarCasillas(); //Actualiza el valor de la lista de casillas y la lista de fichas de label
         this.actualizarTablero(); //Actualiza el tablero con la lista de casillas
         this.actualizarApuestas(); //Coloca el monto de apuestas correspondiente
         this.actualizarSiguienteJugador(); //Actualiza la vista para el siguiente jugador
@@ -987,14 +986,113 @@ public class DialogTablero extends JDialog {
         }
         return true;
     }
-
     /**
      * Actualiza el valor de la lista de casillas con las posiciones de fichas
      */
     public void actualizarCasillas() {
-        //TODO:
-        
-    }
+        //Dejar las fichas de casillas sin iconos ni listeners 
+        for (JLabel casilla : casillas) {
+            casilla.setIcon(null);
+
+            MouseListener[] listeners = casilla.getMouseListeners();
+            for (MouseListener listener : listeners) {
+                casilla.removeMouseListener(listener);
+            }
+        }
+        //TODO: optimizar
+        for (int i = 0; i < fichasGatoPosicion.size(); i++) {
+            if (!(fichasGatoPosicion.get(i) == -1)) {
+                JLabel labelAux = new JLabel();
+                labelAux.setBorder(new LineBorder(Color.BLACK, 1));
+                labelAux.setOpaque(true);
+                labelAux.setBackground(casillas.get(fichasGatoPosicion.get(i)).getBackground());
+                labelAux.setSize(fichasGato.get(i).getSize());
+                final int index = i;
+                labelAux.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        clickearFicha(index, 0);
+                    }
+                });
+                this.inicializarImagen(labelAux, "/cat.png", 15, 15);
+                casillas.set(fichasGatoPosicion.get(i), labelAux);
+                JLabel fichaTablero = fichasGato.get(i);
+                fichasGato.set(i, labelAux);
+                if (!(fichaTablero.getBorder() instanceof LineBorder)) {
+                    fichaTablero.setVisible(false);
+                }
+            }
+        }
+
+        for (int i = 0; i < fichasConchaPosicion.size(); i++) {
+            if (!(fichasConchaPosicion.get(i) == -1)) {
+                JLabel labelAux = new JLabel();
+                labelAux.setBorder(new LineBorder(Color.BLACK, 1));
+                labelAux.setOpaque(true);
+                labelAux.setBackground(casillas.get(fichasConchaPosicion.get(i)).getBackground());
+                final int index = i;
+                labelAux.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        clickearFicha(index, 1);
+                    }
+                });
+                this.inicializarImagen(labelAux, "/concha.png", 15, 15);
+                casillas.set(fichasConchaPosicion.get(i), labelAux);
+                JLabel fichaTablero = fichasGato.get(i);
+                fichasConcha.set(i, labelAux);
+                if (!(fichaTablero.getBorder() instanceof LineBorder)) {
+                    fichaTablero.setVisible(false);
+                } 
+            }
+        }
+
+        for (int i = 0; i < fichasPiramidePosicion.size(); i++) {
+            if (!(fichasPiramidePosicion.get(i) == -1)) {
+                JLabel labelAux = new JLabel();
+                labelAux.setBorder(new LineBorder(Color.BLACK, 1));
+                labelAux.setOpaque(true);
+                labelAux.setBackground(casillas.get(fichasPiramidePosicion.get(i)).getBackground());
+                final int index = i;
+                labelAux.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        clickearFicha(index, 2);
+                    }
+                });
+                this.inicializarImagen(labelAux, "/piramide.png", 15, 15);
+                casillas.set(fichasPiramidePosicion.get(i), labelAux);
+                JLabel fichaTablero = fichasGato.get(i);
+                fichasPiramide.set(i, labelAux);
+                if (!(fichaTablero.getBorder() instanceof LineBorder)) {
+                    fichaTablero.setVisible(false);
+                }
+            }
+        }
+
+        for (int i = 0; i < fichasMazorcaPosicion.size(); i++) {
+            if (!(fichasMazorcaPosicion.get(i) == -1)) {
+                JLabel labelAux = new JLabel();
+                labelAux.setBorder(new LineBorder(Color.BLACK, 1));
+                labelAux.setOpaque(true);
+                labelAux.setBackground(casillas.get(fichasMazorcaPosicion.get(i)).getBackground());
+                final int index = i;
+                labelAux.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        clickearFicha(index, 3);
+                    }
+                });
+                this.inicializarImagen(labelAux, "/mazorca.png", 15, 15);
+                casillas.set(fichasMazorcaPosicion.get(i), labelAux);
+                JLabel fichaTablero = fichasGato.get(i);
+                fichasMazorca.set(i, labelAux);
+                if (!(fichaTablero.getBorder() instanceof LineBorder)) {
+                    fichaTablero.setVisible(false);
+                }
+            }
+        }
+    }   
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 

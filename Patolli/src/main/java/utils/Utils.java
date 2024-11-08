@@ -66,7 +66,9 @@ public class Utils {
      */
     public int GenerarLanzamiento() {
         // Simular un lanzamiento aleatorio de los dados
-        return resultados[new Random().nextInt(resultados.length)];
+        //TODO
+        return 1;
+        //return resultados[new Random().nextInt(resultados.length)];
     }
 
     /**
