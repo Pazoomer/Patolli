@@ -2,7 +2,6 @@ package presentation;
 
 import java.util.List;
 import javax.swing.JDialog;
-import javax.swing.SwingUtilities;
 import negocio.ControlJuego;
 import negocio.IControlJuego;
 
@@ -101,8 +100,17 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param jugador
      * @return
      */
-    public boolean jugadorSale(int jugador) {
+    public boolean enviarJugadorSale(int jugador) {
         return controlJuego.jugadorSale(jugador);
+    }
+    
+    /**
+     * El jugador sale de la partida
+     *
+     * @param jugador
+     */
+    public void recibirJugadorSale(int jugador) {
+        //TODO: Implementar
     }
     
     /**
@@ -139,7 +147,6 @@ public class FrameInicio extends javax.swing.JFrame {
      */
     public void recibirOpciones(int tamaño, int monto, int fichas,int jugadores){
         sala.recibirOpciones(tamaño, monto, fichas, jugadores);
-        System.out.println("Termine inicio");
     }
 
     /**
@@ -147,7 +154,7 @@ public class FrameInicio extends javax.swing.JFrame {
      */
     public void CerrarPrograma() {
         if (isHost) {
-            //TODO
+            //TODO:
             //controlJuego.destruirServidor();
         }
         this.dispose();
@@ -214,7 +221,6 @@ public class FrameInicio extends javax.swing.JFrame {
     public void PasarPantallaOpciones(JDialog children) {
         
         DialogOpciones opciones = new DialogOpciones(this);
-        System.out.println(children);
         opciones.setLocationRelativeTo(children);
         if (children != null) {
             children.setVisible(false);

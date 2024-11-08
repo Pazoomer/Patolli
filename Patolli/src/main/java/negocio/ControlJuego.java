@@ -3,6 +3,7 @@ package negocio;
 
 import java.util.List;
 import javax.swing.JFrame;
+import presentation.FrameInicio;
 
 /**
  *
@@ -11,9 +12,9 @@ import javax.swing.JFrame;
 public class ControlJuego implements IControlJuego {
 
     Juego juego;
-    JFrame frameInicio;
+    FrameInicio frameInicio;
 
-    public ControlJuego(JFrame frameInicio) {
+    public ControlJuego(FrameInicio frameInicio) {
         this.frameInicio=frameInicio;
         juego=new Juego();
     }

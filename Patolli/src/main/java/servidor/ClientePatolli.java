@@ -9,7 +9,6 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
-import javax.swing.JFrame;
 import presentation.FrameInicio;
 
 /**
@@ -22,14 +21,14 @@ public class ClientePatolli {
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
-    private final JFrame frameInicio;
+    private final FrameInicio frameInicio;
     
     /**
      * Constructor que inicializa el codigo de la sala
      * @param codigoSala 
      * @param frameInicio
      */
-    public ClientePatolli(String codigoSala, JFrame frameInicio) {
+    public ClientePatolli(String codigoSala, FrameInicio frameInicio) {
         this.codigoSala = codigoSala;
         this.frameInicio = frameInicio;
     }
@@ -47,15 +46,12 @@ public class ClientePatolli {
 
                 String fromServer;
                 while ((fromServer = in.readLine()) != null) {
-                    System.out.println();
-                    System.out.println("Mensaje Recibido");
                     Gson gson = new Gson();
                     JsonElement jsonElement = gson.fromJson(fromServer, JsonElement.class);
 
                     if (jsonElement.isJsonArray()) {
                         
                         String[] datos = gson.fromJson(jsonElement, String[].class);
-                        System.out.println(datos[0]);
                         switch (datos[0]) {
                             case "pasarOpciones" -> {
                                 int tamaño = gson.fromJson(datos[1], Integer.class);
@@ -92,7 +88,6 @@ public class ClientePatolli {
                     } else {
                         System.out.println("Formato JSON inesperado");
                     }
-                    System.out.println("Fin del mensaje");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -221,32 +216,7 @@ public class ClientePatolli {
      */
     public void recibirCambios(List<Integer> montoJugadores, int siguienteJugador, List<Integer> fichasGatoPosicion,
             List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
-
-        System.out.println("Monto de jugadores");
-        for (Integer integer : montoJugadores) {
-            System.out.println("Monto de jugador: " + integer);
-        }
-        System.out.println("Siguiente Jugador: " + siguienteJugador);
-
-        System.out.println("Fichas Gato Posicion");
-        for (Integer integer : fichasGatoPosicion) {
-            System.out.println("Posicion: " + integer);
-        }
-        System.out.println("Fichas Concha Posicion");
-        for (Integer integer : fichasConchaPosicion) {
-            System.out.println("Posicion: " + integer);
-        }
-        System.out.println("Fichas Piramide Posicion");
-        for (Integer integer : fichasPiramidePosicion) {
-            System.out.println("Posicion: " + integer);
-        }
-        System.out.println("Fichas Mazorca Posicion ");
-        for (Integer integer : fichasMazorcaPosicion) {
-            System.out.println("Posicion: " + integer);
-        }
-        if (frameInicio instanceof FrameInicio inicio) {
-            inicio.recibirCambios(montoJugadores, siguienteJugador, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
-        }
+            frameInicio.recibirCambios(montoJugadores, siguienteJugador, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
     }
 
     /**
@@ -257,13 +227,7 @@ public class ClientePatolli {
      * @param jugadores Numero de jugadores iniciales
      */
     public void recibirOpciones(int tamaño, int monto, int fichas, int jugadores) {
-        System.out.println("Tamaño: " + tamaño);
-        System.out.println("Monto: " + monto);
-        System.out.println("Fichas: " + fichas);
-        System.out.println("Jugadores: " + jugadores);
-        if (frameInicio instanceof FrameInicio inicio) {
-            inicio.recibirOpciones(tamaño, monto, fichas, jugadores);
-        }
+            frameInicio.recibirOpciones(tamaño, monto, fichas, jugadores);
     }
 
     /**
@@ -272,9 +236,7 @@ public class ClientePatolli {
      * @param numeroJugadores
      */
     public void recibirJugadorEntra(int numeroJugadores) {
-        if (frameInicio instanceof FrameInicio inicio) {
-            inicio.jugadorEntra(numeroJugadores);
-        }
+            frameInicio.jugadorEntra(numeroJugadores);
     }
 
     /**
@@ -283,8 +245,6 @@ public class ClientePatolli {
      * @param numeroJugadores
      */
     public void recibirJugadorSale(int numeroJugadores) {
-        if (frameInicio instanceof FrameInicio inicio) {
-            inicio.jugadorSale(numeroJugadores);
-        }
+        frameInicio.recibirJugadorSale(numeroJugadores);
     }
 }

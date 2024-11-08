@@ -12,13 +12,13 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import javax.swing.plaf.ColorUIResource;
 import utils.Utils;
 
 /**
@@ -49,6 +49,7 @@ public class DialogTablero extends JDialog {
     
     //Bandera jugador (Usado a nivel de interfaz, se envia al control)
     private int jugador = 0; //Representa al jugador actual
+    private List<Boolean> jugadoresActivos; //Representa si los jugadores siguen jugando
       
     //Labeles de fichas (Apariencia de fichas, NO se envian al control)
     private List<JLabel> fichasGato;
@@ -66,27 +67,14 @@ public class DialogTablero extends JDialog {
     private List<Integer> montoJugadores;
     
     //Casillas del tablero (Apariencia del tablero, NO se envia al control)
-    private List<JLabel> casillas;
-    //Tamaño        8           
-    //Totales       68          
-    //Inicio        (Arriba: 15,    Abajo: 16,       Derecha: 40,   Izquieda: 55)          
-    //Doble turno   (Arriba: 0,1,   Abajo: 30,31,    Derecha: 39,47   Izquieda: 48,56)          
-    //Pagar apuesta (Arriba: 6,7,   Abajo: 24,25,    Derecha: 36,44   Izquieda: 51,59)         
-    //Centrales     (64,65,66,67)
+    private final List<JLabel> casillas;
     
-    //Tamaño        10           
-    //Totales       84          
-    //Inicio        (Arriba: 19,    Abajo: 20,       Derecha: 50,   Izquieda: 69)          
-    //Doble turno   (Arriba: 0,1,   Abajo: 38,39,    Derecha: 49,59   Izquieda: 60,70)          
-    //Pagar apuesta (Arriba: 6,7,   Abajo: 32,33,    Derecha: 46,56   Izquieda: 63,73)         
-    //Centrales     (80,81,82,83) 
+    //Variables de depuracion
+    private boolean modoDev=false; //Activa la funcion de tablero enumerado
+    private int j=0; //Sirve para enumerar el tablero
     
-    //Tamaño        12           
-    //Totales       100          
-    //Inicio        (Arriba: 23,    Abajo: 24,       Derecha: 60,   Izquieda: 83)          
-    //Doble turno   (Arriba: 0,1,   Abajo: 46,47,    Derecha: 59,71   Izquieda: 72,84)          
-    //Pagar apuesta (Arriba: 6,7,   Abajo: 40,41,    Derecha: 56,68   Izquieda: 75,87)         
-    //Centrales     (96,97,98,99)
+    //TODO: Aveces hay un error al momento de pintar el tablero, talvez no se hace lo de revalidate en algun lado
+    //TODO: No se actualiza el label y la imagen del siguiente jugador
 
     /**
      * Constructor de la clase FrameTablero.
@@ -102,6 +90,14 @@ public class DialogTablero extends JDialog {
         super(parent, false); 
         this.parent=parent;
         this.setResizable(false);
+
+        //AQUI SE CAMBIA EL ESTILO DE LA PANTALLA
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); 
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+
         initComponents();
         utils = new Utils();
         this.tamaño = tamaño;
@@ -110,6 +106,10 @@ public class DialogTablero extends JDialog {
         this.fichas = fichas;
         this.jugadores = jugadores;
         casillas = new ArrayList<>();
+        jugadoresActivos= new ArrayList<>();
+        for (int i = 0; i < jugadores; i++) {
+            jugadoresActivos.add(true);
+        }
         inicializarGui();
         
         if(parent.isHost){
@@ -129,6 +129,7 @@ public class DialogTablero extends JDialog {
      * Inicializa la interfaz gráfica de usuario del tablero.
      * Configura los componentes del tablero y establece el estado inicial
      * de los elementos visuales, como fichas y montos de apuesta.
+     * Solo se llama una vez durante la inicialización
      */
     private void inicializarGui() {
         // Tablero
@@ -240,8 +241,8 @@ public class DialogTablero extends JDialog {
         }
         
         for (int i = 0; i < fichasMazorca.size(); i++) {
-            final int numFicha = i; // Guardar el índice de la ficha actual
-            final int numJugador = 3; // Guardar el índice de la ficha actual
+            final int numFicha = i; // Guarda el índice de la ficha actual
+            final int numJugador = 3; // Guarda el índice del jugador
             fichasMazorca.get(i).addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -251,8 +252,8 @@ public class DialogTablero extends JDialog {
         }
         
         for (int i = 0; i < fichasConcha.size(); i++) {
-            final int numFicha = i; // Guardar el índice de la ficha actual
-            final int numJugador = 1; // Guardar el índice de la ficha actual
+            final int numFicha = i; // Guarda el índice de la ficha actual
+            final int numJugador = 1; // Guarda el índice del jugador
             fichasConcha.get(i).addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -263,8 +264,8 @@ public class DialogTablero extends JDialog {
         }
         
         for (int i = 0; i < fichasPiramide.size(); i++) {
-            final int numFicha = i; // Guardar el índice de la ficha actual
-            final int numJugador = 2; // Guardar el índice de la ficha actual
+            final int numFicha = i; // Guarda el índice de la ficha actual
+            final int numJugador = 2; // Guarda el índice del jugador
             fichasPiramide.get(i).addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -273,8 +274,8 @@ public class DialogTablero extends JDialog {
             });
         }
         for (int i = 0; i < fichasGato.size(); i++) {
-            final int numFicha = i; // Guardar el índice de la ficha actual
-            final int numJugador = 0; // Guardar el índice de la ficha actual
+            final int numFicha = i; // Guarda el índice de la ficha actual
+            final int numJugador = 0; // Guarda el índice del jugador
             fichasGato.get(i).addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -318,6 +319,7 @@ public class DialogTablero extends JDialog {
     }
     /**
      * Le da un orden logico a la lista de casillas para mejor manipulacion
+     * Solo se llama una vez durante la inicialización
      */
     private void reacomodarCasillas() {
         casillasOrdenadas = new ArrayList<>();
@@ -328,7 +330,6 @@ public class DialogTablero extends JDialog {
                 //55, 54, 53, 52, 51, 50, 49, 48, 56, 57, 58, 59, 60, 61, 62, 63, 66
                 //16, 18, 20, 22, 24, 26, 28, 30, 31, 29, 27, 25, 23, 21, 19, 17, 67
                 //40, 41, 42, 43, 44, 45, 46, 47, 39, 38, 37, 36, 35, 34, 33, 32, 65
-                
                 int[] arr = new int[]{15, 13, 11, 9, 7, 5, 3, 1, 0, 2, 4, 6, 8, 10, 12, 14, 64,
                     55, 54, 53, 52, 51, 50, 49, 48, 56, 57, 58, 59, 60, 61, 62, 63, 66,
                     16, 18, 20, 22, 24, 26, 28, 30, 31, 29, 27, 25, 23, 21, 19, 17, 67,
@@ -339,30 +340,54 @@ public class DialogTablero extends JDialog {
 
             }
             case 10 -> {
-                //TODO: IMPLEMENTAR
+                //Tamaño 10 -> 84 elementos
+                //19, 17, 15, 13, 11, 9, 7, 5, 3, 1, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 80
+                //69, 68, 67, 66, 65, 64, 63, 62, 61, 60, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 82
+                //20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 39, 37, 35, 33, 31, 29, 27, 25, 23, 21, 83
+                //50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 49, 48, 47, 46, 45, 44, 43, 42, 41, 40, 81
+                int[] arr = new int[]{19, 17, 15, 13, 11, 9, 7, 5, 3, 1, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 80,
+                    69, 68, 67, 66, 65, 64, 63, 62, 61, 60, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 82,
+                    20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 39, 37, 35, 33, 31, 29, 27, 25, 23, 21, 83,
+                    50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 49, 48, 47, 46, 45, 44, 43, 42, 41, 40, 81};
+                for (int i : arr) {
+                    casillasOrdenadas.add(i);
+                }
             }
             case 12 -> {
-                //TODO: IMPLEMENTAR
+                //Tamaño 12 -> 100 elementos
+                //23, 21, 19, 17, 15, 13, 11, 9, 7, 5, 3, 1, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 96
+                //83, 82, 81, 80, 79, 78, 77, 76, 75, 74, 73, 72, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 98
+                //24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 47, 45, 43, 41, 39, 37, 35, 33, 31, 29, 27, 25, 99
+                //60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 48, 97
+                int[] arr = new int[]{23, 21, 19, 17, 15, 13, 11, 9, 7, 5, 3, 1, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 96,
+                    83, 82, 81, 80, 79, 78, 77, 76, 75, 74, 73, 72, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 98,
+                    24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 47, 45, 43, 41, 39, 37, 35, 33, 31, 29, 27, 25, 99,
+                    60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 48, 97};
+                for (int i : arr) {
+                    casillasOrdenadas.add(i);
+                }
             }
-
         }
     }
     /**
      * Intenta mover la ficha a la que se le hizo click si se cumplen las condiciones
-     * @param numeroFicha
-     * @param numJugador
+     * @param numeroFicha Numero de la ficha a moverse
+     * @param numJugador Numero del jugador dueño de la ficha
      */
     private void clickearFicha(int numeroFicha, int numJugador) {
-        System.out.println("Ficha " + numeroFicha + " Jugador " + numJugador);
-        if (jugador == numJugador && jugador == miJugador) {
+        if (jugador != miJugador) {
+            JOptionPane.showMessageDialog(null, "No es tu turno", "No puedes mover", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        if (jugador == numJugador) {
             moverFicha(numeroFicha, numJugador);
         }else{
-              JOptionPane.showMessageDialog(null, "No es tu turno", "No puedes mover", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La ficha es de otro jugador", "No puedes mover esa ficha", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-
     /**
      * Inicializa un tablero específico con un diseño de cuadrícula.
+     * Solo se llama durante la inicialización de la partida
      *
      * @param tablero el panel que representa el tablero
      * @param filas el número de filas en el tablero
@@ -380,6 +405,11 @@ public class DialogTablero extends JDialog {
             label.setBorder(new LineBorder(Color.BLACK, 1)); // Añadir borde negro
             label.setOpaque(true); // Hacer el fondo visible
             label.setBackground(Color.WHITE);
+            if (modoDev) {
+                label.setText(String.valueOf(j));
+                j++;
+            }
+            
 
             // Lógica para asignar colores a las casillas del tablero
             if (filas * columnas > 6) {
@@ -500,30 +530,19 @@ public class DialogTablero extends JDialog {
 
         int totalCasillas = casillas.size();
         int casillasLaterales = (totalCasillas - 4) / 4; // Número de casillas para cada lado (excepto el centro)
-        //TODO, solo necesito un for, no 5
-        // Panel de Arriba (primer cuarto de las casillas)
-        for (int i = 0; i < casillasLaterales; i++) {
-            tableroArriba.add(casillas.get(i));
-        }
 
-        // Panel de Abajo (segundo cuarto de las casillas)
-        for (int i = casillasLaterales; i < 2 * casillasLaterales; i++) {
-            tableroAbajo.add(casillas.get(i));
-        }
-
-        // Panel de Derecha (tercer cuarto de las casillas)
-        for (int i = 2 * casillasLaterales; i < 3 * casillasLaterales; i++) {
-            tableroDerecha.add(casillas.get(i));
-        }
-
-        // Panel de Izquierda (último cuarto de las casillas laterales)
-        for (int i = 3 * casillasLaterales; i < 4 * casillasLaterales; i++) {
-            tableroIzquierda.add(casillas.get(i));
-        }
-
-        // Panel del Centro (las últimas 4 casillas)
-        for (int i = totalCasillas - 4; i < totalCasillas; i++) {
-            tableroCentro.add(casillas.get(i));
+        for (int i = 0; i < totalCasillas; i++) {
+            if (i < casillasLaterales) {
+                tableroArriba.add(casillas.get(i));
+            } else if (i < 2 * casillasLaterales) {
+                tableroAbajo.add(casillas.get(i));
+            } else if (i < 3 * casillasLaterales) {
+                tableroDerecha.add(casillas.get(i));
+            } else if (i < 4 * casillasLaterales) {
+                tableroIzquierda.add(casillas.get(i));
+            } else if (i >= totalCasillas - 4) {
+                tableroCentro.add(casillas.get(i));
+            }
         }
 
         // Refrescar todos los paneles para que los cambios sean visibles
@@ -542,7 +561,7 @@ public class DialogTablero extends JDialog {
     /**
      * Actualoza la vista de siguiente jugador de GUI
      */
-    private void actualizarSiguienteJugador(){
+    private void actualizarSiguienteJugador() {
         switch (jugador) {
             case 1 -> {
                 this.inicializarImagen(this.lblIconJugadorActual, "/cat.png", 64, 60);
@@ -563,6 +582,9 @@ public class DialogTablero extends JDialog {
      */
     private void actualizarApuestas() {
         for (int i = 0; i < jugadores; i++) {
+            if (montoJugadores.get(i) < 0) {
+                montoJugadores.set(i, 0);
+            }
             switch (i) {
                 case 0 -> {
                     this.lblGatoApuestas.setText("Apuestas: " + montoJugadores.get(i));
@@ -578,33 +600,13 @@ public class DialogTablero extends JDialog {
                 }
             }
         }
-    }
-    /**
-     * Actualiza el label de turnos extra del GUI
-     */
-    private void actualizarTurnosExtra(){
-        this.lblTurnosExtra.setText("Turnos Extra: "+turnosExtra);
-    }
-    /**
-     * Cierra la aplicación después de confirmar la salida con el usuario.
-     */
-    public void salir() {
-        int opcion = JOptionPane.showConfirmDialog(null, "¿Realmente quieres salir?", "Confirmar salida", JOptionPane.YES_NO_OPTION);
-
-        if (opcion == JOptionPane.YES_OPTION) {
-            
-                parent.jugadorSale(miJugador);
-                parent.PasarPantallaInicio(this);
-            
-            
-        }
+        revisarJugadorSale();
     }
     /**
      * Simula el lanzamiento de las cañas y muestra el resultado en el campo de
      * texto.
      */
     public void lanzarCañas() {
-
         resultadoCañas = utils.GenerarLanzamiento();
         this.txtResultado.setText(String.valueOf(resultadoCañas));
 
@@ -635,29 +637,16 @@ public class DialogTablero extends JDialog {
      * actual e ilumina el botón de lanzar cañas.
      */
     public void siguienteJugador() {
-        actualizarTurnosExtra();
+        this.lblTurnosExtra.setText("Turnos Extra: "+turnosExtra);
         //Si no tiene turnos extra
         if (turnosExtra <= 0) {
-            //Pasa el turno al siguiente jugador
-            jugador++;
-            if (jugador >= jugadores) {
-                jugador = 0;
-            }
-
+            jugador = (jugador + 1) % jugadores;
         } else {
             turnosExtra--;
             this.btnLanzarCañas.setEnabled(true);
         }
-        actualizarApuestas();
         actualizarSiguienteJugador();
         subirCambios();
-        revisarJugadorSale();
-    }
-    /**
-     * Cierra la ventana y comunica la desconexion del jugador
-     */
-    public void cerrar() {
-        parent.CerrarPrograma();
     }
     /**
      * Ilumina las fichas del jugador actual, resaltando las fichas que pueden
@@ -689,7 +678,7 @@ public class DialogTablero extends JDialog {
             }
         }
         if (!puedeMover && iluminar) {
-            cobrarApuesta(miJugador, -1);
+            montoJugadores.set(miJugador, montoJugadores.get(miJugador) -1);
             JOptionPane.showMessageDialog(null, "Pagas 1 apuesta", "No puedes moverte", JOptionPane.INFORMATION_MESSAGE);
             siguienteJugador();
         }
@@ -704,16 +693,16 @@ public class DialogTablero extends JDialog {
      * @param numJugador Dueño de la ficha
      */
     public void moverFicha(int numFicha, int numJugador) {
-        JLabel miFicha=getListaFichasMiJugador().get(numFicha);
+        JLabel miFicha = getListaFichasMiJugador().get(numFicha);
         Border borde = miFicha.getBorder();
         if (borde instanceof LineBorder lineBorder) {
             Color colorBorde = lineBorder.getLineColor(); // Obtiene el color del borde
 
             if (colorBorde.equals(Color.BLUE)) {
                 //Si la ficha tiene borde azul, significa que va a moverse por el tablero
-                
-                int posicionRelativa = getListaFichasPosicionMiJugador().get(numFicha);   
-                
+
+                int posicionRelativa = getListaFichasPosicionMiJugador().get(numFicha);
+
                 //Calcula la posicion anterior
                 int posicionAnterior = casillasOrdenadas.indexOf(posicionRelativa);
                 //Obtiene la casilla real donde va la ficha
@@ -721,9 +710,9 @@ public class DialogTablero extends JDialog {
 
                 //Hacer un nuevo label en el tablero
                 JLabel labelAux = new JLabel();
-                labelAux.setBorder(new LineBorder(Color.BLACK, 1)); 
-                labelAux.setOpaque(true); 
-                Color colorCasilla=casillas.get(casillaTermina).getBackground();
+                labelAux.setBorder(new LineBorder(Color.BLACK, 1));
+                labelAux.setOpaque(true);
+                Color colorCasilla = casillas.get(casillaTermina).getBackground();
                 labelAux.setBackground(colorCasilla);
                 labelAux.setIcon(miFicha.getIcon());
                 labelAux.addMouseListener(new MouseAdapter() {
@@ -733,13 +722,13 @@ public class DialogTablero extends JDialog {
                         clickearFicha(numFicha, numJugador);
                     }
                 });
-                
+
                 //Quitar el viejo label del tablero
                 JLabel labelEmpty = new JLabel();
-                labelEmpty.setBorder(new LineBorder(Color.BLACK, 1)); 
-                labelEmpty.setOpaque(true); 
+                labelEmpty.setBorder(new LineBorder(Color.BLACK, 1));
+                labelEmpty.setOpaque(true);
                 labelEmpty.setBackground(casillas.get(getListaFichasPosicionMiJugador().get(numFicha)).getBackground());
-      
+
                 casillas.set(casillaTermina, labelAux);
                 casillas.set(getListaFichasPosicionMiJugador().get(numFicha), labelEmpty);
 
@@ -749,22 +738,22 @@ public class DialogTablero extends JDialog {
 
                 //Casilla pagar apuesta
                 if (colorCasilla.equals(Color.RED)) {
-                    cobrarApuesta(miJugador, -2);
+                    montoJugadores.set(miJugador, montoJugadores.get(miJugador) -2);
                     JOptionPane.showMessageDialog(null, "Pagas 2 apuestas", "Casilla pagar apuesta", JOptionPane.INFORMATION_MESSAGE);
                 }
 
                 //Casilla doble turno
                 if (colorCasilla.equals(Color.BLUE)) {
-                    turnosExtra = turnosExtra+2;
+                    turnosExtra = turnosExtra + 2;
                     JOptionPane.showMessageDialog(null, "Obtienes 2 turnos extra", "Casilla doble turno", JOptionPane.INFORMATION_MESSAGE);
                 }
 
                 //Vuelta al tablero
                 if (posicionAnterior > casillasOrdenadas.indexOf(casillaTermina)) {
-                    cobrarApuesta(miJugador, jugadores);
+                    montoJugadores.set(miJugador, montoJugadores.get(miJugador) + jugadores);
                     for (int i = 0; i < jugadores; i++) {
                         if (miJugador != i) {
-                            cobrarApuesta(i, -1);
+                            montoJugadores.set(i, montoJugadores.get(i) -1);
                         }
                     }
                     JOptionPane.showMessageDialog(null, "Cobraste 1 apuesta a todos los demas jugadores", "Vuelta al tablero", JOptionPane.INFORMATION_MESSAGE);
@@ -772,51 +761,126 @@ public class DialogTablero extends JDialog {
             } else if (colorBorde.equals(Color.YELLOW)) {
                 //Si la ficha tiene borde amarillo, significa que va a entrar al tablero
                 JLabel labelAux = new JLabel();
-                labelAux.setBorder(new LineBorder(Color.BLACK, 1)); 
-                labelAux.setOpaque(true); 
+                labelAux.setBorder(new LineBorder(Color.BLACK, 1));
+                labelAux.setOpaque(true);
                 labelAux.setBackground(casillas.get(getCasillaInicialMiJugador()).getBackground());
                 labelAux.setIcon(miFicha.getIcon());
                 labelAux.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
 
-                        clickearFicha(numFicha, numJugador); 
+                        clickearFicha(numFicha, numJugador);
                     }
                 });
                 casillas.set(getCasillaInicialMiJugador(), labelAux);
                 //Actualizar la posicion en la lista
                 getListaFichasPosicionMiJugador().set(numFicha, getCasillaInicialMiJugador());
-                getListaFichasMiJugador().set(numFicha, labelAux);           
+                getListaFichasMiJugador().set(numFicha, labelAux);
                 //Esconder la ficha del tablero del jugador
                 miFicha.setVisible(false);
             }
         }
         iluminarFichas(false);
         actualizarTablero();
-        actualizarApuestas();
-        actualizarTurnosExtra();
         siguienteJugador();
     }
     /**
      * Si un jugador tiene 0 o menos de monto de apuesta, sale del juego
      */
-    private boolean revisarJugadorSale() {
+    private void revisarJugadorSale() {
         for (int i = 0; i < montoJugadores.size(); i++) {
             if (montoJugadores.get(i) <= 0) {
-                    parent.jugadorSale(miJugador);
-                    return true;          
+                if (jugadoresActivos.get(i)) {
+                    jugadoresActivos.set(i, false);
+                    //TODO: Borra todas las fichas del jugador
+
+                    if (i == miJugador) {
+                        JOptionPane.showMessageDialog(null, "Te has quedado sin apuestas, no puedes jugar más", "Perdiste", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, getNombreMiJugador(i) + " Se ha quedado sin apuestas y sale de la partida", "Un jugador sale de la partida", JOptionPane.INFORMATION_MESSAGE);
+                    }
+
+                }
             }
+
         }
-        return false;
+        revisarFinDelJuego();
     }
     /**
-     * Cambia el monto de los jugadores
-     *
-     * @param jugadorCobra numero que indica el jugador a cobrar la apuesta
-     * @param monto cantidad de la apuesta
+     * Revisa si solo queda un jugador activo, si no es asi, entonces
+     * Salta a los jugadores que perdieron para que el siguiente jugador activo pueda jugar
      */
-    public void cobrarApuesta(int jugadorCobra, int monto) {
-        montoJugadores.set(jugadorCobra, montoJugadores.get(jugadorCobra) + monto);
+    private void revisarFinDelJuego() {
+        boolean ganar = true;
+        int siguienteJugador = -1;
+        int jugadorEncontrado = -1;
+        for (int i = 0; i < jugadores; i++) {      
+            if (jugadoresActivos.get(jugador)) {
+                if (jugadorEncontrado == -1) {
+                    //Aqui entra la primera vez que encuentra al jugador
+                    siguienteJugador = jugador;
+                } else {
+                    //Aqui entra la segunda vez que encuentra al jugador
+                    ganar = false;
+                }
+                jugadorEncontrado = jugador;
+            }
+            jugador = (jugador + 1) % jugadores;
+        }
+        //Si solo se encontro un jugador disponible, entonces ese jugador gana
+        if (ganar) {
+            ganar(jugador);
+        } else { //De otra forma entonces el turno pasa al siguiente jugador que puede jugar
+            jugador = siguienteJugador;
+            if (miJugador == jugador) {
+                this.btnLanzarCañas.setEnabled(true);
+            }
+        }
+    }
+    /**
+     * Termina el juego y muestra los resultados
+     *
+     * @param jugadorGanador Jugador que gana la partida
+     */
+    private void ganar(int jugadorGanador) {
+        this.btnLanzarCañas.setEnabled(false);
+        String jugadorNombre="Error";
+        switch(jugadorGanador){
+            case 0->{
+                jugadorNombre="El jaguar se eleva con la victoria con un rugido estridente";
+            }
+            case 1->{
+                jugadorNombre="Las concha reclaman su territorio como unico ganador";
+            }
+            case 2->{
+                jugadorNombre="La piramide se matiene firme como la victoriosa";
+            }
+            case 3->{
+                jugadorNombre="El maiz es el unico en pie para contemplar su victoria";
+            }
+        }
+        JOptionPane.showMessageDialog(null, "Se acabo la partida, "+jugadorNombre, "Fin del juego", JOptionPane.INFORMATION_MESSAGE);
+    }
+    /**
+     * Devuelve el nombre de un jugador segun miJugador
+     * @return 
+     */
+    private String getNombreMiJugador(int jugador){
+        switch(jugador){
+            case 0->{
+                return "Jaguar";
+            }
+            case 1->{
+                return "Conchas";
+            }
+            case 2->{
+                return "Piramide";
+            }
+            case 3->{
+                return "Maiz";
+            }
+        }
+        return "Error";
     }
     /**
      * Devuelve la posicion de la casilla inicial del jugador dueño de la
@@ -981,9 +1045,12 @@ public class DialogTablero extends JDialog {
         this.actualizarSiguienteJugador(); //Actualiza la vista para el siguiente jugador
 
         //Si es mi turno, habilita el lanzar cañas
-        if (jugador == miJugador) {
-            this.btnLanzarCañas.setEnabled(true);
+        if (jugadoresActivos.get(miJugador)) {
+            if (jugador == miJugador) {
+                this.btnLanzarCañas.setEnabled(true);
+            }
         }
+
         return true;
     }
     /**
@@ -999,100 +1066,64 @@ public class DialogTablero extends JDialog {
                 casilla.removeMouseListener(listener);
             }
         }
-        //TODO: optimizar
-        for (int i = 0; i < fichasGatoPosicion.size(); i++) {
-            if (!(fichasGatoPosicion.get(i) == -1)) {
+        // Actualizar todas las fichas en casillas
+        actualizarFicha(fichasGatoPosicion, fichasGato, "/cat.png", 0);
+        actualizarFicha(fichasConchaPosicion, fichasConcha, "/concha.png", 1);
+        actualizarFicha(fichasPiramidePosicion, fichasPiramide, "/piramide.png", 2);
+        actualizarFicha(fichasMazorcaPosicion, fichasMazorca, "/mazorca.png", 3);
+    }
+    /**
+     * Actualiza la vista de todas las casillas con las posiciones
+     * @param posiciones Posiciiones de las fichas en el tablero
+     * @param fichas Lista de fichas del jugador
+     * @param iconPath Path a la imagen del icono de jugador
+     * @param numeroJugador Numero del jugador
+     */
+    private void actualizarFicha(List<Integer> posiciones, List<JLabel> fichas, String iconPath, int numeroJugador) {
+        for (int i = 0; i < posiciones.size(); i++) {
+            int posicion = posiciones.get(i);
+            if (posicion != -1) {
                 JLabel labelAux = new JLabel();
                 labelAux.setBorder(new LineBorder(Color.BLACK, 1));
                 labelAux.setOpaque(true);
-                labelAux.setBackground(casillas.get(fichasGatoPosicion.get(i)).getBackground());
-                labelAux.setSize(fichasGato.get(i).getSize());
+                labelAux.setBackground(casillas.get(posicion).getBackground());
+                labelAux.setSize(fichas.get(i).getSize());
+
                 final int index = i;
                 labelAux.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        clickearFicha(index, 0);
+                        clickearFicha(index, numeroJugador);
                     }
                 });
-                this.inicializarImagen(labelAux, "/cat.png", 15, 15);
-                casillas.set(fichasGatoPosicion.get(i), labelAux);
-                JLabel fichaTablero = fichasGato.get(i);
-                fichasGato.set(i, labelAux);
+
+                inicializarImagen(labelAux, iconPath, 15, 15);
+                casillas.set(posicion, labelAux);
+
+                JLabel fichaTablero = fichas.get(i);
+                fichas.set(i, labelAux);
                 if (!(fichaTablero.getBorder() instanceof LineBorder)) {
                     fichaTablero.setVisible(false);
                 }
             }
         }
-
-        for (int i = 0; i < fichasConchaPosicion.size(); i++) {
-            if (!(fichasConchaPosicion.get(i) == -1)) {
-                JLabel labelAux = new JLabel();
-                labelAux.setBorder(new LineBorder(Color.BLACK, 1));
-                labelAux.setOpaque(true);
-                labelAux.setBackground(casillas.get(fichasConchaPosicion.get(i)).getBackground());
-                final int index = i;
-                labelAux.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        clickearFicha(index, 1);
-                    }
-                });
-                this.inicializarImagen(labelAux, "/concha.png", 15, 15);
-                casillas.set(fichasConchaPosicion.get(i), labelAux);
-                JLabel fichaTablero = fichasGato.get(i);
-                fichasConcha.set(i, labelAux);
-                if (!(fichaTablero.getBorder() instanceof LineBorder)) {
-                    fichaTablero.setVisible(false);
-                } 
-            }
+    }
+    /**
+     * Cierra la aplicación después de confirmar la salida con el usuario.
+     */
+    public void salir() {
+        int opcion = JOptionPane.showConfirmDialog(null, "¿Realmente quieres salir?", "Confirmar salida", JOptionPane.YES_NO_OPTION);
+        if (opcion == JOptionPane.YES_OPTION) {
+                parent.enviarJugadorSale(miJugador);
+                parent.PasarPantallaInicio(this);
         }
-
-        for (int i = 0; i < fichasPiramidePosicion.size(); i++) {
-            if (!(fichasPiramidePosicion.get(i) == -1)) {
-                JLabel labelAux = new JLabel();
-                labelAux.setBorder(new LineBorder(Color.BLACK, 1));
-                labelAux.setOpaque(true);
-                labelAux.setBackground(casillas.get(fichasPiramidePosicion.get(i)).getBackground());
-                final int index = i;
-                labelAux.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        clickearFicha(index, 2);
-                    }
-                });
-                this.inicializarImagen(labelAux, "/piramide.png", 15, 15);
-                casillas.set(fichasPiramidePosicion.get(i), labelAux);
-                JLabel fichaTablero = fichasGato.get(i);
-                fichasPiramide.set(i, labelAux);
-                if (!(fichaTablero.getBorder() instanceof LineBorder)) {
-                    fichaTablero.setVisible(false);
-                }
-            }
-        }
-
-        for (int i = 0; i < fichasMazorcaPosicion.size(); i++) {
-            if (!(fichasMazorcaPosicion.get(i) == -1)) {
-                JLabel labelAux = new JLabel();
-                labelAux.setBorder(new LineBorder(Color.BLACK, 1));
-                labelAux.setOpaque(true);
-                labelAux.setBackground(casillas.get(fichasMazorcaPosicion.get(i)).getBackground());
-                final int index = i;
-                labelAux.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        clickearFicha(index, 3);
-                    }
-                });
-                this.inicializarImagen(labelAux, "/mazorca.png", 15, 15);
-                casillas.set(fichasMazorcaPosicion.get(i), labelAux);
-                JLabel fichaTablero = fichasGato.get(i);
-                fichasMazorca.set(i, labelAux);
-                if (!(fichaTablero.getBorder() instanceof LineBorder)) {
-                    fichaTablero.setVisible(false);
-                }
-            }
-        }
-    }   
+    }
+    /**
+     * Cierra la ventana y comunica la desconexion del jugador
+     */
+    public void cerrar() {
+        parent.CerrarPrograma();
+    }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -1774,17 +1805,17 @@ public class DialogTablero extends JDialog {
         pnlBotonesLayout.setHorizontalGroup(
             pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBotonesLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(27, Short.MAX_VALUE)
                 .addComponent(lblCaña1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblCaña2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblCaña3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblCaña4, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblCaña5, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22)
+                .addGap(28, 28, 28)
                 .addComponent(txtResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnLanzarCañas, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1840,7 +1871,7 @@ public class DialogTablero extends JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     /**
-    * Maneja el evento de acción cuando se hace clic en el botón "Salir".
+     * Maneja el evento de acción cuando se hace clic en el botón "Salir".
     * Llama al método Salir para cerrar la aplicación.
     *
     * @param evt el evento de acción generado al hacer clic en el botón

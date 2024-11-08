@@ -58,6 +58,7 @@ public class ServidorPatolli {
      * Detiene el servidor y desconecta a todos los jugadores
      */
     public void detenerServidor() {
+        //TODO: NO funciona
         try {
             if (serverSocket != null && !serverSocket.isClosed()) {
                 serverSocket.close();
@@ -102,7 +103,6 @@ public class ServidorPatolli {
      * @param mensaje Cadena que representa la accion a tomar
      */
     private void procesarMensaje(String mensaje) {
-        System.out.println("Procesando mensaje: "+mensaje);
         Gson gson = new Gson();
         String[] partesMensaje = gson.fromJson(mensaje, String[].class);
 
@@ -161,7 +161,6 @@ public class ServidorPatolli {
                 e.printStackTrace();
             }
         }
-        System.out.println("Numero de jugador: " + clientesConectados.size());
         return jugadoresConectados - 1;
     }
 

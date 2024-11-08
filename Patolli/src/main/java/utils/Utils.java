@@ -65,9 +65,7 @@ public class Utils {
      * @return Un entero que representa el resultado del lanzamiento.
      */
     public int GenerarLanzamiento() {
-        // Simular un lanzamiento aleatorio de los dados
-        //TODO
-        return 1;
+        return 1;//TODO
         //return resultados[new Random().nextInt(resultados.length)];
     }
 

@@ -3,6 +3,7 @@ package negocio;
 
 import java.util.List;
 import javax.swing.JFrame;
+import presentation.FrameInicio;
 import servidor.ClientePatolli;
 import servidor.ServidorPatolli;
 
@@ -26,7 +27,7 @@ public class Juego {
         return cliente.enviarJugadorSale(jugador);
     }
 
-    public boolean crearServidor(String codigoSala, JFrame frameInicio) {
+    public boolean crearServidor(String codigoSala, FrameInicio frameInicio) {
         servidor = new ServidorPatolli(codigoSala);
         servidor.crearServidor();
 
@@ -34,7 +35,7 @@ public class Juego {
         return cliente.conectar();
     }
 
-    public boolean unirseServidor(String codigoSala, JFrame frameInicio) {
+    public boolean unirseServidor(String codigoSala, FrameInicio frameInicio) {
         cliente = new ClientePatolli(codigoSala, frameInicio);
         return cliente.conectar();
     }

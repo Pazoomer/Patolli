@@ -85,7 +85,7 @@ public class DialogSala extends JDialog {
      * Método que permite regresar a la pantalla de opciones.
      */
     public void Volver() {
-            parent.jugadorSale(miJugador);
+            parent.enviarJugadorSale(miJugador);
             parent.PasarPantallaOpciones(this);
     }
 
