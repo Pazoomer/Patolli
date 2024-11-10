@@ -1,7 +1,6 @@
 package presentation;
 
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import utils.Utils;
 
@@ -18,7 +17,7 @@ public class DialogSala extends JDialog {
     public int jugadores = 0; // Contador de jugadores en la sala.
     public int miJugador; //Representa el jugador dueño de la pantalla
     public String codigo;   // Código de la sala.
-    private boolean banderaMiJugador=true; //Sirve como candado para que solo se pueda modificar miJugador cuando se conecta a un juego
+    private boolean banderaMiJugador = true; //Sirve como candado para que solo se pueda modificar miJugador cuando se conecta a un juego
 
     /**
      * Constructor de la clase FrameSala.
@@ -29,6 +28,7 @@ public class DialogSala extends JDialog {
      * @param monto Monto de apuestas.
      * @param fichas Número de fichas del jugador.
      * @param codigo Código de la sala. Si es null, se genera uno nuevo.
+     * @param miJugador Numero del jugador que se manda cuando se quiere volver a inicar una partida acabada
      */
     public DialogSala(FrameInicio parent, int tamaño, int monto, int fichas, String codigo) {
         this.setResizable(false);
@@ -40,8 +40,7 @@ public class DialogSala extends JDialog {
                 Cerrar(); // Llama a tu método Cerrar() cuando se intente cerrar la ventana
             }
         });
-        
-
+       
         this.parent = parent;
         this.tamaño = tamaño;
         this.monto = monto;
@@ -190,6 +189,12 @@ public class DialogSala extends JDialog {
      */
     public void recibirOpciones(int tamaño, int monto, int fichas, int jugadores) {
         parent.PasarPantallaTablero(this, tamaño, monto, fichas, jugadores, miJugador);
+    }
+    
+    public void recibirJugadorSale(int jugador){
+        if(jugador!=miJugador){
+            
+        }
     }
     
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

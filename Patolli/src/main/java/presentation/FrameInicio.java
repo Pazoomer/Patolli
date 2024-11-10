@@ -111,6 +111,11 @@ public class FrameInicio extends javax.swing.JFrame {
      */
     public void recibirJugadorSale(int jugador) {
         //TODO: Implementar
+        if (tablero != null) {
+            tablero.recibirJugadorSale(jugador);
+        } else if (sala != null) {
+            sala.recibirJugadorSale(jugador);
+        }
     }
     
     /**
@@ -176,6 +181,23 @@ public class FrameInicio extends javax.swing.JFrame {
         }
         this.setVisible(false);
         unirseCrear.setVisible(true);
+    }
+    
+    /**
+     * Pasa a la siguiente pantalla, que es DialogFinal. Crea una nueva
+     * instancia de DialogFinal y esconde la ventana actual
+     *
+     * @param children
+     * @param podio
+     */
+    public void PasarPantallaFinal(JDialog children, List podio) {
+        DialogFinal dialogFinal = new DialogFinal(this, podio);
+        dialogFinal.setLocationRelativeTo(children);
+        if (children != null) {
+            children.setVisible(false);
+        } 
+        this.setVisible(false);
+        dialogFinal.setVisible(true);
     }
 
     /**
