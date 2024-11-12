@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -51,8 +52,12 @@ public class DialogTablero extends JDialog {
     //Bandera jugador (Usado a nivel de interfaz, se envia al control)
     private int jugador = 0; //Representa al jugador actual
     private final List<Boolean> jugadoresActivos; //Representa si los jugadores siguen jugando
-    private List<Integer> podio=new ArrayList<>(); //Representa el orden de ganadores
-      
+    private List<Integer> podio = new ArrayList<>(); //Representa el orden de ganadores
+    
+    //Representan la lista de mensajes que se almacenan durante el movimiento de una ficha
+    private List<String> mensaje = new ArrayList<>();
+    private List<String> titulo = new ArrayList<>(); 
+
     //Labeles de fichas (Apariencia de fichas, NO se envian al control)
     private List<JLabel> fichasGato;
     private List<JLabel> fichasConcha;
@@ -72,7 +77,7 @@ public class DialogTablero extends JDialog {
     private final List<JLabel> casillas;
     
     //Variables de depuracion
-    private boolean modoDev=false; //Activa la funcion de tablero enumerado
+    private boolean modoDev=true; //Activa la funcion de tablero enumerado, boton lanzarCañas siempre activado
     private int j=0; //Sirve para enumerar el tablero
 
     /**
@@ -100,7 +105,7 @@ public class DialogTablero extends JDialog {
         initComponents();
         utils = new Utils();
         this.tamaño = tamaño;
-        this.monto = 1; //TODO
+        this.monto = 100; //TODO
         this.miJugador=miJugador;
         this.fichas = fichas;
         this.jugadores = jugadores;
@@ -111,7 +116,7 @@ public class DialogTablero extends JDialog {
         }
         inicializarGui();
         
-        if(parent.isHost){
+        if(parent.isHost || modoDev){
             this.btnLanzarCañas.setEnabled(true);
         }else{
             this.btnLanzarCañas.setEnabled(false);
@@ -374,15 +379,15 @@ public class DialogTablero extends JDialog {
      * @param numJugador Numero del jugador dueño de la ficha
      */
     private void clickearFicha(int numeroFicha, int numJugador) {
-        if(juegoAcabo){
+        if(juegoAcabo && !modoDev){
             JOptionPane.showMessageDialog(null, "La partida termino", "Juego finalizado", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        if (jugador != miJugador) {
+        if (jugador != miJugador && !modoDev) {
             JOptionPane.showMessageDialog(null, "No es tu turno", "No puedes mover", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        if (jugador == numJugador) {
+        if (jugador == numJugador || modoDev) {
             moverFicha(numeroFicha, numJugador);
         }else{
             JOptionPane.showMessageDialog(null, "La ficha es de otro jugador", "No puedes mover esa ficha", JOptionPane.INFORMATION_MESSAGE);
@@ -610,7 +615,7 @@ public class DialogTablero extends JDialog {
      * texto.
      */
     public void lanzarCañas() {
-        if(juegoAcabo){
+        if(juegoAcabo && !modoDev){
             JOptionPane.showMessageDialog(null, "La partida termino", "Juego finalizado", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
@@ -635,7 +640,9 @@ public class DialogTablero extends JDialog {
             case 1:
                 this.inicializarImagen(this.lblCaña1, "/cañaMarcada.png", 27, 54);
         }
-        this.btnLanzarCañas.setEnabled(false);
+        if(!modoDev){
+          this.btnLanzarCañas.setEnabled(false);  
+        }       
         iluminarFichas(true);
     }
     /**
@@ -651,6 +658,7 @@ public class DialogTablero extends JDialog {
             turnosExtra--;
             this.btnLanzarCañas.setEnabled(true);
         }
+        mostrarMensajesAlmacenados();
         subirCambios();
     }
     /**
@@ -704,7 +712,7 @@ public class DialogTablero extends JDialog {
             Color colorBorde = lineBorder.getLineColor(); // Obtiene el color del borde
 
             if (colorBorde.equals(Color.GREEN)) {
-                //Si la ficha tiene borde azul, significa que va a moverse por el tablero
+                //Si la ficha tiene borde verde, significa que va a moverse por el tablero
 
                 int posicionRelativa = getListaFichasPosicionMiJugador().get(numFicha);
 
@@ -744,24 +752,34 @@ public class DialogTablero extends JDialog {
                 //Casilla pagar apuesta
                 if (colorCasilla.equals(Color.RED)) {
                     montoJugadores.set(miJugador, montoJugadores.get(miJugador) -2);
-                    JOptionPane.showMessageDialog(null, "Pagas 2 apuestas", "Casilla pagar apuesta", JOptionPane.INFORMATION_MESSAGE);
+                    mensaje.add("Pagas 2 apuestas");
+                    titulo.add("Casilla pagar apuesta");
                 }
 
                 //Casilla doble turno
                 if (colorCasilla.equals(Color.BLUE)) {
                     turnosExtra = turnosExtra + 2;
-                    JOptionPane.showMessageDialog(null, "Obtienes 2 turnos extra", "Casilla doble turno", JOptionPane.INFORMATION_MESSAGE);
+                    mensaje.add("Obtienes 2 turnos extra");
+                    titulo.add("Casilla doble turno");
                 }
 
                 //Vuelta al tablero
-                if (posicionAnterior > casillasOrdenadas.indexOf(casillaTermina)) {
-                    montoJugadores.set(miJugador, montoJugadores.get(miJugador) + jugadores);
+                int casillaVuelta = casillasOrdenadas.indexOf(getCasillaInicialMiJugador());
+                boolean dioVuelta = false;
+                if (miJugador == 0 && posicionAnterior > casillasOrdenadas.indexOf(casillaTermina)) {
+                    dioVuelta = true;
+                } else if (posicionAnterior < casillaVuelta && casillaVuelta < casillasOrdenadas.indexOf(casillaTermina)) {
+                    dioVuelta = true;
+                }
+                if (dioVuelta) {
+                    montoJugadores.set(miJugador, montoJugadores.get(miJugador) + jugadores - 1);
                     for (int i = 0; i < jugadores; i++) {
                         if (miJugador != i) {
-                            montoJugadores.set(i, montoJugadores.get(i) -1);
+                            montoJugadores.set(i, montoJugadores.get(i) - 1);
                         }
                     }
-                    JOptionPane.showMessageDialog(null, "Cobraste 1 apuesta a todos los demas jugadores", "Vuelta al tablero", JOptionPane.INFORMATION_MESSAGE);
+                    mensaje.add("Cobraste 1 apuesta a todos los demas jugadores");
+                    titulo.add("Vuelta al tablero");
                 }
             } else if (colorBorde.equals(Color.YELLOW)) {
                 //Si la ficha tiene borde amarillo, significa que va a entrar al tablero
@@ -783,12 +801,29 @@ public class DialogTablero extends JDialog {
                 getListaFichasMiJugador().set(numFicha, labelAux);
                 //Esconder la ficha del tablero del jugador
                 miFicha.setVisible(false);
+            }else{
+                //Si la ficha no tiene borde, no puede moverse por que otra ficha le estorba
+                JOptionPane.showMessageDialog(null, "La ficha no puede terminar en una casilla ocupada, elige otra ficha", "Casilla ocupada", JOptionPane.INFORMATION_MESSAGE);
+                return;
             }
         }
         iluminarFichas(false);
         actualizarTablero();
         siguienteJugador();
     }
+   
+    /**
+     * Muestra los resultados del movimiento de una ficha almacenados en mensaje
+     * y titulo
+     */
+    private void mostrarMensajesAlmacenados() {
+        for (int i = 0; i < mensaje.size(); i++) {
+            JOptionPane.showMessageDialog(null, mensaje.get(i), titulo.get(i), JOptionPane.INFORMATION_MESSAGE);
+        }
+        mensaje.clear();
+        titulo.clear();
+    }
+
     /**
      * Si un jugador tiene 0 o menos de monto de apuesta, sale del juego
      */
@@ -825,8 +860,7 @@ public class DialogTablero extends JDialog {
                         JOptionPane.showMessageDialog(null, "Te has quedado sin apuestas, no puedes jugar más", "Perdiste", JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         JOptionPane.showMessageDialog(null, getNombreJugador(i) + " Se ha quedado sin apuestas y sale de la partida", "Un jugador sale de la partida", JOptionPane.INFORMATION_MESSAGE);
-                    }
-                    
+                    }               
                     podio.add(i);
                 }
             }
@@ -856,7 +890,7 @@ public class DialogTablero extends JDialog {
         }
         //Si solo se encontro un jugador disponible, entonces ese jugador gana
         if (ganar) {
-            ganar(jugador);
+            ganar(siguienteJugador);
         } else { //De otra forma entonces el turno pasa al siguiente jugador que puede jugar
             jugador = siguienteJugador;
             if (miJugador == jugador) {
@@ -872,6 +906,7 @@ public class DialogTablero extends JDialog {
     private void ganar(int jugadorGanador) {
         juegoAcabo=true;
         podio.add(jugadorGanador);
+        Collections.reverse(podio);
         parent.PasarPantallaFinal(this, podio);
     }
     /**

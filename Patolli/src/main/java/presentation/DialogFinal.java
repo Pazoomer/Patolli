@@ -35,7 +35,7 @@ public class DialogFinal extends javax.swing.JDialog {
         String posicionARuta = null;
         List<String> podioTexto = new ArrayList<>();
         for (int i = 0; i < podio.size(); i++) {
-            switch (i) {
+            switch (podio.get(i)) {
                 case 0 -> {
                     posicionARuta = "/cat.png";
                 }
@@ -51,13 +51,13 @@ public class DialogFinal extends javax.swing.JDialog {
             }
             podioTexto.add(posicionARuta);
         }
-        inicializarImagen(this.lblPrimerLugar, podioTexto.get(podioTexto.size() - 1), 253, 217);
-        inicializarImagen(this.lblSegundoLugar, podioTexto.get(podioTexto.size() - 2), 119, 102);
+        inicializarImagen(this.lblPrimerLugar, podioTexto.get(0), 253, 217);
+        inicializarImagen(this.lblSegundoLugar, podioTexto.get(1), 119, 102);
         if (podioTexto.size() > 2) {
-            inicializarImagen(this.lblTercerLugar, podioTexto.get(podioTexto.size() - 3), 119, 102);
+            inicializarImagen(this.lblTercerLugar, podioTexto.get(2), 119, 102);
         }
         if (podioTexto.size() > 3) {
-            inicializarImagen(this.lblCuartoLugar, podioTexto.get(podioTexto.size() - 4), 119, 102);
+            inicializarImagen(this.lblCuartoLugar, podioTexto.get(3), 119, 102);
         }
     }
 
