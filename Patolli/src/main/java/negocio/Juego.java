@@ -2,7 +2,6 @@
 package negocio;
 
 import java.util.List;
-import javax.swing.JFrame;
 import presentation.FrameInicio;
 import servidor.ClientePatolli;
 import servidor.ServidorPatolli;

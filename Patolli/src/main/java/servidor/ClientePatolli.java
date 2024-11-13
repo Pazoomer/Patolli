@@ -32,7 +32,6 @@ public class ClientePatolli {
         this.codigoSala = codigoSala;
         this.frameInicio = frameInicio;
     }
-
     /**
      * Conecta esta instancia con el servidor
      * @return Verdadero si la conexion fue exitosa
@@ -109,7 +108,12 @@ public class ClientePatolli {
         }).start();
         return true;
     }
-    
+    /**
+     * El cliente se deconecta del servidor
+     */
+    private void desconectar(){
+        //TODO:
+    }
     /**
      * Envia un mensaje al servidor
      * @param mensaje Cadena a enviar
@@ -119,7 +123,6 @@ public class ClientePatolli {
             out.println(mensaje); 
         }
     }
-
     /**
      * Notifica a todos los jugadores que un jugador salio
      *
@@ -138,7 +141,6 @@ public class ClientePatolli {
         enviarMensaje(mensaje);
         return true;
     }
-
     /**
      * Metodo para actualizar a los clientes conectados
      * @param siguienteJugador
@@ -174,7 +176,6 @@ public class ClientePatolli {
         enviarMensaje(mensaje);
         return true;
     }
-    
     /**
      * Envia las opciones de la partida
      * @param tamaño Tamaño del tablero
@@ -203,7 +204,6 @@ public class ClientePatolli {
         
         return true;
     }
-
     /**
      * Recibe los cambios de un jugador y los manda a todos los otros jugadores
      *
@@ -218,7 +218,6 @@ public class ClientePatolli {
             List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
             frameInicio.recibirCambios(montoJugadores, siguienteJugador, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
     }
-
     /**
      * Recibe las opciones de la partida
      * @param tamaño Tamaño del tablero
@@ -229,7 +228,6 @@ public class ClientePatolli {
     public void recibirOpciones(int tamaño, int monto, int fichas, int jugadores) {
             frameInicio.recibirOpciones(tamaño, monto, fichas, jugadores);
     }
-
     /**
      * Recibe la notificacion de que un jugador entro
      *
@@ -238,7 +236,6 @@ public class ClientePatolli {
     public void recibirJugadorEntra(int numeroJugadores) {
             frameInicio.jugadorEntra(numeroJugadores);
     }
-
     /**
      * Recibe la notificacion de que un jugador salio
      *

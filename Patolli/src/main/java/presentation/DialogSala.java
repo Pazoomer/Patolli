@@ -10,6 +10,7 @@ import utils.Utils;
  * a otras pantallas del juego.
  */
 public class DialogSala extends JDialog {
+
     private final FrameInicio parent;
     public int tamaño;      // Tamaño del tablero de juego.
     public int monto;       // Monto de apuestas.
@@ -17,7 +18,7 @@ public class DialogSala extends JDialog {
     public int jugadores = 0; // Contador de jugadores en la sala.
     public int miJugador; //Representa el jugador dueño de la pantalla
     public String codigo;   // Código de la sala.
-    private boolean banderaMiJugador = true; //Sirve como candado para que solo se pueda modificar miJugador cuando se conecta a un juego
+    private boolean banderaMiJugador = true; //Sirve como candado para que solo se pueda modificar miJugador cuando se conecta a una sala
 
     /**
      * Constructor de la clase FrameSala.
@@ -28,7 +29,6 @@ public class DialogSala extends JDialog {
      * @param monto Monto de apuestas.
      * @param fichas Número de fichas del jugador.
      * @param codigo Código de la sala. Si es null, se genera uno nuevo.
-     * @param miJugador Numero del jugador que se manda cuando se quiere volver a inicar una partida acabada
      */
     public DialogSala(FrameInicio parent, int tamaño, int monto, int fichas, String codigo) {
         this.setResizable(false);
@@ -37,7 +37,7 @@ public class DialogSala extends JDialog {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                Cerrar(); // Llama a tu método Cerrar() cuando se intente cerrar la ventana
+                cerrar(); // Llama a tu método Cerrar() cuando se intente cerrar la ventana
             }
         });
        
@@ -66,7 +66,6 @@ public class DialogSala extends JDialog {
         
         ajustesHost();
     }
-    
     /**
      * Ajusta la pantalla dependiendo si es o no el host
      */
@@ -79,22 +78,13 @@ public class DialogSala extends JDialog {
         }
 
     }
-    
-    /**
-     * Método que permite regresar a la pantalla de opciones.
-     */
-    public void Volver() {
-            parent.enviarJugadorSale(miJugador);
-            parent.PasarPantallaOpciones(this);
-    }
-
     /**
      * Método que inicia el juego.
      * Si hay más de un jugador, pasa a la pantalla del tablero; de lo contrario,
      * muestra un mensaje informando que se
      * necesitan más jugadores.
      */
-    public void Jugar() {
+    public void jugar() {
         if (!parent.isHost) {
             JOptionPane.showMessageDialog(null, "Solo el creador de la sala puede iniciar el juego", "No eres el host", JOptionPane.INFORMATION_MESSAGE);
             return;
@@ -106,15 +96,7 @@ public class DialogSala extends JDialog {
         } else {
             JOptionPane.showMessageDialog(null, "Se necesitan dos jugadores para jugar", "Faltan jugadores", JOptionPane.INFORMATION_MESSAGE);
         }
-    }
-    
-    public int setMiJugador(int numeroJugadores){
-        if(banderaMiJugador){
-            banderaMiJugador=false;
-            this.miJugador=numeroJugadores;
-        }
-        return numeroJugadores;
-    }
+    } 
     /**
      * Método para añadir un jugador a la sala.
      * Actualiza la cantidad de jugadores y la visibilidad de los iconos correspondientes.
@@ -122,52 +104,28 @@ public class DialogSala extends JDialog {
      * @param numeroJugadores El número de jugadores a añadir (puede ser negativo para restar).
      * @return Entero con los jugadores actuales despues de agregar
      */
-    public int AñadirJugador(int numeroJugadores) {
-        jugadores = jugadores + numeroJugadores;
-        switch (jugadores) {
-            case 0->{
-                AñadirJugador(1);
-            }
-            case 1 -> {
-                this.lblP2.setVisible(false);
-                this.conchaIcono.setVisible(false);
-            }
-            case 2 -> {
-                this.lblP2.setVisible(true);
-                this.conchaIcono.setVisible(true);
+    public int añadirJugador(int numeroJugadores) {
+        jugadores += numeroJugadores;
 
-                this.lblP3.setVisible(false);
-                this.piramideIcono.setVisible(false);
-                this.lblP4.setVisible(false);
-                this.mazorcaIcono.setVisible(false);
-            }
-            case 3 -> {
-                this.lblP3.setVisible(true);
-                this.piramideIcono.setVisible(true);
-
-                this.lblP4.setVisible(false);
-                this.mazorcaIcono.setVisible(false);
-            }
-            case 4 -> {
-                this.lblP4.setVisible(true);
-                this.mazorcaIcono.setVisible(true);
-            }
-            case 5 -> {
-                // No se pueden tener más de 4 jugadores, se reduce el contador.
-                AñadirJugador(-1);
-            }
+        // Ajustar el número de jugadores al rango permitido (1-4)
+        if (jugadores < 1) {
+            jugadores = 1;
+        } else if (jugadores > 4) {
+            jugadores = 4;
         }
+
+        // Configurar visibilidad según el número de jugadores
+        this.lblP2.setVisible(jugadores >= 2);
+        this.conchaIcono.setVisible(jugadores >= 2);
+
+        this.lblP3.setVisible(jugadores >= 3);
+        this.piramideIcono.setVisible(jugadores >= 3);
+
+        this.lblP4.setVisible(jugadores >= 4);
+        this.mazorcaIcono.setVisible(jugadores >= 4);
+
         return jugadores;
     }
-    
-    
-    /**
-     * Cierra el programa
-     */
-    public void Cerrar() {
-            parent.CerrarPrograma();
-    }
-
     /**
      * Manda el valor del tablero, el monto de los jugadores y el
      * siguientejugador al control del juego
@@ -178,7 +136,6 @@ public class DialogSala extends JDialog {
         parent.subirOpciones(tamaño, monto, fichas, jugadores);
         return true;
     }
-
     /**
      * Recibe las ocpiones del control e inicia el tablero con estas
      *
@@ -190,13 +147,46 @@ public class DialogSala extends JDialog {
     public void recibirOpciones(int tamaño, int monto, int fichas, int jugadores) {
         parent.PasarPantallaTablero(this, tamaño, monto, fichas, jugadores, miJugador);
     }
-    
-    public void recibirJugadorSale(int jugador){
-        if(jugador!=miJugador){
-            
+    /**
+     * Recibe la notifiación de que el numero de mi jugador es el del parametro
+     * @param numeroJugadores Mi numero de jugador
+     * @return el numero de jugador recibido
+     */
+    public int setMiJugador(int numeroJugadores) {
+        if (banderaMiJugador) {
+            banderaMiJugador = false;
+            miJugador = numeroJugadores;
+            añadirJugador(miJugador);
+        }
+        return numeroJugadores;
+    }
+    /**
+     * Recibe la notificación de que un jugador salio de la sala
+     *
+     * @param jugador Jugador que salio
+     */
+    public void recibirJugadorSale(int jugador) {
+        if (jugador != miJugador) {
+            añadirJugador(-1);
+            if (miJugador > jugador) {
+                miJugador--;
+            }
         }
     }
-    
+    /**
+     * Regresa a la pantalla de opciones.
+     */
+    public void volver() {
+        parent.enviarJugadorSale(miJugador);
+        parent.PasarPantallaOpciones(this);
+    }
+    /**
+     * Cierra el programa
+     */
+    public void cerrar() {
+        parent.enviarJugadorSale(miJugador);
+        parent.CerrarPrograma();
+    }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -493,7 +483,7 @@ public class DialogSala extends JDialog {
     * @param evt el evento de mouse que se ha producido
     */
     private void lblVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblVolverMouseClicked
-        Volver();
+        volver();
     }//GEN-LAST:event_lblVolverMouseClicked
     /**
     * Maneja el evento de clic en el panel "Volver".
@@ -511,7 +501,7 @@ public class DialogSala extends JDialog {
     * @param evt el evento de mouse que se ha producido
     */
     private void lblJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblJugarMouseClicked
-        Jugar();
+        jugar();
     }//GEN-LAST:event_lblJugarMouseClicked
     /**
     * Maneja el evento de clic en el panel "Jugar".
@@ -530,7 +520,7 @@ public class DialogSala extends JDialog {
     * @param evt el evento de mouse que se ha producido
     */
     private void TODObtnAñadirJugadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TODObtnAñadirJugadorMouseClicked
-        AñadirJugador(1);
+        añadirJugador(1);
     }//GEN-LAST:event_TODObtnAñadirJugadorMouseClicked
     /**
     * Maneja el evento de clic en el botón para eliminar un jugador.
@@ -540,7 +530,7 @@ public class DialogSala extends JDialog {
     * @param evt el evento de mouse que se ha producido
     */
     private void TODObtnEliminarJugadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TODObtnEliminarJugadorMouseClicked
-       AñadirJugador(-1);
+       añadirJugador(-1);
     }//GEN-LAST:event_TODObtnEliminarJugadorMouseClicked
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed

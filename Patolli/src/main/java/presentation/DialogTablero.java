@@ -31,26 +31,24 @@ import utils.Utils;
  */
 public class DialogTablero extends JDialog {
 
-    //Clases (Son iguales para todas las instancias, NO pueden cambiar, NO se envian al control)
+    //VARIABLES QUE NO SE ENVIAN AL CONTROL
+    
+    //Clases (Son iguales para todas las instancias, NO pueden cambiar)
     private final FrameInicio parent; //JFrame padre
     private final Utils utils; //Herramientas para calculos
     
-    //Opciones (Se definen en la creacion de la pantalla, NO pueden cambiar, NO se envian al control)
+    //Opciones (Se definen en la creacion de la pantalla, NO pueden cambiar)
     private final int tamaño; //Tamaño del tablero
     private final int monto; //Cantidad de monto de apuestas al comenzar
     private final int fichas; //Cantidad de fichas por jugador
     private final int jugadores; //Cantidad de jugadores
     private final int miJugador; //Representa el jugador dueño de la pantalla
-    private List<Integer> casillasOrdenadas; //Arreglo de numeros que traduce el verdadero orden de las casillas a progreso
     
-    //Banderas (Usados a nivel de interfaz, NO se envian al control)
+    //Banderas (Usados a nivel de interfaz)
     private int resultadoCañas; //Resultado del ultimo lanzamiento de cañas
     private boolean puedeMover; //Indica si el jugador puede mover una ficha
     private int turnosExtra; //Indica los turnos extras del jugador
     private boolean juegoAcabo; //Indica si el juego finalizo
-    
-    //Bandera jugador (Usado a nivel de interfaz, se envia al control)
-    private int jugador = 0; //Representa al jugador actual
     private final List<Boolean> jugadoresActivos; //Representa si los jugadores siguen jugando
     private List<Integer> podio = new ArrayList<>(); //Representa el orden de ganadores
     
@@ -58,28 +56,34 @@ public class DialogTablero extends JDialog {
     private List<String> mensaje = new ArrayList<>();
     private List<String> titulo = new ArrayList<>(); 
 
-    //Labeles de fichas (Apariencia de fichas, NO se envian al control)
+    //Labeles de fichas (Apariencia de fichas)
     private List<JLabel> fichasGato;
     private List<JLabel> fichasConcha;
     private List<JLabel> fichasPiramide;
     private List<JLabel> fichasMazorca;
     
-    //Posición de fichas (Posicion real de fichas, Se envian al control)
+    //Casillas del tablero
+    private final List<JLabel> casillas; //Apariencia del tablero
+    private List<Integer> casillasOrdenadas; //Arreglo de numeros que traduce el verdadero orden de las casillas a progreso
+    
+    //Variables de depuracion
+    private boolean modoDev=false; //Activa la funcion de tablero enumerado, boton lanzarCañas siempre activado
+    private int j=0; //Sirve para enumerar el tablero
+    
+    //VARIABLES QUE SE ENVIAN AL CONTROL
+    
+    //Representa al jugador actual
+    private int jugador = 0;
+    
+    //Posicion real de fichas en casillas
     private List<Integer> fichasGatoPosicion;
     private List<Integer> fichasConchaPosicion;
     private List<Integer> fichasPiramidePosicion;
     private List<Integer> fichasMazorcaPosicion;
     
-    //Monto de jugadores (Valor de apuestas, Se envia al control)
+    //Monto de apuestas de jugadores 
     private List<Integer> montoJugadores;
     
-    //Casillas del tablero (Apariencia del tablero, NO se envia al control)
-    private final List<JLabel> casillas;
-    
-    //Variables de depuracion
-    private boolean modoDev=true; //Activa la funcion de tablero enumerado, boton lanzarCañas siempre activado
-    private int j=0; //Sirve para enumerar el tablero
-
     /**
      * Constructor de la clase FrameTablero.
      *
@@ -772,7 +776,13 @@ public class DialogTablero extends JDialog {
                     dioVuelta = true;
                 }
                 if (dioVuelta) {
-                    montoJugadores.set(miJugador, montoJugadores.get(miJugador) + jugadores - 1);
+                    int jugadoresAct=0;
+                    for (int i = 0; i < jugadores; i++) {
+                        if(jugadoresActivos.get(i)){
+                            jugadoresAct++;
+                        }
+                    }
+                    montoJugadores.set(miJugador, montoJugadores.get(miJugador) + jugadoresAct - 1);
                     for (int i = 0; i < jugadores; i++) {
                         if (miJugador != i) {
                             montoJugadores.set(i, montoJugadores.get(i) - 1);
@@ -810,8 +820,7 @@ public class DialogTablero extends JDialog {
         iluminarFichas(false);
         actualizarTablero();
         siguienteJugador();
-    }
-   
+    }  
     /**
      * Muestra los resultados del movimiento de una ficha almacenados en mensaje
      * y titulo
@@ -823,7 +832,6 @@ public class DialogTablero extends JDialog {
         mensaje.clear();
         titulo.clear();
     }
-
     /**
      * Si un jugador tiene 0 o menos de monto de apuesta, sale del juego
      */
@@ -1157,11 +1165,17 @@ public class DialogTablero extends JDialog {
         }
     }
     /**
-     * Recibe la notificacion de que un jugador sale de la partida por medios distintos a perder en el juego
+     * Recibe la notificacion de que un jugador sale de la partida por medios
+     * distintos a perder en el juego
+     *
      * @param jugador Jugador que sale de la partida
      */
-    public void recibirJugadorSale(int jugador){
-        //TODO:
+    public void recibirJugadorSale(int jugador) {
+        if (jugador != miJugador) {
+            montoJugadores.set(jugador, 0);
+            JOptionPane.showMessageDialog(null, getNombreJugador(jugador) + " ha abandona la partida, se removeran sus apuestas y fichas", "Un jugador abandono la partida", JOptionPane.INFORMATION_MESSAGE);
+            revisarJugadorSale();
+        }
     }
     /**
      * Cierra la aplicación después de confirmar la salida con el usuario.
@@ -1177,6 +1191,7 @@ public class DialogTablero extends JDialog {
      * Cierra la ventana y comunica la desconexion del jugador
      */
     public void cerrar() {
+        parent.enviarJugadorSale(miJugador);
         parent.CerrarPrograma();
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1963,7 +1978,7 @@ public class DialogTablero extends JDialog {
     }//GEN-LAST:event_btnLanzarCañasMouseClicked
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-  
+
     }//GEN-LAST:event_formWindowClosed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

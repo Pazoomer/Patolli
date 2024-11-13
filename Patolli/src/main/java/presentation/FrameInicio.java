@@ -110,7 +110,6 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param jugador
      */
     public void recibirJugadorSale(int jugador) {
-        //TODO: Implementar
         if (tablero != null) {
             tablero.recibirJugadorSale(jugador);
         } else if (sala != null) {
@@ -125,7 +124,7 @@ public class FrameInicio extends javax.swing.JFrame {
      */
     public int jugadorEntra(int numeroJugadores) {
         if (sala != null) {
-            sala.AñadirJugador(1);
+            sala.añadirJugador(1);
             return sala.setMiJugador(numeroJugadores-1);
         }
         return -1;
