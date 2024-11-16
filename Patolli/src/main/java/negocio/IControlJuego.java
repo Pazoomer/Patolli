@@ -9,25 +9,17 @@ import java.util.List;
 public interface IControlJuego {
 
     /**
-     * Desactiva el servidor con el codigo de sala
-     */
-    public void destruirServidor();
-
-    /**
-     * Crea un nuevo servidor con el codigo de la sala
-     *
-     * @param codigoSala Contraseña para unirse al servidor
-     * @return
-     */
-    public boolean crearServidor(String codigoSala);
-
-    /**
      * Esta instancia de programa se une al servidor con el codigo de sala
      *
      * @param codigoSala Contraseña del servidor
      * @return
      */
     public boolean unirseServidor(String codigoSala);
+    
+    /**
+     * El jugador se desconecta de la partida
+     */
+    public void desconectar();
 
     /**
      * Recibe los cambios de la interfaz del jugador actual y los manda a las
@@ -53,13 +45,6 @@ public interface IControlJuego {
     public boolean jugadorSale(int jugador);
 
     /**
-     * Un jugador se une a la partida
-     *
-     * @return Devuelve el numero de jugador que es
-     */
-    public int jugadorEntra();
-
-    /**
      * Pasa los ajustes de opciones
      *
      * @param tamaño
@@ -70,4 +55,5 @@ public interface IControlJuego {
      */
     public boolean pasarOpciones(int tamaño, int monto, int fichas, int jugadores);
 
+    public void getNumeroJugadores();
 }

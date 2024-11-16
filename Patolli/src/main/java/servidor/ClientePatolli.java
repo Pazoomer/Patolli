@@ -47,10 +47,11 @@ public class ClientePatolli {
                 while ((fromServer = in.readLine()) != null) {
                     Gson gson = new Gson();
                     JsonElement jsonElement = gson.fromJson(fromServer, JsonElement.class);
-
+                    
                     if (jsonElement.isJsonArray()) {
                         
                         String[] datos = gson.fromJson(jsonElement, String[].class);
+                        System.out.println(datos[0]);
                         switch (datos[0]) {
                             case "pasarOpciones" -> {
                                 int tamaño = gson.fromJson(datos[1], Integer.class);
@@ -80,15 +81,19 @@ public class ClientePatolli {
                                 recibirJugadorEntra(numeroJugadores);
                             }
                             case "jugadorSale"->{
+                                int numeroJugador = gson.fromJson(datos[1], Integer.class);
+                                recibirJugadorSale(numeroJugador);
+                            }
+                            case "numeroJugadores"->{
                                 int numeroJugadores = gson.fromJson(datos[1], Integer.class);
-                                recibirJugadorSale(numeroJugadores);
+                                setNumeroJugadores(numeroJugadores);
                             }
                         }
                     } else {
                         System.out.println("Formato JSON inesperado");
                     }
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 try {
@@ -106,13 +111,26 @@ public class ClientePatolli {
                 }
             }
         }).start();
+        enviarCodigoSala();
         return true;
     }
     /**
      * El cliente se deconecta del servidor
      */
-    private void desconectar(){
-        //TODO:
+    public void desconectar() {
+        try {
+            if (in != null) {
+                in.close();
+            }
+            if (out != null) {
+                out.close();
+            }
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     /**
      * Envia un mensaje al servidor
@@ -122,6 +140,22 @@ public class ClientePatolli {
         if (out != null) {
             out.println(mensaje); 
         }
+    }
+    /**
+     * Envia el codigo de la sala al servidor para que lo coloque en la sala correcta
+     * @return Verdadero si se envio con exito
+     */
+    public boolean enviarCodigoSala(){
+        Gson gson = new Gson();
+       
+        String jsonCodigoSala = gson.toJson(codigoSala);
+        
+        String mensaje = gson.toJson(new String[]{
+            "codigoSala",
+            jsonCodigoSala
+        });
+        enviarMensaje(mensaje);
+        return true;
     }
     /**
      * Notifica a todos los jugadores que un jugador salio
@@ -243,5 +277,22 @@ public class ClientePatolli {
      */
     public void recibirJugadorSale(int numeroJugadores) {
         frameInicio.recibirJugadorSale(numeroJugadores);
+    }
+    /**
+     * Devuelve el numero de jugadores conectados al servidor
+     */
+    public void getNumeroJugadores() {
+        Gson gson = new Gson();
+
+        String mensaje = gson.toJson(new String[]{
+            "numeroJugadores"
+        });
+        enviarMensaje(mensaje);
+    }
+    /**
+     * Devuelve el numero de jugadores conectados al servidor
+     */
+    public void setNumeroJugadores(int numeroJugadores) {
+        frameInicio.recibirNumeroJugadores(numeroJugadores);
     }
 }

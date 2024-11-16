@@ -2,7 +2,6 @@
 package negocio;
 
 import java.util.List;
-import javax.swing.JFrame;
 import presentation.FrameInicio;
 
 /**
@@ -32,18 +31,8 @@ public class ControlJuego implements IControlJuego {
     }
 
     @Override
-    public boolean crearServidor(String codigoSala) {
-        return juego.crearServidor(codigoSala, frameInicio);
-    }
-
-    @Override
     public boolean unirseServidor(String codigoSala) {
         return juego.unirseServidor(codigoSala, frameInicio);
-    }
-
-    @Override
-    public void destruirServidor() {
-        juego.destruirServidor();
     }
 
     @Override
@@ -52,8 +41,12 @@ public class ControlJuego implements IControlJuego {
     }
 
     @Override
-    public int jugadorEntra() {
-    return juego.jugadorEntra();
+    public void desconectar() {
+        juego.desconectar();
     }
 
+    @Override
+    public void getNumeroJugadores() {
+        juego.getNumeroJugadores();
+    }
 }

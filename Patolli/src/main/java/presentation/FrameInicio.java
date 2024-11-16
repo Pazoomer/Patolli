@@ -31,13 +31,6 @@ public class FrameInicio extends javax.swing.JFrame {
     }
 
     /**
-     * Detiene el servidor y desconecta a todos los jugadores
-     */
-    public void detenerServidor() {
-        controlJuego.destruirServidor();
-    }
-
-    /**
      * Crea un nuevo servidor
      *
      * @param codigoSala
@@ -45,7 +38,8 @@ public class FrameInicio extends javax.swing.JFrame {
      */
     public boolean crearServidor(String codigoSala) {
         isHost = true;
-        return controlJuego.crearServidor(codigoSala);
+        return controlJuego.unirseServidor(codigoSala);
+        //TODO: Cambiar nombre del metodo
     }
 
     /**
@@ -105,6 +99,14 @@ public class FrameInicio extends javax.swing.JFrame {
     }
     
     /**
+     * El jugador se desconecta del servidor
+     */
+    public void desconectar(){
+        controlJuego.desconectar();
+        //TODO: Este metodo debe ser llamado en sala y tablero al salir
+    }
+    
+    /**
      * El jugador sale de la partida
      *
      * @param jugador
@@ -116,6 +118,24 @@ public class FrameInicio extends javax.swing.JFrame {
             sala.recibirJugadorSale(jugador);
         }
     }
+    /**
+     * Recibe el numero de jugadores para actualizar la interfaz de la sala
+     * @param numeroJugadores 
+     */
+    public void recibirNumeroJugadores(int numeroJugadores){
+        if (sala != null) {
+            sala.añadirJugador(1);
+            sala.setMiJugador(numeroJugadores);
+            sala.setContexto();
+        }
+    }
+    
+    /**
+     * Pide el numero de jugadores al servidor
+     */
+    public void getNumeroJugadores(){
+        this.controlJuego.getNumeroJugadores();
+    }
     
     /**
      * Un jugador entra a la partida
@@ -123,9 +143,9 @@ public class FrameInicio extends javax.swing.JFrame {
      * @return 
      */
     public int jugadorEntra(int numeroJugadores) {
-        if (sala != null) {
+        if (sala != null) {                
             sala.añadirJugador(1);
-            return sala.setMiJugador(numeroJugadores-1);
+            return numeroJugadores;
         }
         return -1;
     }

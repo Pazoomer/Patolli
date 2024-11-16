@@ -51,7 +51,8 @@ public class DialogTablero extends JDialog {
     private boolean juegoAcabo; //Indica si el juego finalizo
     private final List<Boolean> jugadoresActivos; //Representa si los jugadores siguen jugando
     private List<Integer> podio = new ArrayList<>(); //Representa el orden de ganadores
-    
+    private boolean primerLanzamiento = true;
+
     //Representan la lista de mensajes que se almacenan durante el movimiento de una ficha
     private List<String> mensaje = new ArrayList<>();
     private List<String> titulo = new ArrayList<>(); 
@@ -109,7 +110,7 @@ public class DialogTablero extends JDialog {
         initComponents();
         utils = new Utils();
         this.tamaño = tamaño;
-        this.monto = 100; //TODO
+        this.monto = monto;
         this.miJugador=miJugador;
         this.fichas = fichas;
         this.jugadores = jugadores;
@@ -119,8 +120,8 @@ public class DialogTablero extends JDialog {
             jugadoresActivos.add(true);
         }
         inicializarGui();
-        
-        if(parent.isHost || modoDev){
+        System.out.println("Soy el jugador mijugador: "+miJugador);
+        if(miJugador==0 || modoDev){
             this.btnLanzarCañas.setEnabled(true);
         }else{
             this.btnLanzarCañas.setEnabled(false);
@@ -619,11 +620,16 @@ public class DialogTablero extends JDialog {
      * texto.
      */
     public void lanzarCañas() {
-        if(juegoAcabo && !modoDev){
+        if(juegoAcabo && !modoDev) {
             JOptionPane.showMessageDialog(null, "La partida termino", "Juego finalizado", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        resultadoCañas = utils.GenerarLanzamiento();
+        if (primerLanzamiento) {
+            primerLanzamiento = false;
+            resultadoCañas = 1;
+        } else {
+            resultadoCañas = utils.GenerarLanzamiento();
+        }
         this.txtResultado.setText(String.valueOf(resultadoCañas));
 
         this.inicializarImagen(this.lblCaña1, "/cañaLisa.png", 27, 54);
@@ -915,6 +921,7 @@ public class DialogTablero extends JDialog {
         juegoAcabo=true;
         podio.add(jugadorGanador);
         Collections.reverse(podio);
+        parent.enviarJugadorSale(miJugador);
         parent.PasarPantallaFinal(this, podio);
     }
     /**
@@ -1098,7 +1105,7 @@ public class DialogTablero extends JDialog {
         this.actualizarApuestas(); //Coloca el monto de apuestas correspondiente
         this.actualizarCasillas(); //Actualiza el valor de la lista de casillas y la lista de fichas de label
         this.actualizarTablero(); //Actualiza el tablero con la lista de casillas
-        this.actualizarSiguienteJugador(); //Actualiza la vista para el siguiente jugador
+        this.actualizarSiguienteJugador(); //Actualiza la vista para el siguiente jugador TODO: no funciona como deberia
 
         //Si es mi turno, habilita el lanzar cañas
         if (jugadoresActivos.get(miJugador)) {

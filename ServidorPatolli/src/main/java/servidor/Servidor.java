@@ -6,42 +6,54 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.Gson;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 /**
  *
  * @author t1pas
  */
-public class ServidorPatolli {
+public class Servidor {
 
-    private final List<Socket> clientesConectados = new ArrayList<>();  // Lista para almacenar los clientes conectados
+    private final Map<String, List<Socket>> salas = new HashMap<>();  // Diccionario con código de sala como clave y lista de sockets como valor
     private ServerSocket serverSocket;
-    private final String codigoSala;
-
+    
     /**
-     * Constructor con el codigo de sala
-     * @param codigoSala 
+     * Enciende o apaga el servidor
+     * @return Cadena de texto con el procedimiento realizado o un mensaje de error
      */
-    public ServidorPatolli(String codigoSala) {
-        this.codigoSala = codigoSala;
+    public String switchServidor() {
+        if(estaEncendido()){
+            return this.detenerServidor();
+        }else{
+            return this.iniciarServidor();
+        }
     }
-
+    /**
+     * Verifica si el servidor esta corriendo
+     * @return Verdadero si el servidor esta encendido
+     */
+    public boolean estaEncendido() {
+        try (Socket socket = new Socket("localhost", 4444)) {
+            return true;  
+        } catch (IOException e) {
+            return false;
+        }
+    }
     /**
      * Crea un nuevo servidor
+     * @return Cadena de texto con el resultado del metodo
      */
-    public void crearServidor() {
-        System.out.println("SOY EL SERVIDOR");
-        try {
+    public String iniciarServidor() {
+        try {//TODO: cuando un jugador se desconecta por netbeans, da error
             serverSocket = new ServerSocket(4444);
             new Thread(() -> {
                 while (true) {
                     try {
                         Socket cliente = serverSocket.accept();
-                        clientesConectados.add(cliente);  
-                        jugadorEntra();
-
+                        System.out.println("Jugador se añadio al servidor");
                         new Thread(() -> manejarCliente(cliente)).start();
                     } catch (IOException e) {
                         System.err.println("Error al aceptar la conexión del cliente: " + e.getMessage());
@@ -50,34 +62,37 @@ public class ServidorPatolli {
             }).start();
 
         } catch (IOException e) {
-            System.err.println("No se pudo crear el servidor en el puerto 4444: " + e.getMessage());
+            return "No se pudo crear el servidor en el puerto 4444:"+ e.getMessage() ;
         }
+        return "Servidor encendido con exito";
     }
-    
     /**
      * Detiene el servidor y desconecta a todos los jugadores
+     * @return Cadena de texto con el resultado del metodo
      */
-    public void detenerServidor() {
-        //TODO: NO funciona
-        try {
-            if (serverSocket != null && !serverSocket.isClosed()) {
-                serverSocket.close();
-                System.out.println("Servidor detenido.");
-            }
-
-            for (Socket cliente : clientesConectados) {
-                if (cliente != null && !cliente.isClosed()) {
-                    cliente.close();
-                    System.out.println("Conexión con cliente cerrada.");
+    public String detenerServidor() {
+         try {
+            // Cerrar las conexiones de todos los clientes de cada sala
+            for (Map.Entry<String, List<Socket>> entry : salas.entrySet()) {
+                List<Socket> clientes = entry.getValue();
+                for (Socket cliente : clientes) {
+                    if (cliente != null && !cliente.isClosed()) {
+                        cliente.close();
+                    }
                 }
             }
-            clientesConectados.clear(); 
 
+            // Cerrar el ServerSocket para detener la escucha de nuevas conexiones
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+            }
+
+            salas.clear();
+            return "Servidor detenido correctamente.";
         } catch (IOException e) {
-            e.printStackTrace();
+            return "Error al detener el servidor: " + e.getMessage();
         }
     }
-    
     /**
      * Escucha los cambios del cliente y manda a que se procesen
      * @param cliente Socket de este cliente
@@ -89,26 +104,31 @@ public class ServidorPatolli {
 
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                procesarMensaje(inputLine);
+                procesarMensaje(inputLine, cliente);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
     /**
      * Procesa los mensajes recibidos de los clientes y ejecuta la acción
      * correspondiente.
+     *
      * @param mensaje Cadena que representa la accion a tomar
      */
-    private void procesarMensaje(String mensaje) {
+    private void procesarMensaje(String mensaje, Socket cliente) {
         Gson gson = new Gson();
         String[] partesMensaje = gson.fromJson(mensaje, String[].class);
-
         String comando = partesMensaje[0];
-        
+        System.out.println("");
+        System.out.println(comando);
         switch (comando) {
+            case "codigoSala"->{
+                String codigoSalaRecibido = partesMensaje[1];
+                System.out.println("Jugador asignado a la sala: "+codigoSalaRecibido);
+                asignarSala(codigoSalaRecibido, cliente);
+            }
             case "recibirCambios" -> {
                 List<Integer> montoJugadores = gson.fromJson(partesMensaje[1], List.class);
                 int siguienteJugador = Integer.parseInt(partesMensaje[2]);
@@ -118,42 +138,84 @@ public class ServidorPatolli {
                 List<Integer> fichasMazorcaPosicion = gson.fromJson(partesMensaje[6], List.class);
 
                 enviarCambiosAClientes(montoJugadores, siguienteJugador, fichasGatoPosicion,
-                        fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
+                        fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion, cliente);
             }
             case "jugadorSale"->{
                 int jugadorSale = Integer.parseInt(partesMensaje[1]);
-                enviarJugadorSale(jugadorSale);
+                enviarJugadorSale(jugadorSale, cliente);
             }
             case "pasarOpciones"->{
                 int tamaño = Integer.parseInt(partesMensaje[1]);
                 int monto = Integer.parseInt(partesMensaje[2]);
                 int fichas = Integer.parseInt(partesMensaje[3]);
                 int jugadores = Integer.parseInt(partesMensaje[4]);
-                enviarOpciones(tamaño, monto, fichas, jugadores);
+                enviarOpciones(tamaño, monto, fichas, jugadores, cliente);
+            }
+            case "numeroJugadores"->{
+                enviarNumeroJugadores(cliente);
             }
             default ->
                 System.out.println("Comando desconocido: " + comando);
         }
     }
+    /**
+     * Envia el numero de jugadores conectados de la sala al cliente del pa
+     * @param clienteParametro
+     */
+    public boolean enviarNumeroJugadores(Socket clienteParametro){
+        List<Socket> sala = obtenerSocketsDeSala(clienteParametro);
+        
+        Gson gson = new Gson();
+        String numeroJugadores = gson.toJson(sala.size());
+         
+        String mensaje = gson.toJson(new String[]{
+            "numeroJugadores",
+            numeroJugadores
+        });
 
+        try {
+            PrintWriter out = new PrintWriter(clienteParametro.getOutputStream(), true);
+            out.println(mensaje);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Crea una sala con el codigo de la sala
+     *
+     * @param codigoSala
+     * @param cliente
+     */
+    public void asignarSala(String codigoSala, Socket cliente) {
+        // Si el código de la sala no existe, creamos una nueva entrada en el mapa
+        salas.putIfAbsent(codigoSala, new ArrayList<>());
+        
+        // Agregar el socket de este jugador a la lista correspondiente
+        salas.get(codigoSala).add(cliente);
+        jugadorEntra(cliente);
+    }
     /**
      * Notifica a todos los jugadores que un jugador entro
      *
+     * @param clienteParametro
      * @return Entero con el numero de jugadores
      */
-    public int jugadorEntra() {
-
-        int jugadoresConectados = clientesConectados.size();
+    public int jugadorEntra(Socket clienteParametro) {
+        List<Socket> sala = obtenerSocketsDeSala(clienteParametro);
+        int jugadoresConectados = sala.size()+1; //1 Más por que se cuenta el cliente que manda el cambio
 
         Gson gson = new Gson();
-        String jugadoresConectadosJson = gson.toJson(jugadoresConectados);
+        String jugadoresConectadosJson = gson.toJson(jugadoresConectados); 
 
         String mensaje = gson.toJson(new String[]{
             "jugadorEntra",
             jugadoresConectadosJson
         });
 
-        for (Socket cliente : clientesConectados) {
+        for (Socket cliente : sala) {
             try {
                 PrintWriter out = new PrintWriter(cliente.getOutputStream(), true);
                 out.println(mensaje);
@@ -163,17 +225,18 @@ public class ServidorPatolli {
         }
         return jugadoresConectados - 1;
     }
-
     /**
      * Notifica a todos los jugadores que un jugador salio
      *
      * @param jugador Posicion del jugador a sacar
+     * @param clienteParametro
      * @return Verdad si salio el jugador con exito
      */
-    public boolean enviarJugadorSale(int jugador) {
+    public boolean enviarJugadorSale(int jugador, Socket clienteParametro) {
+        List<Socket> sala = obtenerSocketsDeSala(clienteParametro);
         String mensaje = "jugadorSale";
 
-        for (Socket cliente : clientesConectados) {
+        for (Socket cliente : sala) {
             try {
                 PrintWriter out = new PrintWriter(cliente.getOutputStream(), true);
                 out.println(mensaje);
@@ -184,7 +247,6 @@ public class ServidorPatolli {
         }
         return true;
     }
-
     /**
      * Metodo para actualizar a los clientes conectados
      * @param siguienteJugador
@@ -193,11 +255,13 @@ public class ServidorPatolli {
      * @param fichasConchaPosicion
      * @param fichasPiramidePosicion
      * @param fichasMazorcaPosicion
+     * @param clienteParametro
      * @return 
      */
     public boolean enviarCambiosAClientes(List<Integer> montoJugadores, int siguienteJugador, List<Integer> fichasGatoPosicion,
-            List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
+            List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion, Socket clienteParametro) {
 
+        List<Socket> sala = obtenerSocketsDeSala(clienteParametro);
         Gson gson = new Gson();
        
         String montoJugadoresJson = gson.toJson(montoJugadores);
@@ -216,7 +280,7 @@ public class ServidorPatolli {
             fichasPiramidePosicionJson,
             fichasMazorcaPosicionJson
         });
-        for (Socket cliente : clientesConectados) {
+        for (Socket cliente : sala) {
             try {
                 PrintWriter out = new PrintWriter(cliente.getOutputStream(), true);   
                 out.println(mensaje);
@@ -226,17 +290,19 @@ public class ServidorPatolli {
             }
         }
         return true;
-    }
-    
+    }   
     /**
      * Envia las opciones del juego a todos los clientes
      * @param tamaño Tamaño del tablero
      * @param monto Monto de apuestas inicial
      * @param fichas Fichas por jugador
      * @param jugadores Numero de jugadores inicial
+     * @param clienteParametro
      * @return Verdadero si los envio con exito 
      */
-    public boolean enviarOpciones(int tamaño, int monto, int fichas,int jugadores){
+    public boolean enviarOpciones(int tamaño, int monto, int fichas,int jugadores, Socket clienteParametro){
+        List<Socket> sala = obtenerSocketsDeSala(clienteParametro);
+        
         Gson gson = new Gson();
        
         String tamañoJson = gson.toJson(tamaño);
@@ -252,7 +318,7 @@ public class ServidorPatolli {
             jugadoresJson
         });
 
-        for (Socket cliente : clientesConectados) {
+        for (Socket cliente : sala) {
             try {
                 PrintWriter out = new PrintWriter(cliente.getOutputStream(), true);
                 out.println(mensaje);  
@@ -263,5 +329,19 @@ public class ServidorPatolli {
         }
         return true;
     }
-    
+    /**
+     * Obtiene todos los sockets de la misma sala que el socket especificado.
+     * @param socket El socket específico del que deseas obtener todos los demás de la misma sala.
+     * @return La lista de sockets de la misma sala, o null si el socket no pertenece a ninguna sala.
+     */
+    public List<Socket> obtenerSocketsDeSala(Socket socket) {
+        for (List<Socket> clientes : salas.values()) {
+            if (clientes.contains(socket)) {
+                List<Socket> clientesExcluyendo = new ArrayList<>(clientes);
+                clientesExcluyendo.remove(socket);
+                return clientesExcluyendo;
+            }
+        }
+        return null;
+    }
 }

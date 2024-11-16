@@ -27,7 +27,6 @@ public class DialogFinal extends javax.swing.JDialog {
         initComponents();
         inicializarGUI();
     }
-
     /**
      * Inicializa las imagenes del podio
      */
@@ -60,7 +59,6 @@ public class DialogFinal extends javax.swing.JDialog {
             inicializarImagen(this.lblCuartoLugar, podioTexto.get(3), 119, 102);
         }
     }
-
     /**
      * Inicializa una imagen en un JLabel con las dimensiones especificadas.
      *
@@ -90,7 +88,9 @@ public class DialogFinal extends javax.swing.JDialog {
             System.out.println("Error al cargar la imagen: " + e.getMessage());
         }
     }
-
+    private void salir(){
+        parent.PasarPantallaInicio(this);
+    }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -209,7 +209,7 @@ public class DialogFinal extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        parent.PasarPantallaInicio(this);
+        salir();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

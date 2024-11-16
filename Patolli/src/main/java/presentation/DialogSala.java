@@ -65,18 +65,39 @@ public class DialogSala extends JDialog {
         this.mazorcaIcono.setVisible(false);
         
         ajustesHost();
+        parent.getNumeroJugadores();
     }
     /**
      * Ajusta la pantalla dependiendo si es o no el host
      */
     private void ajustesHost() {
         if (parent.isHost) {
-            parent.crearServidor(codigo);
+            if(!parent.crearServidor(codigo)){
+                //TODO: No se llama por que sale un error antes
+                JOptionPane.showMessageDialog(null, "El servidor no responde, intentelo de nuevo más tarde", "No se pudo acceder al servidor", JOptionPane.INFORMATION_MESSAGE);
+                this.volver();
+            }
         } else {
             this.lblContexto.setText("Espera a que el host inicie la partida");
-            this.lblCodigo.setText("------");
         }
 
+    }
+    public void setContexto(){
+        switch(miJugador){
+            case 0->{
+                this.lblContexto.setText("Eres el JAGUAR");
+            }
+            case 1->{
+                this.lblContexto.setText("Eres la CONCHA");
+            }
+            case 2->{
+                this.lblContexto.setText("Eres la PIRAMIDE");
+            }
+            case 3->{
+                this.lblContexto.setText("Eres la MAZORCA");
+            }
+        }
+        
     }
     /**
      * Método que inicia el juego.
@@ -153,13 +174,15 @@ public class DialogSala extends JDialog {
      * @return el numero de jugador recibido
      */
     public int setMiJugador(int numeroJugadores) {
+        System.out.println(banderaMiJugador);
         if (banderaMiJugador) {
             banderaMiJugador = false;
             miJugador = numeroJugadores;
             añadirJugador(miJugador);
+            System.out.println("Soy el jugador numero: "+miJugador);
         }
         return numeroJugadores;
-    }
+    } 
     /**
      * Recibe la notificación de que un jugador salio de la sala
      *
@@ -206,7 +229,6 @@ public class DialogSala extends JDialog {
         mazorcaIcono = new javax.swing.JLabel();
         conchaIcono = new javax.swing.JLabel();
         lblContexto = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
         TODObtnAñadirJugador = new javax.swing.JButton();
         TODObtnEliminarJugador = new javax.swing.JButton();
 
@@ -351,10 +373,7 @@ public class DialogSala extends JDialog {
         conchaIcono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/concha.png"))); // NOI18N
 
         lblContexto.setFont(new java.awt.Font("Comic Sans MS", 1, 36)); // NOI18N
-        lblContexto.setText("Se necesitan 2 jugadores para");
-
-        jLabel13.setFont(new java.awt.Font("Comic Sans MS", 1, 36)); // NOI18N
-        jLabel13.setText("iniciar");
+        lblContexto.setText("Se necesitan 2 jugadores para iniciar");
 
         TODObtnAñadirJugador.setText("(TODO:) Añadir Jugador");
         TODObtnAñadirJugador.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -384,16 +403,10 @@ public class DialogSala extends JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblP4, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(77, 77, 77))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(131, 131, 131)
-                .addComponent(lblContexto)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(pnlVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel13)
-                .addGap(147, 147, 147)
                 .addComponent(pnlJugar, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -417,6 +430,10 @@ public class DialogSala extends JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(TODObtnEliminarJugador)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblContexto)
+                .addGap(62, 62, 62))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -439,28 +456,18 @@ public class DialogSala extends JDialog {
                     .addComponent(lblP4, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(43, 43, 43)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(piramideIcono)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(conchaIcono, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(gatoIcon)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblContexto)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(pnlJugar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(pnlVolver, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(14, 14, 14))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel13)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(mazorcaIcono)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(piramideIcono)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(conchaIcono, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(gatoIcon))
+                    .addComponent(mazorcaIcono))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addComponent(lblContexto)
+                .addGap(28, 28, 28)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlJugar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnlVolver, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -542,7 +549,6 @@ public class DialogSala extends JDialog {
     private javax.swing.JButton TODObtnEliminarJugador;
     private javax.swing.JLabel conchaIcono;
     private javax.swing.JLabel gatoIcon;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblCodigo;
