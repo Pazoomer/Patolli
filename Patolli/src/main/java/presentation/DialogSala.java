@@ -16,7 +16,7 @@ public class DialogSala extends JDialog {
     public int monto;       // Monto de apuestas.
     public int fichas;      // Número de fichas del jugador.
     public int jugadores = 0; // Contador de jugadores en la sala.
-    public int miJugador; //Representa el jugador dueño de la pantalla
+    public int miJugador=-1; //Representa el jugador dueño de la pantalla
     public String codigo;   // Código de la sala.
     private boolean banderaMiJugador = true; //Sirve como candado para que solo se pueda modificar miJugador cuando se conecta a una sala
 
@@ -37,7 +37,7 @@ public class DialogSala extends JDialog {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                cerrar(); // Llama a tu método Cerrar() cuando se intente cerrar la ventana
+                cerrar(); 
             }
         });
        
@@ -45,8 +45,6 @@ public class DialogSala extends JDialog {
         this.tamaño = tamaño;
         this.monto = monto;
         this.fichas = fichas;
-        
-        this.lblJugar.setEnabled(parent.isHost);
 
         // Si se proporciona un código, se utiliza; de lo contrario, se genera uno nuevo.
         if (codigo != null) {
@@ -64,15 +62,14 @@ public class DialogSala extends JDialog {
         this.lblP4.setVisible(false);
         this.mazorcaIcono.setVisible(false);
         
-        ajustesHost();
-        parent.getNumeroJugadores();
+        ajustesHost();    
     }
     /**
      * Ajusta la pantalla dependiendo si es o no el host
      */
     private void ajustesHost() {
         if (parent.isHost) {
-            if(!parent.crearServidor(codigo)){
+            if(!parent.crearSala(codigo)){
                 //TODO: No se llama por que sale un error antes
                 JOptionPane.showMessageDialog(null, "El servidor no responde, intentelo de nuevo más tarde", "No se pudo acceder al servidor", JOptionPane.INFORMATION_MESSAGE);
                 this.volver();
@@ -80,7 +77,7 @@ public class DialogSala extends JDialog {
         } else {
             this.lblContexto.setText("Espera a que el host inicie la partida");
         }
-
+        parent.getNumeroJugadores();
     }
     public void setContexto(){
         switch(miJugador){
@@ -106,7 +103,7 @@ public class DialogSala extends JDialog {
      * necesitan más jugadores.
      */
     public void jugar() {
-        if (!parent.isHost) {
+        if (miJugador!=0) {
             JOptionPane.showMessageDialog(null, "Solo el creador de la sala puede iniciar el juego", "No eres el host", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
@@ -174,12 +171,12 @@ public class DialogSala extends JDialog {
      * @return el numero de jugador recibido
      */
     public int setMiJugador(int numeroJugadores) {
-        System.out.println(banderaMiJugador);
         if (banderaMiJugador) {
             banderaMiJugador = false;
             miJugador = numeroJugadores;
             añadirJugador(miJugador);
             System.out.println("Soy el jugador numero: "+miJugador);
+            this.lblJugar.setEnabled(miJugador==0);
         }
         return numeroJugadores;
     } 

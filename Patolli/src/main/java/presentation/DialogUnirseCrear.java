@@ -39,6 +39,7 @@ public class DialogUnirseCrear extends JDialog {
      * fue encontrada.
      */
     public void Unirse() {
+        parent.isHost=false;
         if (this.txtCodigo.getText() == null) {
             JOptionPane.showMessageDialog(null, "No se encontró la partida", "Partida no encontrada", JOptionPane.INFORMATION_MESSAGE);
         } else {
@@ -54,8 +55,8 @@ public class DialogUnirseCrear extends JDialog {
      * Crea una nueva partida y muestra la pantalla de opciones.
      */
     public void Crear() {
-            parent.isHost=true;
-            parent.PasarPantallaOpciones(this);
+        parent.isHost=true;
+        parent.PasarPantallaOpciones(this);
     }
     
     /**

@@ -14,6 +14,7 @@ public class Juego {
     ClientePatolli cliente;
 
     public boolean unirseServidor(String codigoSala, FrameInicio frameInicio) {
+        System.out.println("cliente conectado");
         cliente = new ClientePatolli(codigoSala, frameInicio);
         return cliente.conectar();
     }

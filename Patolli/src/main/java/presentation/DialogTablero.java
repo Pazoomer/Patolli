@@ -110,7 +110,7 @@ public class DialogTablero extends JDialog {
         initComponents();
         utils = new Utils();
         this.tamaño = tamaño;
-        this.monto = monto;
+        this.monto = 1;//TODO
         this.miJugador=miJugador;
         this.fichas = fichas;
         this.jugadores = jugadores;
@@ -120,7 +120,7 @@ public class DialogTablero extends JDialog {
             jugadoresActivos.add(true);
         }
         inicializarGui();
-        System.out.println("Soy el jugador mijugador: "+miJugador);
+    
         if(miJugador==0 || modoDev){
             this.btnLanzarCañas.setEnabled(true);
         }else{
@@ -142,11 +142,11 @@ public class DialogTablero extends JDialog {
      */
     private void inicializarGui() {
         // Tablero
-        inicializarTablero(tableroArriba, tamaño, 2, false);
-        inicializarTablero(tableroAbajo, tamaño, 2, true);
-        inicializarTablero(tableroDerecha, 2, tamaño, true);
-        inicializarTablero(tableroIzquierda, 2, tamaño, false);
-        inicializarTablero(tableroCentro, 2, 2, true);
+        inicializarAspa(tableroArriba, tamaño, 2, false);
+        inicializarAspa(tableroAbajo, tamaño, 2, true);
+        inicializarAspa(tableroDerecha, 2, tamaño, true);
+        inicializarAspa(tableroIzquierda, 2, tamaño, false);
+        inicializarAspa(tableroCentro, 2, 2, true);
         reacomodarCasillas();
 
         //Cañas
@@ -407,7 +407,7 @@ public class DialogTablero extends JDialog {
      * @param columnas el número de columnas en el tablero
      * @param invertir indica si se debe invertir el color de las casillas
      */
-    private void inicializarTablero(JPanel tablero, int filas, int columnas, boolean invertir) {
+    private void inicializarAspa(JPanel tablero, int filas, int columnas, boolean invertir) {
         tablero.setLayout(new GridLayout(filas, columnas));
         tablero.setPreferredSize(tablero.getSize());
         tablero.setMinimumSize(tablero.getSize());
@@ -921,7 +921,7 @@ public class DialogTablero extends JDialog {
         juegoAcabo=true;
         podio.add(jugadorGanador);
         Collections.reverse(podio);
-        parent.enviarJugadorSale(miJugador);
+        //parent.enviarJugadorSale(miJugador); TODO: Desconectarlo de la partida
         parent.PasarPantallaFinal(this, podio);
     }
     /**
@@ -1078,6 +1078,12 @@ public class DialogTablero extends JDialog {
      * @return Verdadero si se actualizo con exito
      */
     private boolean subirCambios() {
+        if(!this.juegoAcabo){
+            revisarJugadorSale();
+            revisarFinDelJuego();
+        }
+        this.actualizarSiguienteJugador(); //Actualiza la vista para el siguiente jugador 
+        
         return parent.subirCambios(montoJugadores, jugador, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
     }
     /**
@@ -1105,7 +1111,7 @@ public class DialogTablero extends JDialog {
         this.actualizarApuestas(); //Coloca el monto de apuestas correspondiente
         this.actualizarCasillas(); //Actualiza el valor de la lista de casillas y la lista de fichas de label
         this.actualizarTablero(); //Actualiza el tablero con la lista de casillas
-        this.actualizarSiguienteJugador(); //Actualiza la vista para el siguiente jugador TODO: no funciona como deberia
+        this.actualizarSiguienteJugador(); //Actualiza la vista para el siguiente jugador 
 
         //Si es mi turno, habilita el lanzar cañas
         if (jugadoresActivos.get(miJugador)) {
@@ -1178,6 +1184,9 @@ public class DialogTablero extends JDialog {
      * @param jugador Jugador que sale de la partida
      */
     public void recibirJugadorSale(int jugador) {
+        if(this.juegoAcabo){
+            return;
+        }
         if (jugador != miJugador) {
             montoJugadores.set(jugador, 0);
             JOptionPane.showMessageDialog(null, getNombreJugador(jugador) + " ha abandona la partida, se removeran sus apuestas y fichas", "Un jugador abandono la partida", JOptionPane.INFORMATION_MESSAGE);

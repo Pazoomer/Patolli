@@ -36,10 +36,9 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param codigoSala
      * @return
      */
-    public boolean crearServidor(String codigoSala) {
-        isHost = true;
+    public boolean crearSala(String codigoSala) {
+        isHost=true;
         return controlJuego.unirseServidor(codigoSala);
-        //TODO: Cambiar nombre del metodo
     }
 
     /**
@@ -49,7 +48,7 @@ public class FrameInicio extends javax.swing.JFrame {
      * @return
      */
     public boolean unirseServidor(String codigoSala) {
-        isHost = false;
+        isHost=false;
         return controlJuego.unirseServidor(codigoSala);
     }
 
@@ -177,10 +176,10 @@ public class FrameInicio extends javax.swing.JFrame {
      * Cierra la aplicacion por completo
      */
     public void CerrarPrograma() {
-        if (isHost) {
+        //if (//isHost) {
             //TODO:
             //controlJuego.destruirServidor();
-        }
+        //}
         this.dispose();
     }
     

@@ -3,7 +3,6 @@ package presentation;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 /**
@@ -15,7 +14,7 @@ import javax.swing.JLabel;
  */
 public class DialogOpciones extends JDialog {
 
-    private FrameInicio parent;
+    private final FrameInicio parent;
     public int tamaño; // Almacena el tamaño del tablero
     public int monto;  // Almacena el monto de las apuestas
     public int fichas; // Almacena la cantidad de fichas por jugador
@@ -35,7 +34,7 @@ public class DialogOpciones extends JDialog {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                Cerrar(); // Llama a tu método Cerrar() cuando se intente cerrar la ventana
+                Cerrar(); 
             }
         });
         SetTamañoTablero(8); // Establece el tamaño del tablero a 8 por defecto
@@ -489,16 +488,16 @@ public class DialogOpciones extends JDialog {
         pnlOpcionesLayout.setHorizontalGroup(
             pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlOpcionesLayout.createSequentialGroup()
-                .addGap(40, 40, 40)
+                .addGap(29, 29, 29)
                 .addComponent(lblOpciones)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlOpcionesLayout.setVerticalGroup(
             pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlOpcionesLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createSequentialGroup()
+                .addContainerGap(18, Short.MAX_VALUE)
                 .addComponent(lblOpciones)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addGap(14, 14, 14))
         );
 
         pnlVolver.setBackground(new java.awt.Color(192, 160, 123));

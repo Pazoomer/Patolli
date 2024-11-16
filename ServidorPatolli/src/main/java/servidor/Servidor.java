@@ -182,7 +182,6 @@ public class Servidor {
         }
         return true;
     }
-
     /**
      * Crea una sala con el codigo de la sala
      *
@@ -234,7 +233,13 @@ public class Servidor {
      */
     public boolean enviarJugadorSale(int jugador, Socket clienteParametro) {
         List<Socket> sala = obtenerSocketsDeSala(clienteParametro);
-        String mensaje = "jugadorSale";
+        Gson gson = new Gson();
+        String jugadorSaleJson = gson.toJson(jugador); 
+        
+        String mensaje = gson.toJson(new String[]{
+            "jugadorSale",
+            jugadorSaleJson
+        });
 
         for (Socket cliente : sala) {
             try {
