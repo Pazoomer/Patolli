@@ -13,10 +13,12 @@ public class Juego {
    
     ClientePatolli cliente;
 
-    public boolean unirseServidor(String codigoSala, FrameInicio frameInicio) {
-        System.out.println("cliente conectado");
+    public boolean unirseServidor(String codigoSala, FrameInicio frameInicio) { 
         cliente = new ClientePatolli(codigoSala, frameInicio);
-        return cliente.conectar();
+        cliente.conectar();
+        cliente.enviarCodigoSala();
+        System.out.println("cliente conectado");
+        return true;
     }
     
     public void desconectar(){
@@ -39,5 +41,12 @@ public class Juego {
     }
     public void getNumeroJugadores(){
         cliente.getNumeroJugadores();
+    }
+    public boolean crearSala(String codigoSala, FrameInicio frameInicio) {
+        cliente = new ClientePatolli(codigoSala, frameInicio);
+        cliente.conectar();
+        cliente.crearSala(codigoSala);
+        System.out.println("Sala creada");
+        return true;
     }
 }

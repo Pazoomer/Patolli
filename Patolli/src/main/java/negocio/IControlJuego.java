@@ -56,4 +56,5 @@ public interface IControlJuego {
     public boolean pasarOpciones(int tamaño, int monto, int fichas, int jugadores);
 
     public void getNumeroJugadores();
+    public boolean crearSala(String codigoSala);
 }

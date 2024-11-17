@@ -53,6 +53,10 @@ public class ClientePatolli {
                         String[] datos = gson.fromJson(jsonElement, String[].class);
                         System.out.println(datos[0]);
                         switch (datos[0]) {
+                            case "ResultadoExisteSala"->{
+                                boolean resultado = gson.fromJson(datos[1], Boolean.class);
+                                existeSala(resultado);
+                            }
                             case "pasarOpciones" -> {
                                 int tamaño = gson.fromJson(datos[1], Integer.class);
                                 int monto = gson.fromJson(datos[2], Integer.class);
@@ -111,7 +115,6 @@ public class ClientePatolli {
                 }
             }
         }).start();
-        enviarCodigoSala();
         return true;
     }
     /**
@@ -153,6 +156,18 @@ public class ClientePatolli {
         String mensaje = gson.toJson(new String[]{
             "codigoSala",
             jsonCodigoSala
+        });
+        enviarMensaje(mensaje);
+        return true;
+    }
+    public boolean crearSala(String codigoSala){
+        Gson gson = new Gson();
+       
+        String codigoSalaJson = gson.toJson(codigoSala);
+        
+        String mensaje = gson.toJson(new String[]{
+            "crearSala",
+            codigoSalaJson
         });
         enviarMensaje(mensaje);
         return true;
@@ -269,6 +284,9 @@ public class ClientePatolli {
      */
     public void recibirJugadorEntra(int numeroJugadores) {
             frameInicio.jugadorEntra(numeroJugadores);
+    }
+    public void existeSala(boolean resultado){
+        frameInicio.existeSala(resultado);
     }
     /**
      * Recibe la notificacion de que un jugador salio

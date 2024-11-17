@@ -124,9 +124,13 @@ public class Servidor {
         System.out.println("");
         System.out.println(comando);
         switch (comando) {
+            case "crearSala"->{
+                String codigoSalaRecibido = partesMensaje[1];
+                crearSala(codigoSalaRecibido);
+                asignarSala(codigoSalaRecibido, cliente);
+            }
             case "codigoSala"->{
                 String codigoSalaRecibido = partesMensaje[1];
-                System.out.println("Jugador asignado a la sala: "+codigoSalaRecibido);
                 asignarSala(codigoSalaRecibido, cliente);
             }
             case "recibirCambios" -> {
@@ -186,16 +190,57 @@ public class Servidor {
      * Crea una sala con el codigo de la sala
      *
      * @param codigoSala
+     */
+    public void crearSala(String codigoSala) {
+        if (salas.putIfAbsent(codigoSala, new ArrayList<>()) != null) {
+            System.out.println("La sala " + codigoSala + " ya existe.");
+        }
+        System.out.println("Sala creada con el codigo: " + codigoSala);
+    }
+
+    /**
+     * Asigna el jugador a la sala, si no existe la sala, no hace nada
+     *
+     * @param codigoSala
      * @param cliente
      */
     public void asignarSala(String codigoSala, Socket cliente) {
-        // Si el código de la sala no existe, creamos una nueva entrada en el mapa
-        salas.putIfAbsent(codigoSala, new ArrayList<>());
-        
-        // Agregar el socket de este jugador a la lista correspondiente
-        salas.get(codigoSala).add(cliente);
-        jugadorEntra(cliente);
+        boolean boolResultado = salas.containsKey(codigoSala);
+        Gson gson = new Gson();
+
+        // Crear el mensaje JSON para enviar al cliente
+        String resultado = gson.toJson(boolResultado);
+        String mensaje = gson.toJson(new String[]{
+            "ResultadoExisteSala",
+            resultado
+        });
+
+        try {
+            PrintWriter out = new PrintWriter(cliente.getOutputStream(), true);
+            out.println(mensaje); // Enviar mensaje al cliente
+
+            if (!boolResultado) {
+                // Si la sala no existe, cerrar la conexión con el cliente
+                System.out.println("La sala " + codigoSala + " no existe. Cerrando conexión con el cliente...");
+                cliente.close();
+                return; // Salir del método
+            }
+
+            // Si la sala existe, continuar con la lógica
+            List<Socket> jugadores = salas.get(codigoSala);
+            if (!jugadores.contains(cliente)) {
+                jugadores.add(cliente);
+                jugadorEntra(cliente);
+                System.out.println("Jugador asignado a la sala: " + codigoSala);
+            } else {
+                System.out.println("El cliente ya está en la sala " + codigoSala);
+            }
+        } catch (IOException e) {
+            System.err.println("Error al manejar la conexión del cliente: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
+
     /**
      * Notifica a todos los jugadores que un jugador entro
      *

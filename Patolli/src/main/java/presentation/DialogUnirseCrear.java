@@ -39,15 +39,20 @@ public class DialogUnirseCrear extends JDialog {
      * fue encontrada.
      */
     public void Unirse() {
-        parent.isHost=false;
-        if (this.txtCodigo.getText() == null) {
+        parent.isHost = false;
+        parent.unirseServidor(this.txtCodigo.getText());
+    }
+
+    public void existeSala(boolean resultado){
+        if(parent.isHost){
+            return;
+        }
+        if(resultado){
+            JOptionPane.showMessageDialog(null, "Uniéndose a la partida", "Partida encontrada", JOptionPane.INFORMATION_MESSAGE);  
+            parent.PasarPantallaSala(this, -1, -1, -1, this.txtCodigo.getText());
+        }else{
             JOptionPane.showMessageDialog(null, "No se encontró la partida", "Partida no encontrada", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-                JOptionPane.showMessageDialog(null, "Uniéndose a la partida", "Partida encontrada", JOptionPane.INFORMATION_MESSAGE);
-                if(parent.unirseServidor(this.txtCodigo.getText())){
-                    parent.PasarPantallaSala(this, -1, -1, -1, this.txtCodigo.getText());
-                }
-            
+        
         }
     }
 
@@ -268,7 +273,7 @@ public class DialogUnirseCrear extends JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlUnirseCrear, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlUnirseCrear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();

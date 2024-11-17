@@ -17,6 +17,7 @@ public class FrameInicio extends javax.swing.JFrame {
     private final IControlJuego controlJuego;
     DialogTablero tablero;
     DialogSala sala;
+    DialogUnirseCrear unirseCrear;
     public boolean isHost;
     
     /**
@@ -38,7 +39,7 @@ public class FrameInicio extends javax.swing.JFrame {
      */
     public boolean crearSala(String codigoSala) {
         isHost=true;
-        return controlJuego.unirseServidor(codigoSala);
+        return controlJuego.crearSala(codigoSala);
     }
 
     /**
@@ -50,6 +51,11 @@ public class FrameInicio extends javax.swing.JFrame {
     public boolean unirseServidor(String codigoSala) {
         isHost=false;
         return controlJuego.unirseServidor(codigoSala);
+    }
+    public void existeSala(boolean resultado){
+        if(unirseCrear!=null){
+            unirseCrear.existeSala(resultado);
+        }
     }
 
     /**
@@ -190,7 +196,7 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param children
      */
     public void PasarPantallaUnirseCrear(JDialog children) {  
-        DialogUnirseCrear unirseCrear = new DialogUnirseCrear(this);
+        unirseCrear = new DialogUnirseCrear(this);
         if (children != null) {
             unirseCrear.setLocationRelativeTo(children);
             children.setVisible(false);
@@ -307,7 +313,7 @@ public class FrameInicio extends javax.swing.JFrame {
 
         pnlTodo = new javax.swing.JPanel();
         lblLogo = new javax.swing.JLabel();
-        lblInstrucccion = new javax.swing.JLabel();
+        lblInstruccion = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 600));
@@ -324,55 +330,43 @@ public class FrameInicio extends javax.swing.JFrame {
         });
 
         lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/patolli.png"))); // NOI18N
-        lblLogo.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblLogoMouseClicked(evt);
-            }
-        });
 
-        lblInstrucccion.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
-        lblInstrucccion.setText("Haga Click Para Empezar");
-        lblInstrucccion.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblInstrucccionMouseClicked(evt);
-            }
-        });
+        lblInstruccion.setFont(new java.awt.Font("Comic Sans MS", 1, 30)); // NOI18N
+        lblInstruccion.setText("Haga Click Para Jugar");
 
         javax.swing.GroupLayout pnlTodoLayout = new javax.swing.GroupLayout(pnlTodo);
         pnlTodo.setLayout(pnlTodoLayout);
         pnlTodoLayout.setHorizontalGroup(
             pnlTodoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTodoLayout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(lblLogo)
-                .addContainerGap(50, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTodoLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblInstrucccion)
-                .addGap(283, 283, 283))
+                .addGroup(pnlTodoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlTodoLayout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(lblLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlTodoLayout.createSequentialGroup()
+                        .addGap(237, 237, 237)
+                        .addComponent(lblInstruccion)))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
         pnlTodoLayout.setVerticalGroup(
             pnlTodoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTodoLayout.createSequentialGroup()
-                .addComponent(lblLogo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblInstrucccion))
+                .addContainerGap()
+                .addComponent(lblLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblInstruccion)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlTodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(pnlTodo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlTodo, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(pnlTodo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -388,28 +382,9 @@ public class FrameInicio extends javax.swing.JFrame {
         PasarPantallaUnirseCrear(null);
     }//GEN-LAST:event_pnlTodoMouseClicked
 
-    /**
-     * Este método se ejecuta cuando se hace clic en la etiqueta lblLogo.
-     * Llama al método PasarPantalla() para pasar a la pantalla de opciones.
-     * 
-     * @param evt El evento de clic del ratón.
-     */
-    private void lblLogoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLogoMouseClicked
-        PasarPantallaUnirseCrear(null);
-    }//GEN-LAST:event_lblLogoMouseClicked
-    /**
-     * Este método se ejecuta cuando se hace clic en la etiqueta lblInstruccion.
-     * Llama al método PasarPantalla() para pasar a la pantalla de opciones.
-     * 
-     * @param evt El evento de clic del ratón.
-     */
-    private void lblInstrucccionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblInstrucccionMouseClicked
-        PasarPantallaUnirseCrear(null);
-    }//GEN-LAST:event_lblInstrucccionMouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel lblInstrucccion;
+    private javax.swing.JLabel lblInstruccion;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JPanel pnlTodo;
     // End of variables declaration//GEN-END:variables

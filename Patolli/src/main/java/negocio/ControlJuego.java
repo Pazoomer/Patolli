@@ -49,4 +49,9 @@ public class ControlJuego implements IControlJuego {
     public void getNumeroJugadores() {
         juego.getNumeroJugadores();
     }
+
+    @Override
+    public boolean crearSala(String codigoSala) {
+       return juego.crearSala(codigoSala, frameInicio);
+    }
 }
