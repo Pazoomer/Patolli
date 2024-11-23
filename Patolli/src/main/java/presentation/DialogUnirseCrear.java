@@ -1,5 +1,8 @@
 package presentation;
 
+import cliente.CuerpoMensaje;
+import cliente.Mensaje;
+import cliente.TipoMensaje;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
@@ -40,7 +43,19 @@ public class DialogUnirseCrear extends JDialog {
      */
     public void Unirse() {
         parent.isHost = false;
-        parent.unirseServidor(this.txtCodigo.getText());
+
+        parent.conectarse();
+        
+        CuerpoMensaje cuerpo = new CuerpoMensaje();
+        cuerpo.setCodigoSala(this.txtCodigo.getText());
+        
+        TipoMensaje tipo = TipoMensaje.UNIRSE_SALA; 
+
+        Mensaje mensaje = new Mensaje.Builder()
+                .body(cuerpo)
+                .messageType(tipo)
+                .build();
+        parent.enviarMensaje(mensaje);
     }
 
     public void existeSala(boolean resultado){

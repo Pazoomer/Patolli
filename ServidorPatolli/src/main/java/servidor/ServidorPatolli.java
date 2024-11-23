@@ -13,8 +13,8 @@ public class ServidorPatolli implements IServidorPatolli{
     }
     
     @Override
-    public String switchServidor() {
-        return servidor.switchServidor();
+    public void initServidor() {
+         servidor.init();
     }
     
 }

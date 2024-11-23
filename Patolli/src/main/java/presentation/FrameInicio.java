@@ -1,7 +1,9 @@
 package presentation;
 
+import cliente.Mensaje;
 import java.util.List;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import negocio.ControlJuego;
 import negocio.IControlJuego;
 
@@ -30,154 +32,191 @@ public class FrameInicio extends javax.swing.JFrame {
         initComponents();
         controlJuego = new ControlJuego(this);
     }
-
-    /**
-     * Crea un nuevo servidor
-     *
-     * @param codigoSala
-     * @return
-     */
-    public boolean crearSala(String codigoSala) {
-        isHost=true;
-        return controlJuego.crearSala(codigoSala);
-    }
-
-    /**
-     * Se une al servidor
-     *
-     * @param codigoSala
-     * @return
-     */
-    public boolean unirseServidor(String codigoSala) {
-        isHost=false;
-        return controlJuego.unirseServidor(codigoSala);
-    }
-    public void existeSala(boolean resultado){
-        if(unirseCrear!=null){
-            unirseCrear.existeSala(resultado);
-        }
-    }
-
-    /**
-     * Sube los cambios para los demas jugadores
-     *
-     * @param siguienteJugador
-     * @param montoJugadores
-     * @param fichasGatoPosicion
-     * @param fichasConchaPosicion
-     * @param fichasPiramidePosicion
-     * @param fichasMazorcaPosicion
-     * @return
-     */
-    public boolean subirCambios(List<Integer> montoJugadores, int siguienteJugador, List<Integer> fichasGatoPosicion,
-            List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
-        return controlJuego.actualizarCambios(montoJugadores, siguienteJugador, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
-    }
-
-    /**
-     * Recibe los cambios de otro jugador
-     *
-     * @param montoJugadores
-     * @param siguienteJugador
-     * @param fichasGatoPosicion
-     * @param fichasConchaPosicion
-     * @param fichasPiramidePosicion
-     * @param fichasMazorcaPosicion
-     * @return Verdadero si los cambios se recibieron con exito
-     */
-    public boolean recibirCambios(List<Integer> montoJugadores, int siguienteJugador, List<Integer> fichasGatoPosicion,
-            List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
-        if (tablero==null){
-            return false;
-        }
-        return tablero.recibirCambios(montoJugadores, siguienteJugador, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
-    }
-
-    /**
-     * El jugador sale de la partida
-     *
-     * @param jugador
-     * @return
-     */
-    public boolean enviarJugadorSale(int jugador) {
-        return controlJuego.jugadorSale(jugador);
-    }
     
+    /**
+     * El jugador se conecta al servidor
+     */
+    public void conectarse(){
+        controlJuego.conectarse(this); //Se conecta con esta pantalla
+    }
     /**
      * El jugador se desconecta del servidor
+     * @param codigoSala
      */
-    public void desconectar(){
-        controlJuego.desconectar();
-        //TODO: Este metodo debe ser llamado en sala y tablero al salir
-    }
-    
-    /**
-     * El jugador sale de la partida
-     *
-     * @param jugador
-     */
-    public void recibirJugadorSale(int jugador) {
-        if (tablero != null) {
-            tablero.recibirJugadorSale(jugador);
-        } else if (sala != null) {
-            sala.recibirJugadorSale(jugador);
-        }
+    public void desconectar(String codigoSala){
+        controlJuego.desconectar(codigoSala);
     }
     /**
-     * Recibe el numero de jugadores para actualizar la interfaz de la sala
-     * @param numeroJugadores 
+     * El jugador envia un mensaje a los demas jugadores
+     * @param mensaje
      */
-    public void recibirNumeroJugadores(int numeroJugadores){
-        if (sala != null) {
-            sala.añadirJugador(1);
-            sala.setMiJugador(numeroJugadores);
-            sala.setContexto();
-        }
-    }
-    
-    /**
-     * Pide el numero de jugadores al servidor
-     */
-    public void getNumeroJugadores(){
-        this.controlJuego.getNumeroJugadores();
-    }
-    
-    /**
-     * Un jugador entra a la partida
-     * @param numeroJugadores
-     * @return 
-     */
-    public int jugadorEntra(int numeroJugadores) {
-        if (sala != null) {                
-            sala.añadirJugador(1);
-            return numeroJugadores;
-        }
-        return -1;
-    }
-    
-    /**
-     * Pasa los ajustes de una partida
-     * @param tamaño
-     * @param monto
-     * @param fichas
-     * @param jugadores
-     * @return 
-     */
-    public boolean subirOpciones(int tamaño, int monto, int fichas,int jugadores){
-        return controlJuego.pasarOpciones(tamaño, monto, fichas,jugadores);
-    }
-    
-    /**
-     * Pasa los ajustes de una partida
-     * @param tamaño
-     * @param monto
-     * @param fichas
-     * @param jugadores 
-     */
-    public void recibirOpciones(int tamaño, int monto, int fichas,int jugadores){
-        sala.recibirOpciones(tamaño, monto, fichas, jugadores);
+    public void enviarMensaje(Mensaje mensaje){
+        controlJuego.enviarMensaje(mensaje);
     }
 
+    public void onConectarse(Mensaje mensaje) {
+
+    }
+
+    public void onUnirseSala(Mensaje mensaje) {
+        if (sala != null) {
+            sala.añadirJugador(1);
+        }
+    }
+
+    public void onCrearSala(Mensaje mensaje) {
+
+    }
+
+    public void onPasarOpciones(Mensaje mensaje) { 
+        if(sala!=null){
+            sala.recibirOpciones(mensaje.getBody().getTamaño(), mensaje.getBody().getMonto(), mensaje.getBody().getFichas(), mensaje.getBody().getJugadores(), mensaje.getBody().getCodigoSala());
+        }
+    }
+
+    public void onPasarCambios(Mensaje mensaje) {
+        if(tablero!=null){
+            tablero.recibirCambios(mensaje.getBody().getMontoJugadores(), mensaje.getBody().getJugador(), mensaje.getBody().getFichasGatoPosicion(), mensaje.getBody().getFichasConchaPosicion(), mensaje.getBody().getFichasPiramidePosicion(), mensaje.getBody().getFichasMazorcaPosicion());
+        }     
+    }
+    
+    public void onDesconectarse(Mensaje mensaje){
+        JOptionPane.showMessageDialog(null, mensaje.getBody().getRazonDesconexion(), "Se desconecto del servidor", JOptionPane.INFORMATION_MESSAGE);
+        if(tablero!=null){
+            this.PasarPantallaInicio(tablero);
+        }else if(sala!=null){
+            this.PasarPantallaInicio(sala);
+        }    
+    }
+
+    public void onPasarJugadores(Mensaje mensaje) {
+        
+        if (unirseCrear != null) {
+            unirseCrear.existeSala(mensaje.getBody().isExisteSala());
+        }else{
+            System.out.println("unirseCrear es null");
+        }
+        
+        int jugadores = mensaje.getBody().getJugadores();
+
+        if (sala != null) {
+            sala.setMiJugador(jugadores-1);
+        }else{
+            System.out.println("Sala es null");
+        }
+    }
+//    /**
+//     * Sube los cambios para los demas jugadores
+//     *
+//     * @param siguienteJugador
+//     * @param montoJugadores
+//     * @param fichasGatoPosicion
+//     * @param fichasConchaPosicion
+//     * @param fichasPiramidePosicion
+//     * @param fichasMazorcaPosicion
+//     * @return
+//     */
+//    public boolean subirCambios(List<Integer> montoJugadores, int siguienteJugador, List<Integer> fichasGatoPosicion,
+//            List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
+//        return controlJuego.actualizarCambios(montoJugadores, siguienteJugador, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
+//    }
+//
+//    /**
+//     * Recibe los cambios de otro jugador
+//     *
+//     * @param montoJugadores
+//     * @param siguienteJugador
+//     * @param fichasGatoPosicion
+//     * @param fichasConchaPosicion
+//     * @param fichasPiramidePosicion
+//     * @param fichasMazorcaPosicion
+//     * @return Verdadero si los cambios se recibieron con exito
+//     */
+//    public boolean recibirCambios(List<Integer> montoJugadores, int siguienteJugador, List<Integer> fichasGatoPosicion,
+//            List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
+//        if (tablero==null){
+//            return false;
+//        }
+//        return tablero.recibirCambios(montoJugadores, siguienteJugador, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
+//    }
+//
+//    /**
+//     * El jugador sale de la partida
+//     *
+//     * @param jugador
+//     * @return
+//     */
+//    public boolean enviarJugadorSale(int jugador) {
+//        return true;
+//        //TODO: return controlJuego.jugadorSale(jugador);
+//    }
+//    
+//    /**
+//     * El jugador sale de la partida
+//     *
+//     * @param jugador
+//     */
+//    public void recibirJugadorSale(int jugador) {
+//        if (tablero != null) {
+//            tablero.recibirJugadorSale(jugador);
+//        } else if (sala != null) {
+//            sala.recibirJugadorSale(jugador);
+//        }
+//    }
+//    /**
+//     * Recibe el numero de jugadores para actualizar la interfaz de la sala
+//     * @param numeroJugadores 
+//     */
+//    public void recibirNumeroJugadores(int numeroJugadores){
+//        if (sala != null) {
+//            sala.añadirJugador(1);
+//            sala.setMiJugador(numeroJugadores);
+//            sala.setContexto();
+//        }
+//    }
+//    
+//    /**
+//     * Pide el numero de jugadores al servidor
+//     */
+//    public void getNumeroJugadores(){
+//        this.controlJuego.getNumeroJugadores();
+//    }
+//    
+//    /**
+//     * Un jugador entra a la partida
+//     * @param numeroJugadores
+//     * @return 
+//     */
+//    public int jugadorEntra(int numeroJugadores) {
+//        if (sala != null) {                
+//            sala.añadirJugador(1);
+//            return numeroJugadores;
+//        }
+//        return -1;
+//    }
+//    
+//    /**
+//     * Pasa los ajustes de una partida
+//     * @param tamaño
+//     * @param monto
+//     * @param fichas
+//     * @param jugadores
+//     * @return 
+//     */
+//    public boolean subirOpciones(int tamaño, int monto, int fichas,int jugadores){
+//        return controlJuego.pasarOpciones(tamaño, monto, fichas,jugadores);
+//    }
+//    
+//    /**
+//     * Pasa los ajustes de una partida
+//     * @param tamaño
+//     * @param monto
+//     * @param fichas
+//     * @param jugadores 
+//     */
+//    public void recibirOpciones(int tamaño, int monto, int fichas,int jugadores){
+//        sala.recibirOpciones(tamaño, monto, fichas, jugadores);
+//    }
     /**
      * Cierra la aplicacion por completo
      */
@@ -297,8 +336,8 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param jugadores
      * @param miJugador
      */
-    public void PasarPantallaTablero(JDialog children,int tamaño, int fichas, int monto, int jugadores, int miJugador) {
-        tablero = new DialogTablero(this, tamaño, fichas, monto, jugadores, miJugador);
+    public void PasarPantallaTablero(JDialog children,int tamaño, int fichas, int monto, int jugadores, int miJugador, String codigoSala) {
+        tablero = new DialogTablero(this, tamaño, fichas, monto, jugadores, miJugador,codigoSala);
         tablero.setLocationRelativeTo(children);
         tablero.setModal(false);
         if (children != null) {

@@ -1,5 +1,8 @@
 package presentation;
 
+import cliente.CuerpoMensaje;
+import cliente.Mensaje;
+import cliente.TipoMensaje;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import utils.Utils;
@@ -69,15 +72,23 @@ public class DialogSala extends JDialog {
      */
     private void ajustesHost() {
         if (parent.isHost) {
-            if(!parent.crearSala(codigo)){
-                //TODO: No se llama por que sale un error antes
-                JOptionPane.showMessageDialog(null, "El servidor no responde, intentelo de nuevo más tarde", "No se pudo acceder al servidor", JOptionPane.INFORMATION_MESSAGE);
-                this.volver();
-            }
+            parent.conectarse();
+
+            CuerpoMensaje cuerpo = new CuerpoMensaje();
+            cuerpo.setCodigoSala(this.codigo);
+
+            TipoMensaje tipo = TipoMensaje.CREAR_SALA;
+
+            Mensaje mensaje = new Mensaje.Builder()
+                    .body(cuerpo)
+                    .messageType(tipo)
+                    .build();
+            parent.enviarMensaje(mensaje);
+                //TODO: Si el servidor no responde debe volver a la pantalla anterior
         } else {
             this.lblContexto.setText("Espera a que el host inicie la partida");
         }
-        parent.getNumeroJugadores();
+        //parent.getNumeroJugadores(); //TODO: Pedir el numero de jugadores
     }
     public void setContexto(){
         switch(miJugador){
@@ -109,8 +120,7 @@ public class DialogSala extends JDialog {
         }
         if (jugadores > 1) {
             subirOpciones();
-            parent.PasarPantallaTablero(this, tamaño, monto, fichas, jugadores, miJugador);
-
+            parent.PasarPantallaTablero(this, tamaño, monto, fichas, jugadores, miJugador,codigo);
         } else {
             JOptionPane.showMessageDialog(null, "Se necesitan dos jugadores para jugar", "Faltan jugadores", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -150,9 +160,21 @@ public class DialogSala extends JDialog {
      *
      * @return Verdadero si se actualizo con exito
      */
-    private boolean subirOpciones() {
-        parent.subirOpciones(tamaño, monto, fichas, jugadores);
-        return true;
+    private void subirOpciones() {
+        CuerpoMensaje cuerpo = new CuerpoMensaje();
+        cuerpo.setCodigoSala(codigo);
+        cuerpo.setFichas(fichas);
+        cuerpo.setJugadores(jugadores);
+        cuerpo.setMonto(monto);
+        cuerpo.setTamaño(tamaño);
+        
+        TipoMensaje tipo = TipoMensaje.PASAR_OPCIONES; 
+
+        Mensaje mensaje = new Mensaje.Builder()
+                .body(cuerpo)
+                .messageType(tipo)
+                .build();
+        parent.enviarMensaje(mensaje);
     }
     /**
      * Recibe las ocpiones del control e inicia el tablero con estas
@@ -161,9 +183,10 @@ public class DialogSala extends JDialog {
      * @param monto
      * @param fichas
      * @param jugadores
+     * @param codigo
      */
-    public void recibirOpciones(int tamaño, int monto, int fichas, int jugadores) {
-        parent.PasarPantallaTablero(this, tamaño, monto, fichas, jugadores, miJugador);
+    public void recibirOpciones(int tamaño, int monto, int fichas, int jugadores, String codigo) {
+        parent.PasarPantallaTablero(this, tamaño, monto, fichas, jugadores, miJugador,codigo);
     }
     /**
      * Recibe la notifiación de que el numero de mi jugador es el del parametro
@@ -177,6 +200,11 @@ public class DialogSala extends JDialog {
             añadirJugador(miJugador);
             System.out.println("Soy el jugador numero: "+miJugador);
             this.lblJugar.setEnabled(miJugador==0);
+            
+            //Añade un jugador extra
+            if(!parent.isHost){
+                añadirJugador(miJugador);
+            }
         }
         return numeroJugadores;
     } 
@@ -197,14 +225,14 @@ public class DialogSala extends JDialog {
      * Regresa a la pantalla de opciones.
      */
     public void volver() {
-        parent.enviarJugadorSale(miJugador);
+        parent.desconectar(this.codigo);
         parent.PasarPantallaOpciones(this);
     }
     /**
      * Cierra el programa
      */
     public void cerrar() {
-        parent.enviarJugadorSale(miJugador);
+        parent.desconectar(this.codigo);
         parent.CerrarPrograma();
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

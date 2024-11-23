@@ -32,5 +32,10 @@
             <version>2.10.1</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>itson.mx</groupId>
+            <artifactId>ClientePatolli</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 </project>

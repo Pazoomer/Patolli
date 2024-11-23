@@ -1,5 +1,8 @@
 package presentation;
 
+import cliente.CuerpoMensaje;
+import cliente.Mensaje;
+import cliente.TipoMensaje;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -43,6 +46,7 @@ public class DialogTablero extends JDialog {
     private final int fichas; //Cantidad de fichas por jugador
     private final int jugadores; //Cantidad de jugadores
     private final int miJugador; //Representa el jugador dueño de la pantalla
+    private final String codigoSala;
     
     //Banderas (Usados a nivel de interfaz)
     private int resultadoCañas; //Resultado del ultimo lanzamiento de cañas
@@ -94,8 +98,9 @@ public class DialogTablero extends JDialog {
      * @param fichas el número de fichas disponibles
      * @param jugadores el número de jugadores
      * @param miJugador el jugador dueño de esta pantalla
+     * @param codigoSala el codigo de la sala
      */
-    public DialogTablero(FrameInicio parent, int tamaño, int monto, int fichas, int jugadores, int miJugador) {
+    public DialogTablero(FrameInicio parent, int tamaño, int monto, int fichas, int jugadores, int miJugador, String codigoSala) {
         super(parent, false); 
         this.parent=parent;
         this.setResizable(false);
@@ -114,6 +119,7 @@ public class DialogTablero extends JDialog {
         this.miJugador=miJugador;
         this.fichas = fichas;
         this.jugadores = jugadores;
+        this.codigoSala=codigoSala;
         casillas = new ArrayList<>();
         jugadoresActivos= new ArrayList<>();
         for (int i = 0; i < jugadores; i++) {
@@ -874,8 +880,10 @@ public class DialogTablero extends JDialog {
                         JOptionPane.showMessageDialog(null, "Te has quedado sin apuestas, no puedes jugar más", "Perdiste", JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         JOptionPane.showMessageDialog(null, getNombreJugador(i) + " Se ha quedado sin apuestas y sale de la partida", "Un jugador sale de la partida", JOptionPane.INFORMATION_MESSAGE);
-                    }               
+                    }         
+                    
                     podio.add(i);
+                    System.out.println("Podio añadido: "+i);
                 }
             }
         }
@@ -918,11 +926,14 @@ public class DialogTablero extends JDialog {
      * @param jugadorGanador Jugador que gana la partida
      */
     private void ganar(int jugadorGanador) {
-        juegoAcabo=true;
-        podio.add(jugadorGanador);
-        Collections.reverse(podio);
-        //parent.enviarJugadorSale(miJugador); TODO: Desconectarlo de la partida
-        parent.PasarPantallaFinal(this, podio);
+        if (!juegoAcabo) {
+            juegoAcabo = true;
+            System.out.println("Ganador: " + jugadorGanador);
+            podio.add(jugadorGanador);
+            Collections.reverse(podio);
+            //parent.enviarJugadorSale(miJugador); TODO: Desconectarlo de la partida
+            parent.PasarPantallaFinal(this, podio);
+        }
     }
     /**
      * Devuelve el nombre de un jugador segun miJugador
@@ -1077,15 +1088,31 @@ public class DialogTablero extends JDialog {
      *
      * @return Verdadero si se actualizo con exito
      */
-    private boolean subirCambios() {
+    private void subirCambios() {
         if(!this.juegoAcabo){
             revisarJugadorSale();
             revisarFinDelJuego();
         }
         this.actualizarSiguienteJugador(); //Actualiza la vista para el siguiente jugador 
-        
-        return parent.subirCambios(montoJugadores, jugador, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
+
+        CuerpoMensaje cuerpo = new CuerpoMensaje();
+        cuerpo.setCodigoSala(this.codigoSala);
+        cuerpo.setFichasConchaPosicion(fichasConchaPosicion);
+        cuerpo.setFichasGatoPosicion(fichasGatoPosicion);
+        cuerpo.setFichasMazorcaPosicion(fichasMazorcaPosicion);
+        cuerpo.setFichasPiramidePosicion(fichasPiramidePosicion);
+        cuerpo.setMontoJugadores(montoJugadores);
+        cuerpo.setJugador(jugador);
+
+        TipoMensaje tipo = TipoMensaje.PASAR_CAMBIOS;
+
+        Mensaje mensajeAServidor = new Mensaje.Builder()
+                .body(cuerpo)
+                .messageType(tipo)
+                .build();
+        parent.enviarMensaje(mensajeAServidor);
     }
+
     /**
      * Recibe los cambios del control y los coloca en la pantalla
      *
@@ -1199,7 +1226,7 @@ public class DialogTablero extends JDialog {
     public void salir() {
         int opcion = JOptionPane.showConfirmDialog(null, "¿Realmente quieres salir?", "Confirmar salida", JOptionPane.YES_NO_OPTION);
         if (opcion == JOptionPane.YES_OPTION) {
-                parent.enviarJugadorSale(miJugador);
+                parent.desconectar(this.codigoSala);
                 parent.PasarPantallaInicio(this);
         }
     }
@@ -1207,7 +1234,7 @@ public class DialogTablero extends JDialog {
      * Cierra la ventana y comunica la desconexion del jugador
      */
     public void cerrar() {
-        parent.enviarJugadorSale(miJugador);
+        parent.desconectar(this.codigoSala);
         parent.CerrarPrograma();
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

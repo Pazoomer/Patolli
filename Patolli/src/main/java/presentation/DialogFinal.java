@@ -24,8 +24,12 @@ public class DialogFinal extends javax.swing.JDialog {
         super(parent, false);
         this.parent=parent;
         this.podio=podio;
+        for (int i = 0; i < podio.size(); i++) {
+            System.out.println(podio.get(i));
+        }
         initComponents();
         inicializarGUI();
+        
     }
     /**
      * Inicializa las imagenes del podio
@@ -89,7 +93,7 @@ public class DialogFinal extends javax.swing.JDialog {
         }
     }
     private void salir(){
-        parent.PasarPantallaInicio(this);
+        parent.PasarPantallaUnirseCrear(this);
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
