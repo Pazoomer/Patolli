@@ -1224,9 +1224,9 @@ public class DialogTablero extends JDialog {
      * Cierra la aplicación después de confirmar la salida con el usuario.
      */
     public void salir() {
-        int opcion = JOptionPane.showConfirmDialog(null, "¿Realmente quieres salir?", "Confirmar salida", JOptionPane.YES_NO_OPTION);
+        int opcion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que quieres volver?", "Salir", JOptionPane.YES_NO_OPTION);
         if (opcion == JOptionPane.YES_OPTION) {
-                parent.desconectar(this.codigoSala);
+                parent.desconectar(this.codigoSala,miJugador);
                 parent.PasarPantallaInicio(this);
         }
     }
@@ -1234,8 +1234,11 @@ public class DialogTablero extends JDialog {
      * Cierra la ventana y comunica la desconexion del jugador
      */
     public void cerrar() {
-        parent.desconectar(this.codigoSala);
-        parent.CerrarPrograma();
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que quieres salir?", "Salir", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            parent.desconectar(this.codigoSala,miJugador);
+            parent.CerrarPrograma();
+        }
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

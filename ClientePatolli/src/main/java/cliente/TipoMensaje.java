@@ -11,8 +11,9 @@ public enum TipoMensaje {
     UNIRSE_SALA(4),
     PASAR_OPCIONES(5),
     PASAR_CAMBIOS(6),
-    PASAR_JUGADORES(7);
-    
+    PASAR_JUGADORES(7),
+    JUGADOR_SALE(8);
+
     private final int type;
     
     private TipoMensaje(int type) {

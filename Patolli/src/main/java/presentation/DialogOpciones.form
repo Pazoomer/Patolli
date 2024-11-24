@@ -359,6 +359,7 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblTama&#xf1;o8MouseClicked"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblTama&#xf1;o8MousePressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblTama&#xf1;o12">
@@ -375,6 +376,7 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblTama&#xf1;o12MouseClicked"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblTama&#xf1;o12MousePressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblTama&#xf1;o10">
@@ -391,6 +393,7 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblTama&#xf1;o10MouseClicked"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblTama&#xf1;o10MousePressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblMonto10">
@@ -412,6 +415,7 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblMonto10MouseClicked"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblMonto10MousePressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblMonto20">
@@ -428,6 +432,7 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblMonto20MouseClicked"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblMonto20MousePressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblMonto40">
@@ -444,6 +449,7 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblMonto40MouseClicked"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblMonto40MousePressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblFichas2">
@@ -465,6 +471,7 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblFichas2MouseClicked"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblFichas2MousePressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblFichas4">
@@ -481,6 +488,7 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblFichas4MouseClicked"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblFichas4MousePressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblFichas6">
@@ -497,6 +505,7 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblFichas6MouseClicked"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblFichas6MousePressed"/>
           </Events>
         </Component>
         <Container class="javax.swing.JPanel" name="pnlJugar">
@@ -545,6 +554,7 @@
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblJugarMouseClicked"/>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblJugarMousePressed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -646,6 +656,7 @@
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblVolverMouseClicked"/>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblVolverMousePressed"/>
               </Events>
             </Component>
           </SubComponents>

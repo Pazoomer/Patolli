@@ -340,6 +340,9 @@ public class DialogOpciones extends JDialog {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblTamaño8MouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblTamaño8MousePressed(evt);
+            }
         });
 
         lblTamaño12.setBackground(new java.awt.Color(192, 160, 123));
@@ -351,6 +354,9 @@ public class DialogOpciones extends JDialog {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblTamaño12MouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblTamaño12MousePressed(evt);
+            }
         });
 
         lblTamaño10.setBackground(new java.awt.Color(192, 160, 123));
@@ -361,6 +367,9 @@ public class DialogOpciones extends JDialog {
         lblTamaño10.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblTamaño10MouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblTamaño10MousePressed(evt);
             }
         });
 
@@ -374,6 +383,9 @@ public class DialogOpciones extends JDialog {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblMonto10MouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblMonto10MousePressed(evt);
+            }
         });
 
         lblMonto20.setBackground(new java.awt.Color(192, 160, 123));
@@ -385,6 +397,9 @@ public class DialogOpciones extends JDialog {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblMonto20MouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblMonto20MousePressed(evt);
+            }
         });
 
         lblMonto40.setBackground(new java.awt.Color(192, 160, 123));
@@ -395,6 +410,9 @@ public class DialogOpciones extends JDialog {
         lblMonto40.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblMonto40MouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblMonto40MousePressed(evt);
             }
         });
 
@@ -408,6 +426,9 @@ public class DialogOpciones extends JDialog {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblFichas2MouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblFichas2MousePressed(evt);
+            }
         });
 
         lblFichas4.setBackground(new java.awt.Color(192, 160, 123));
@@ -419,6 +440,9 @@ public class DialogOpciones extends JDialog {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblFichas4MouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblFichas4MousePressed(evt);
+            }
         });
 
         lblFichas6.setBackground(new java.awt.Color(192, 160, 123));
@@ -429,6 +453,9 @@ public class DialogOpciones extends JDialog {
         lblFichas6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblFichas6MouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblFichas6MousePressed(evt);
             }
         });
 
@@ -447,6 +474,9 @@ public class DialogOpciones extends JDialog {
         lblJugar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblJugarMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblJugarMousePressed(evt);
             }
         });
 
@@ -515,6 +545,9 @@ public class DialogOpciones extends JDialog {
         lblVolver.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblVolverMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblVolverMousePressed(evt);
             }
         });
 
@@ -624,118 +657,51 @@ public class DialogOpciones extends JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    /**
-     * Método llamado cuando se hace clic en la etiqueta 'Jugar'.
-     * Inicia el juego pasando a la pantalla correspondiente.
-     *
-     * @param evt Evento del mouse que se genera al hacer clic.
-     */
+
     private void lblJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblJugarMouseClicked
-        Jugar();
+
     }//GEN-LAST:event_lblJugarMouseClicked
-    /**
-     * Método llamado cuando se hace clic en el panel 'Jugar'.
-     * Inicia el juego pasando a la pantalla correspondiente.
-     *
-     * @param evt Evento del mouse que se genera al hacer clic.
-     */
+
     private void pnlJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlJugarMouseClicked
         
     }//GEN-LAST:event_pnlJugarMouseClicked
-    /**
-     * Método llamado cuando se hace clic en la etiqueta para seleccionar un
-     * tablero de tamaño 8.
-     * Actualiza el tamaño del tablero a 8.
-     *
-     * @param evt Evento del mouse que se genera al hacer clic.
-     */
+
     private void lblTamaño8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTamaño8MouseClicked
-        SetTamañoTablero(8);
+        
     }//GEN-LAST:event_lblTamaño8MouseClicked
-    /**
-     * Método llamado cuando se hace clic en la etiqueta para seleccionar un
-     * tablero de tamaño 10.
-     * Actualiza el tamaño del tablero a 10.
-     *
-     * @param evt Evento del mouse que se genera al hacer clic.
-     */
+
     private void lblTamaño10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTamaño10MouseClicked
-        SetTamañoTablero(10);
+        
     }//GEN-LAST:event_lblTamaño10MouseClicked
-    /**
-     * Método llamado cuando se hace clic en la etiqueta para seleccionar un
-     * tablero de tamaño 12.
-     * Actualiza el tamaño del tablero a 12.
-     *
-     * @param evt Evento del mouse que se genera al hacer clic.
-     */
+
     private void lblTamaño12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTamaño12MouseClicked
-        SetTamañoTablero(12);
+        
     }//GEN-LAST:event_lblTamaño12MouseClicked
-    /**
-     * Método llamado cuando se hace clic en la etiqueta para seleccionar un
-     * monto de apuesta de 10.
-     * Actualiza el monto de apuestas a 10.
-     *
-     * @param evt Evento del mouse que se genera al hacer clic.
-     */
+
     private void lblMonto10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblMonto10MouseClicked
-        SetMontoApuestas(10);
+        
     }//GEN-LAST:event_lblMonto10MouseClicked
-    /**
-     * Método llamado cuando se hace clic en la etiqueta para seleccionar un
-     * monto de apuesta de 20.
-     * Actualiza el monto de apuestas a 20.
-     *
-     * @param evt Evento del mouse que se genera al hacer clic.
-     */
+
     private void lblMonto20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblMonto20MouseClicked
-        SetMontoApuestas(20);
+        
     }//GEN-LAST:event_lblMonto20MouseClicked
-    /**
-     * Método llamado cuando se hace clic en la etiqueta para seleccionar un
-     * monto de apuesta de 40.
-     * Actualiza el monto de apuestas a 40.
-     *
-     * @param evt Evento del mouse que se genera al hacer clic.
-     */
+
     private void lblMonto40MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblMonto40MouseClicked
-        SetMontoApuestas(40);
+        
     }//GEN-LAST:event_lblMonto40MouseClicked
-    /**
-     * Método llamado cuando se hace clic en la etiqueta para seleccionar 2 fichas.
-     * Actualiza el número de fichas del jugador a 2.
-     *
-     * @param evt Evento del mouse que se genera al hacer clic.
-     */
+
     private void lblFichas2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFichas2MouseClicked
-        SetFichasJugador(2);
+        
     }//GEN-LAST:event_lblFichas2MouseClicked
-    /**
-     * Método llamado cuando se hace clic en la etiqueta para seleccionar 4 fichas.
-     * Actualiza el número de fichas del jugador a 4.
-     *
-     * @param evt Evento del mouse que se genera al hacer clic.
-     */
+
     private void lblFichas4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFichas4MouseClicked
-        SetFichasJugador(4);
+        
     }//GEN-LAST:event_lblFichas4MouseClicked
-    /**
-     * Método llamado cuando se hace clic en la etiqueta para seleccionar 6 fichas.
-     * Actualiza el número de fichas del jugador a 6.
-     *
-     * @param evt Evento del mouse que se genera al hacer clic.
-     */
+
     private void lblFichas6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFichas6MouseClicked
-        SetFichasJugador(6);
+        
     }//GEN-LAST:event_lblFichas6MouseClicked
 
-   /**
-     * Método llamado cuando se hace clic en la etiqueta 'Volver'.
-     * Regresa a la pantalla anterior.
-     *
-     * @param evt Evento del mouse que se genera al hacer clic.
-     */
     private void lblOpcionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblOpcionesMouseClicked
        
     }//GEN-LAST:event_lblOpcionesMouseClicked
@@ -747,19 +713,58 @@ public class DialogOpciones extends JDialog {
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
 
     }//GEN-LAST:event_formWindowClosed
-    /**
-     * Método llamado cuando se hace clic en el panel 'Volver'. Regresa a la
-     * pantalla anterior.
-     *
-     * @param evt Evento del mouse que se genera al hacer clic.
-     */
+
     private void lblVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblVolverMouseClicked
-        Volver();
+        
     }//GEN-LAST:event_lblVolverMouseClicked
 
     private void pnlVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlVolverMouseClicked
 
     }//GEN-LAST:event_pnlVolverMouseClicked
+
+    private void lblVolverMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblVolverMousePressed
+        Volver();
+    }//GEN-LAST:event_lblVolverMousePressed
+
+    private void lblJugarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblJugarMousePressed
+        Jugar();
+    }//GEN-LAST:event_lblJugarMousePressed
+
+    private void lblTamaño10MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTamaño10MousePressed
+        SetTamañoTablero(10);
+    }//GEN-LAST:event_lblTamaño10MousePressed
+
+    private void lblTamaño8MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTamaño8MousePressed
+        SetTamañoTablero(8);
+    }//GEN-LAST:event_lblTamaño8MousePressed
+
+    private void lblTamaño12MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTamaño12MousePressed
+        SetTamañoTablero(12);
+    }//GEN-LAST:event_lblTamaño12MousePressed
+
+    private void lblMonto10MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblMonto10MousePressed
+        SetMontoApuestas(10);
+    }//GEN-LAST:event_lblMonto10MousePressed
+
+    private void lblMonto20MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblMonto20MousePressed
+        SetMontoApuestas(20);
+    }//GEN-LAST:event_lblMonto20MousePressed
+
+    private void lblMonto40MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblMonto40MousePressed
+        SetMontoApuestas(40);
+    }//GEN-LAST:event_lblMonto40MousePressed
+
+    private void lblFichas2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFichas2MousePressed
+        SetFichasJugador(2);
+    }//GEN-LAST:event_lblFichas2MousePressed
+
+    private void lblFichas4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFichas4MousePressed
+        SetFichasJugador(4);
+    }//GEN-LAST:event_lblFichas4MousePressed
+
+    private void lblFichas6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFichas6MousePressed
+        SetFichasJugador(6);
+    }//GEN-LAST:event_lblFichas6MousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

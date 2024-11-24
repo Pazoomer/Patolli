@@ -15,6 +15,7 @@ public interface PlantillaConexion {
             case PASAR_CAMBIOS ->onPasarCambios(mensaje);
             case PASAR_JUGADORES ->onPasarJugadores(mensaje);
             case DESCONECTARSE ->onDisconnect(mensaje);
+            case JUGADOR_SALE->onJugadorSale(mensaje);
         }
     }
     
@@ -29,6 +30,8 @@ public interface PlantillaConexion {
     void onPasarJugadores(Mensaje mensaje);
 
     void onPasarCambios(Mensaje mensaje);
+    
+    void onJugadorSale(Mensaje mensaje);
     
     default void onDisconnect(Mensaje mensaje){}
 }

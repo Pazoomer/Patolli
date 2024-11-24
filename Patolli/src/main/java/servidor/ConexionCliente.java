@@ -40,7 +40,7 @@ public class ConexionCliente implements PlantillaConexion, IObservador, IConexio
     }
 
     @Override
-    public void init() {
+    public void init(){
         try {
             Socket clientSocket = new Socket(HOST, PORT);
             
@@ -61,7 +61,7 @@ public class ConexionCliente implements PlantillaConexion, IObservador, IConexio
             System.out.println("Usuario conectado");
         } catch (IOException ex) {
             logger.error(String.format(" %s : el servidor no responde", ex.getMessage()));
-            System.exit(0);
+            frameInicio.volverInicio=true;
         }
     }
 
@@ -74,13 +74,17 @@ public class ConexionCliente implements PlantillaConexion, IObservador, IConexio
 
     @Override
     public void sendMessage(Mensaje mensaje) {
-        mensaje.setSender(usuario);
-        cliente.sendMessage(mensaje);
+        if (cliente!=null) {
+            mensaje.setSender(usuario);
+            cliente.sendMessage(mensaje);
+        }
     }
 
     @Override
     public void disconnect() {
-        cliente.disconnect();
+        if(cliente!=null){
+           cliente.disconnect(); 
+        }
     }
 
     @Override
@@ -116,5 +120,10 @@ public class ConexionCliente implements PlantillaConexion, IObservador, IConexio
     @Override
     public void onPasarCambios(Mensaje mensaje) {
         frameInicio.onPasarCambios(mensaje);
+    }
+
+    @Override
+    public void onJugadorSale(Mensaje mensaje) {
+        frameInicio.onJugadorSale(mensaje);
     }
 }

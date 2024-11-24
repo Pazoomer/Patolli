@@ -131,6 +131,9 @@ public class DialogUnirseCrear extends JDialog {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblUnirseMouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblUnirseMousePressed(evt);
+            }
         });
 
         javax.swing.GroupLayout pnlUnirseLayout = new javax.swing.GroupLayout(pnlUnirse);
@@ -161,6 +164,9 @@ public class DialogUnirseCrear extends JDialog {
         lblCrear.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblCrearMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblCrearMousePressed(evt);
             }
         });
 
@@ -219,13 +225,20 @@ public class DialogUnirseCrear extends JDialog {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 pnlComoJugarMouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                pnlComoJugarMousePressed(evt);
+            }
         });
 
         lblComoJugar.setFont(new java.awt.Font("Comic Sans MS", 1, 30)); // NOI18N
+        lblComoJugar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblComoJugar.setText("COMO JUGAR");
         lblComoJugar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblComoJugarMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblComoJugarMousePressed(evt);
             }
         });
 
@@ -234,16 +247,16 @@ public class DialogUnirseCrear extends JDialog {
         pnlComoJugarLayout.setHorizontalGroup(
             pnlComoJugarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlComoJugarLayout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(lblComoJugar)
+                .addContainerGap()
+                .addComponent(lblComoJugar, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlComoJugarLayout.setVerticalGroup(
             pnlComoJugarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlComoJugarLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(lblComoJugar)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(lblComoJugar, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout pnlUnirseCrearLayout = new javax.swing.GroupLayout(pnlUnirseCrear);
@@ -300,7 +313,7 @@ public class DialogUnirseCrear extends JDialog {
      * @param evt el evento de clic del mouse generado al hacer clic en la etiqueta
      */
     private void lblUnirseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUnirseMouseClicked
-        Unirse();
+        
     }//GEN-LAST:event_lblUnirseMouseClicked
     /**
      * Maneja el evento de clic del mouse en el panel "Unirse".
@@ -318,7 +331,7 @@ public class DialogUnirseCrear extends JDialog {
      * @param evt el evento de clic del mouse generado al hacer clic en la etiqueta
      */
     private void lblCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCrearMouseClicked
-        Crear();
+        
     }//GEN-LAST:event_lblCrearMouseClicked
     /**
      * Maneja el evento de clic del mouse en el panel "Crear".
@@ -339,8 +352,24 @@ public class DialogUnirseCrear extends JDialog {
     }//GEN-LAST:event_lblComoJugarMouseClicked
 
     private void pnlComoJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlComoJugarMouseClicked
-        ComoJugar();
+        
     }//GEN-LAST:event_pnlComoJugarMouseClicked
+
+    private void lblUnirseMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUnirseMousePressed
+        Unirse();
+    }//GEN-LAST:event_lblUnirseMousePressed
+
+    private void lblCrearMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCrearMousePressed
+        Crear();
+    }//GEN-LAST:event_lblCrearMousePressed
+
+    private void pnlComoJugarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlComoJugarMousePressed
+        
+    }//GEN-LAST:event_pnlComoJugarMousePressed
+
+    private void lblComoJugarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblComoJugarMousePressed
+        ComoJugar();
+    }//GEN-LAST:event_lblComoJugarMousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel6;

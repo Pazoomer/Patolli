@@ -106,13 +106,22 @@ public class ControladorMensajes extends Observable implements PlantillaConexion
         try {
             String codigoSala = mensaje.getBody().getCodigoSala();
             var user = salas.get(codigoSala).stream().filter(c -> c.getUser().equals(mensaje.getSender())).findFirst().orElse(null);
-            if (user != null) {
-                //String roomCode = user.getRoom();
-                //salas.get(roomCode).remove(user);
-                //sendMessageToRoom(roomCode, message); // Notificar a la sala de la desconexión
-
+            if (user != null) {       
                 salas.get(codigoSala).remove(user);
                 user.disconnect();
+
+                //Mensaje para los demas jugadores de la sala
+                CuerpoMensaje cuerpoRespuesta = new CuerpoMensaje();
+                cuerpoRespuesta.setJugador(mensaje.getBody().getJugador());
+                TipoMensaje tipoRespuesta = TipoMensaje.JUGADOR_SALE;
+                Mensaje mensajeRespuesta = new Mensaje.Builder()
+                        .body(cuerpoRespuesta)
+                        .messageType(tipoRespuesta)
+                        .build();
+                salas.get(codigoSala).forEach(cliente -> {
+                    cliente.sendMessage(mensajeRespuesta);
+                }
+                );
                 notifyObservers(mensaje);
             }
         } finally {
@@ -122,12 +131,10 @@ public class ControladorMensajes extends Observable implements PlantillaConexion
 
     @Override
     public void onUpdate(Object obj) {
-        proccessMessage((Mensaje) obj);
+        Mensaje mensaje=(Mensaje)obj;
+        System.out.println("Mensaje recibido: "+mensaje.getMessageType());
+        proccessMessage(mensaje);
     }
-
-//    private List<Usuario> getUsers() {
-//        return connections.stream().map(c -> c.getUser()).collect(Collectors.toList());
-//    }
 
     @Override
     public void notifyObservers(Object obj) {
@@ -276,34 +283,10 @@ public class ControladorMensajes extends Observable implements PlantillaConexion
 
         System.out.println("Mensaje enviado a los demás jugadores en la sala: " + codigoSala);
     }
+
+    @Override
+    public void onJugadorSale(Mensaje mensaje) {
+        
+    }
 }
-/*
-    private void onRecibirCambios(Mensaje mensaje) {}
-    private void onRecibirOpciones(Mensaje mensaje) {}
-    private void onNumeroJugadores(Mensaje mensaje) {}
-    private void onJugadorEntra(Mensaje mensaje) {}
-    private void onJugadorSale(Mensaje mensaje) {}
-*/
-//    public void joinRoom(String roomCode, HiloCliente client) {
-//        // Si la sala no existe, se crea una nueva
-//        salas.putIfAbsent(roomCode, new ArrayList<>());
-//        salas.get(roomCode).add(client);
-//        client.setRoom(roomCode); // Se establece la sala a la que pertenece el cliente
-//        notifyRoomMembers(roomCode); // Notifica a los miembros de la sala sobre la nueva conexión
-//    }
-//
-//    public void sendMessageToRoom(String roomCode, Mensaje message) {
-//        List<HiloCliente> roomClients = salas.get(roomCode);
-//        if (roomClients != null) {
-//            for (HiloCliente client : roomClients) {
-//                client.sendMessage(message);
-//            }
-//        }
-//    }
-//
-//    private void notifyRoomMembers(String roomCode) {
-//        Mensaje updateMessage = new Mensaje();
-//        updateMessage.setBody(new CuerpoMensaje("Lista actualizada de jugadores"));
-//        sendMessageToRoom(roomCode, updateMessage);
-//    }
 

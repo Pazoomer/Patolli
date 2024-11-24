@@ -30,8 +30,8 @@ public class ControlJuego implements IControlJuego {
     }
     
     @Override
-    public void desconectar(String codigoSala) {
-        juego.desconectar(codigoSala);
+    public void desconectar(String codigoSala, int miJugador) {
+        juego.desconectar(codigoSala, miJugador);
     }
     
 //    @Override

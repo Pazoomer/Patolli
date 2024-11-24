@@ -21,6 +21,7 @@ public class FrameInicio extends javax.swing.JFrame {
     DialogSala sala;
     DialogUnirseCrear unirseCrear;
     public boolean isHost;
+    public boolean volverInicio;
     
     /**
      * Constructor de FrameInicio.
@@ -32,19 +33,20 @@ public class FrameInicio extends javax.swing.JFrame {
         initComponents();
         controlJuego = new ControlJuego(this);
     }
-    
     /**
      * El jugador se conecta al servidor
      */
     public void conectarse(){
-        controlJuego.conectarse(this); //Se conecta con esta pantalla
+        volverInicio=false;
+        controlJuego.conectarse(this);
     }
     /**
      * El jugador se desconecta del servidor
      * @param codigoSala
+     * @param miJugador
      */
-    public void desconectar(String codigoSala){
-        controlJuego.desconectar(codigoSala);
+    public void desconectar(String codigoSala, int miJugador){
+        controlJuego.desconectar(codigoSala,miJugador);
     }
     /**
      * El jugador envia un mensaje a los demas jugadores
@@ -53,33 +55,27 @@ public class FrameInicio extends javax.swing.JFrame {
     public void enviarMensaje(Mensaje mensaje){
         controlJuego.enviarMensaje(mensaje);
     }
-
     public void onConectarse(Mensaje mensaje) {
 
     }
-
     public void onUnirseSala(Mensaje mensaje) {
         if (sala != null) {
             sala.añadirJugador(1);
         }
     }
-
     public void onCrearSala(Mensaje mensaje) {
 
     }
-
     public void onPasarOpciones(Mensaje mensaje) { 
         if(sala!=null){
             sala.recibirOpciones(mensaje.getBody().getTamaño(), mensaje.getBody().getMonto(), mensaje.getBody().getFichas(), mensaje.getBody().getJugadores(), mensaje.getBody().getCodigoSala());
         }
     }
-
     public void onPasarCambios(Mensaje mensaje) {
         if(tablero!=null){
             tablero.recibirCambios(mensaje.getBody().getMontoJugadores(), mensaje.getBody().getJugador(), mensaje.getBody().getFichasGatoPosicion(), mensaje.getBody().getFichasConchaPosicion(), mensaje.getBody().getFichasPiramidePosicion(), mensaje.getBody().getFichasMazorcaPosicion());
         }     
-    }
-    
+    } 
     public void onDesconectarse(Mensaje mensaje){
         JOptionPane.showMessageDialog(null, mensaje.getBody().getRazonDesconexion(), "Se desconecto del servidor", JOptionPane.INFORMATION_MESSAGE);
         if(tablero!=null){
@@ -88,9 +84,7 @@ public class FrameInicio extends javax.swing.JFrame {
             this.PasarPantallaInicio(sala);
         }    
     }
-
     public void onPasarJugadores(Mensaje mensaje) {
-        
         if (unirseCrear != null) {
             unirseCrear.existeSala(mensaje.getBody().isExisteSala());
         }else{
@@ -105,129 +99,40 @@ public class FrameInicio extends javax.swing.JFrame {
             System.out.println("Sala es null");
         }
     }
-//    /**
-//     * Sube los cambios para los demas jugadores
-//     *
-//     * @param siguienteJugador
-//     * @param montoJugadores
-//     * @param fichasGatoPosicion
-//     * @param fichasConchaPosicion
-//     * @param fichasPiramidePosicion
-//     * @param fichasMazorcaPosicion
-//     * @return
-//     */
-//    public boolean subirCambios(List<Integer> montoJugadores, int siguienteJugador, List<Integer> fichasGatoPosicion,
-//            List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
-//        return controlJuego.actualizarCambios(montoJugadores, siguienteJugador, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
-//    }
-//
-//    /**
-//     * Recibe los cambios de otro jugador
-//     *
-//     * @param montoJugadores
-//     * @param siguienteJugador
-//     * @param fichasGatoPosicion
-//     * @param fichasConchaPosicion
-//     * @param fichasPiramidePosicion
-//     * @param fichasMazorcaPosicion
-//     * @return Verdadero si los cambios se recibieron con exito
-//     */
-//    public boolean recibirCambios(List<Integer> montoJugadores, int siguienteJugador, List<Integer> fichasGatoPosicion,
-//            List<Integer> fichasConchaPosicion, List<Integer> fichasPiramidePosicion, List<Integer> fichasMazorcaPosicion) {
-//        if (tablero==null){
-//            return false;
-//        }
-//        return tablero.recibirCambios(montoJugadores, siguienteJugador, fichasGatoPosicion, fichasConchaPosicion, fichasPiramidePosicion, fichasMazorcaPosicion);
-//    }
-//
-//    /**
-//     * El jugador sale de la partida
-//     *
-//     * @param jugador
-//     * @return
-//     */
-//    public boolean enviarJugadorSale(int jugador) {
-//        return true;
-//        //TODO: return controlJuego.jugadorSale(jugador);
-//    }
-//    
-//    /**
-//     * El jugador sale de la partida
-//     *
-//     * @param jugador
-//     */
-//    public void recibirJugadorSale(int jugador) {
-//        if (tablero != null) {
-//            tablero.recibirJugadorSale(jugador);
-//        } else if (sala != null) {
-//            sala.recibirJugadorSale(jugador);
-//        }
-//    }
-//    /**
-//     * Recibe el numero de jugadores para actualizar la interfaz de la sala
-//     * @param numeroJugadores 
-//     */
-//    public void recibirNumeroJugadores(int numeroJugadores){
-//        if (sala != null) {
-//            sala.añadirJugador(1);
-//            sala.setMiJugador(numeroJugadores);
-//            sala.setContexto();
-//        }
-//    }
-//    
-//    /**
-//     * Pide el numero de jugadores al servidor
-//     */
-//    public void getNumeroJugadores(){
-//        this.controlJuego.getNumeroJugadores();
-//    }
-//    
-//    /**
-//     * Un jugador entra a la partida
-//     * @param numeroJugadores
-//     * @return 
-//     */
-//    public int jugadorEntra(int numeroJugadores) {
-//        if (sala != null) {                
-//            sala.añadirJugador(1);
-//            return numeroJugadores;
-//        }
-//        return -1;
-//    }
-//    
-//    /**
-//     * Pasa los ajustes de una partida
-//     * @param tamaño
-//     * @param monto
-//     * @param fichas
-//     * @param jugadores
-//     * @return 
-//     */
-//    public boolean subirOpciones(int tamaño, int monto, int fichas,int jugadores){
-//        return controlJuego.pasarOpciones(tamaño, monto, fichas,jugadores);
-//    }
-//    
-//    /**
-//     * Pasa los ajustes de una partida
-//     * @param tamaño
-//     * @param monto
-//     * @param fichas
-//     * @param jugadores 
-//     */
-//    public void recibirOpciones(int tamaño, int monto, int fichas,int jugadores){
-//        sala.recibirOpciones(tamaño, monto, fichas, jugadores);
-//    }
+    public void onJugadorSale(Mensaje mensaje){
+        if (sala != null) {
+            sala.recibirJugadorSale(mensaje.getBody().getJugador());
+        }else{
+            System.out.println("Sala es null");
+        }
+        if(tablero!=null){
+           tablero.recibirJugadorSale(mensaje.getBody().getJugador());
+        }else{
+            System.out.println("Tablero es null");
+        }          
+    }
     /**
      * Cierra la aplicacion por completo
      */
     public void CerrarPrograma() {
-        //if (//isHost) {
-            //TODO:
-            //controlJuego.destruirServidor();
-        //}
-        this.dispose();
+        try {
+            if (sala != null) {
+                sala.dispose();
+            }
+            if (unirseCrear != null) {
+                unirseCrear.dispose();
+            }
+            if (tablero != null) {
+                tablero.dispose();
+            }
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                // Limpia recursos aquí (cerrar conexiones, guardar datos, etc.)
+                System.out.println("Cerrando el programa...");
+            }));
+        } finally {
+            System.exit(0);
+        }
     }
-    
     /**
      * Pasa a la siguiente pantalla, que es FrameUnirseCrear. Crea una nueva
      * instancia de FrameUnirseCrear y esconde la ventana actual
@@ -244,8 +149,7 @@ public class FrameInicio extends javax.swing.JFrame {
         }
         this.setVisible(false);
         unirseCrear.setVisible(true);
-    }
-    
+    } 
     /**
      * Pasa a la siguiente pantalla, que es DialogFinal. Crea una nueva
      * instancia de DialogFinal y esconde la ventana actual
@@ -262,7 +166,6 @@ public class FrameInicio extends javax.swing.JFrame {
         this.setVisible(false);
         dialogFinal.setVisible(true);
     }
-
     /**
      * Pasa a la siguiente pantalla, que es DialogComoJugar Crea una nueva
      * instancia de DialogComoJugar y esconde la ventana actual
@@ -278,7 +181,6 @@ public class FrameInicio extends javax.swing.JFrame {
         this.setVisible(false);
         comoJugar.setVisible(true); 
     } 
-    
     /**
      * Pasa a la siguiente pantalla, que es FrameSala.
      * Crea una nueva instancia de FrameSala y esconde la ventana actual
@@ -297,7 +199,6 @@ public class FrameInicio extends javax.swing.JFrame {
         this.setVisible(false);
         sala.setVisible(true); 
     } 
-    
     /**
      * Pasa a la siguiente pantalla, que es FrameOpciones.
      * Crea una nueva instancia de FrameOpciones y esconde la ventana actual
@@ -313,9 +214,9 @@ public class FrameInicio extends javax.swing.JFrame {
         this.setVisible(false);
         opciones.setVisible(true);       
     } 
-    
     /**
      * Pasa a la siguiente pantalla, que es FrameInicio
+     *
      * @param children
      */
     public void PasarPantallaInicio(JDialog children) {
@@ -323,9 +224,14 @@ public class FrameInicio extends javax.swing.JFrame {
         if (children != null) {
             children.setVisible(false);
         }
+        if (this.unirseCrear != null) {
+            unirseCrear.setVisible(false);
+        }
+        if (this.sala != null) {
+            sala.setVisible(false);
+        }
         this.setVisible(true);
-    } 
-    
+    }
     /**
      * Pasa a la siguiente pantalla, que es FrameTablero.
      * Crea una nueva instancia de FrameTablero y esconde la ventana actual
@@ -335,6 +241,7 @@ public class FrameInicio extends javax.swing.JFrame {
      * @param monto
      * @param jugadores
      * @param miJugador
+     * @param codigoSala
      */
     public void PasarPantallaTablero(JDialog children,int tamaño, int fichas, int monto, int jugadores, int miJugador, String codigoSala) {
         tablero = new DialogTablero(this, tamaño, fichas, monto, jugadores, miJugador,codigoSala);
@@ -346,7 +253,6 @@ public class FrameInicio extends javax.swing.JFrame {
         this.setVisible(false);
         tablero.setVisible(true);
     }
-
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -365,6 +271,9 @@ public class FrameInicio extends javax.swing.JFrame {
         pnlTodo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 pnlTodoMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                pnlTodoMousePressed(evt);
             }
         });
 
@@ -411,16 +320,14 @@ public class FrameInicio extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-    /**
-     * Este método se ejecuta cuando se hace clic en el panel pnlTodo.
-     * Llama al método PasarPantalla() para pasar a la pantalla de opciones.
-     * 
-     * @param evt El evento de clic del ratón.
-     */
+
     private void pnlTodoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlTodoMouseClicked
-        PasarPantallaUnirseCrear(null);
+        
     }//GEN-LAST:event_pnlTodoMouseClicked
 
+    private void pnlTodoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlTodoMousePressed
+        PasarPantallaUnirseCrear(null);
+    }//GEN-LAST:event_pnlTodoMousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblInstruccion;

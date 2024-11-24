@@ -58,19 +58,18 @@ public class HiloCliente extends Observable implements Runnable, Serializable {
             out.flush();
         } catch (IOException ex) {
             ex.printStackTrace();
-            logger.error(ex.getMessage());
+            logger.error(String.format("Error al mandar mensaje: %s",ex.getMessage()));
         }
     }
 
     public void disconnect() {
         try {
-            sendMessage(new Mensaje.Builder().sender(usuario).messageType(TipoMensaje.DESCONECTARSE).build());
             connected = false;
             in.close();
             out.close();
             clientSocket.close();
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            logger.error(String.format("Error al desconectarse: %s",e.getMessage()));
         }
     }
     
@@ -83,8 +82,7 @@ public class HiloCliente extends Observable implements Runnable, Serializable {
         try {
             proccessMessage();
         } catch (Exception ex) {
-            ex.printStackTrace();
-            logger.error(ex.getMessage());
+            System.out.println("Se cerro la conexion");
         }
     }
 
@@ -94,17 +92,13 @@ public class HiloCliente extends Observable implements Runnable, Serializable {
             in = new ObjectInputStream(clientSocket.getInputStream());
         } catch (IOException ex) {
             ex.printStackTrace();
-            logger.error(ex.getMessage());
+            logger.error(String.format("Error al inicializar el hilo: %s",ex.getMessage()));
         }
     }
 
     private void proccessMessage() throws Exception {
         while (connected) {
             Mensaje mensaje = (Mensaje) in.readObject();
-            //if (mensaje.getMessageType() == TipoMensaje.CONECTARSE) {
-            //    usuario = mensaje.getSender();
-            //    mensaje.setMessageType(TipoMensaje.ACTUALIZAR_USUARIO);
-            //}
             if (mensaje.getMessageType() == TipoMensaje.DESCONECTARSE) {
                 connected = false;
                 disconnect();

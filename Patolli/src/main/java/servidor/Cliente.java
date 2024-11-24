@@ -26,13 +26,15 @@ public class Cliente {
         conexionCliente.sendMessage(mensaje);
     }
     
-    public void disconnect(String codigoSala){
+    public void disconnect(String codigoSala, int miJugador){
         CuerpoMensaje cuerpo = new CuerpoMensaje();
         cuerpo.setCodigoSala(codigoSala);
+        cuerpo.setJugador(miJugador);
         
         TipoMensaje tipo = TipoMensaje.DESCONECTARSE;
         Mensaje mensaje = new Mensaje.Builder()
                 .messageType(tipo)
+                .body(cuerpo)
                 .build();
         conexionCliente.sendMessage(mensaje);
         conexionCliente.disconnect();

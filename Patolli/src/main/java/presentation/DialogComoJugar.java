@@ -1,7 +1,6 @@
 package presentation;
 
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 
 /**
  * La clase FrameComoJugar muestra las instrucciones del juego Patolli.
@@ -10,7 +9,7 @@ import javax.swing.JFrame;
  * 
  * @author t1pas
  */
-public class DialogComoJugar extends JDialog {
+public final class DialogComoJugar extends JDialog {
 
     private final FrameInicio parent;
     // Página actual de las instrucciones
@@ -26,6 +25,7 @@ public class DialogComoJugar extends JDialog {
         this.parent=parent;
         this.setResizable(false); // Desactiva la opción de cambiar el tamaño de la ventana
         initComponents();
+        pasarInstrucciones(0);
         // Agregar un WindowListener para manejar el evento de cerrar
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -59,6 +59,8 @@ public class DialogComoJugar extends JDialog {
             paginaInstrucciones = 0; // Limita el valor mínimo
         }
         // Actualiza el texto de la instrucción según la página
+        this.lblIzquierda.setVisible(true);
+        this.lblDerecha.setVisible(true);
         switch (paginaInstrucciones) {
             case 0->{
                 this.txtInstruccion.setText("""
@@ -67,6 +69,7 @@ public class DialogComoJugar extends JDialog {
                                             El objetivo del patolli es dejar a los demas jugadores sin apuestas.
                                             
                                             Hay varias formas de ganar o perder apuestas que dependeran de como muevas tus fichas.""");
+                this.lblIzquierda.setVisible(false);
             }
             case 1 -> {
                 this.txtInstruccion.setText("""
@@ -103,6 +106,7 @@ public class DialogComoJugar extends JDialog {
                                             Si caes en la casilla roja, tendras que pagar dos apuestas.
                                             
                                             Si caes en la casilla azul, juegas dos turnos adicionales seguidos.""");
+                this.lblDerecha.setVisible(false);
             }
         }
     }
@@ -234,6 +238,9 @@ public class DialogComoJugar extends JDialog {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblVolverMouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblVolverMousePressed(evt);
+            }
         });
 
         javax.swing.GroupLayout pnlVolverLayout = new javax.swing.GroupLayout(pnlVolver);
@@ -306,7 +313,7 @@ public class DialogComoJugar extends JDialog {
  * @param evt El evento de clic del ratón.
  */
     private void lblVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblVolverMouseClicked
-        Volver();
+        
     }//GEN-LAST:event_lblVolverMouseClicked
 
     private void pnlVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlVolverMouseClicked
@@ -336,6 +343,10 @@ public class DialogComoJugar extends JDialog {
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
       
     }//GEN-LAST:event_formWindowClosed
+
+    private void lblVolverMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblVolverMousePressed
+        Volver();
+    }//GEN-LAST:event_lblVolverMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

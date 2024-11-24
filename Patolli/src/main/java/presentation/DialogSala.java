@@ -12,7 +12,7 @@ import utils.Utils;
  * Maneja la interacción de los jugadores, el código de la sala y la transición
  * a otras pantallas del juego.
  */
-public class DialogSala extends JDialog {
+public final class DialogSala extends JDialog {
 
     private final FrameInicio parent;
     public int tamaño;      // Tamaño del tablero de juego.
@@ -65,7 +65,10 @@ public class DialogSala extends JDialog {
         this.lblP4.setVisible(false);
         this.mazorcaIcono.setVisible(false);
         
-        ajustesHost();    
+        ajustesHost();  
+        if(parent.volverInicio){
+            volver();
+        }
     }
     /**
      * Ajusta la pantalla dependiendo si es o no el host
@@ -84,11 +87,9 @@ public class DialogSala extends JDialog {
                     .messageType(tipo)
                     .build();
             parent.enviarMensaje(mensaje);
-                //TODO: Si el servidor no responde debe volver a la pantalla anterior
         } else {
             this.lblContexto.setText("Espera a que el host inicie la partida");
         }
-        //parent.getNumeroJugadores(); //TODO: Pedir el numero de jugadores
     }
     public void setContexto(){
         switch(miJugador){
@@ -225,15 +226,26 @@ public class DialogSala extends JDialog {
      * Regresa a la pantalla de opciones.
      */
     public void volver() {
-        parent.desconectar(this.codigo);
-        parent.PasarPantallaOpciones(this);
+            parent.desconectar(this.codigo,miJugador);
+            parent.PasarPantallaOpciones(this);
     }
+    
+    public void confirmarVolver(){
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que quieres volver?", "Salir", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            volver();
+        }
+    }
+
     /**
      * Cierra el programa
      */
     public void cerrar() {
-        parent.desconectar(this.codigo);
-        parent.CerrarPrograma();
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que quieres salir?", "Salir", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            parent.desconectar(this.codigo, miJugador);
+            parent.CerrarPrograma();
+        }
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -254,8 +266,6 @@ public class DialogSala extends JDialog {
         mazorcaIcono = new javax.swing.JLabel();
         conchaIcono = new javax.swing.JLabel();
         lblContexto = new javax.swing.JLabel();
-        TODObtnAñadirJugador = new javax.swing.JButton();
-        TODObtnEliminarJugador = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 600));
@@ -311,6 +321,9 @@ public class DialogSala extends JDialog {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblVolverMouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblVolverMousePressed(evt);
+            }
         });
 
         javax.swing.GroupLayout pnlVolverLayout = new javax.swing.GroupLayout(pnlVolver);
@@ -345,6 +358,9 @@ public class DialogSala extends JDialog {
         lblJugar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblJugarMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblJugarMousePressed(evt);
             }
         });
 
@@ -398,21 +414,8 @@ public class DialogSala extends JDialog {
         conchaIcono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/concha.png"))); // NOI18N
 
         lblContexto.setFont(new java.awt.Font("Comic Sans MS", 1, 36)); // NOI18N
-        lblContexto.setText("Se necesitan 2 jugadores para iniciar");
-
-        TODObtnAñadirJugador.setText("(TODO:) Añadir Jugador");
-        TODObtnAñadirJugador.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                TODObtnAñadirJugadorMouseClicked(evt);
-            }
-        });
-
-        TODObtnEliminarJugador.setText("(TODO:) Eliminar Jugador");
-        TODObtnEliminarJugador.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                TODObtnEliminarJugadorMouseClicked(evt);
-            }
-        });
+        lblContexto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblContexto.setText("Invita amigos usando el codigo de la sala");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -434,45 +437,30 @@ public class DialogSala extends JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(pnlJugar, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(TODObtnAñadirJugador)
-                    .addComponent(gatoIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(conchaIcono)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(piramideIcono))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lblContexto)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(gatoIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(43, 43, 43)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(conchaIcono)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(piramideIcono))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                         .addComponent(mazorcaIcono)
-                        .addGap(34, 34, 34))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(TODObtnEliminarJugador)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblContexto)
-                .addGap(62, 62, 62))
+                        .addGap(34, 34, 34))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(TODObtnAñadirJugador))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
-                        .addComponent(TODObtnEliminarJugador)))
+                .addGap(21, 21, 21)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(42, 42, 42)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblP1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -486,9 +474,9 @@ public class DialogSala extends JDialog {
                         .addComponent(conchaIcono, javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(gatoIcon))
                     .addComponent(mazorcaIcono))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addComponent(lblContexto)
-                .addGap(28, 28, 28)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlJugar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pnlVolver, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -508,70 +496,36 @@ public class DialogSala extends JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    /**
-    * Maneja el evento de clic en la etiqueta "Volver".
-    * Llama al método Volver() para regresar a la pantalla de opciones.
-    *
-    * @param evt el evento de mouse que se ha producido
-    */
+
     private void lblVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblVolverMouseClicked
-        volver();
+       
     }//GEN-LAST:event_lblVolverMouseClicked
-    /**
-    * Maneja el evento de clic en el panel "Volver".
-    * Llama al método {@link #Volver()} para regresar a la pantalla de opciones.
-    *
-    * @param evt el evento de mouse que se ha producido
-    */
+
     private void pnlVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlVolverMouseClicked
        
     }//GEN-LAST:event_pnlVolverMouseClicked
-    /**
-    * Maneja el evento de clic en la etiqueta "Jugar".
-    * Llama al método Jugar para iniciar el juego.
-    *
-    * @param evt el evento de mouse que se ha producido
-    */
+
     private void lblJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblJugarMouseClicked
-        jugar();
+        
     }//GEN-LAST:event_lblJugarMouseClicked
-    /**
-    * Maneja el evento de clic en el panel "Jugar".
-    * Llama al método Jugar para iniciar el juego.
-    *
-    * @param evt el evento de mouse que se ha producido
-    */
+
     private void pnlJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlJugarMouseClicked
     
     }//GEN-LAST:event_pnlJugarMouseClicked
-    /**
-    * Maneja el evento de clic en el botón para añadir un jugador.
-    * Llama al método AñadirJugador con el parámetro 1
-    * para incrementar el número de jugadores en la sala.
-    *
-    * @param evt el evento de mouse que se ha producido
-    */
-    private void TODObtnAñadirJugadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TODObtnAñadirJugadorMouseClicked
-        añadirJugador(1);
-    }//GEN-LAST:event_TODObtnAñadirJugadorMouseClicked
-    /**
-    * Maneja el evento de clic en el botón para eliminar un jugador.
-    * Llama al método {@link #AñadirJugador(int)} con el parámetro -1
-    * para decrementar el número de jugadores en la sala.
-    *
-    * @param evt el evento de mouse que se ha producido
-    */
-    private void TODObtnEliminarJugadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TODObtnEliminarJugadorMouseClicked
-       añadirJugador(-1);
-    }//GEN-LAST:event_TODObtnEliminarJugadorMouseClicked
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
  
     }//GEN-LAST:event_formWindowClosed
 
+    private void lblVolverMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblVolverMousePressed
+         confirmarVolver();
+    }//GEN-LAST:event_lblVolverMousePressed
+
+    private void lblJugarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblJugarMousePressed
+        jugar();
+    }//GEN-LAST:event_lblJugarMousePressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton TODObtnAñadirJugador;
-    private javax.swing.JButton TODObtnEliminarJugador;
     private javax.swing.JLabel conchaIcono;
     private javax.swing.JLabel gatoIcon;
     private javax.swing.JPanel jPanel1;
