@@ -115,7 +115,7 @@ public class DialogTablero extends JDialog {
         initComponents();
         utils = new Utils();
         this.tamaño = tamaño;
-        this.monto = 1;//TODO
+        this.monto = monto;
         this.miJugador=miJugador;
         this.fichas = fichas;
         this.jugadores = jugadores;
@@ -634,7 +634,7 @@ public class DialogTablero extends JDialog {
             primerLanzamiento = false;
             resultadoCañas = 1;
         } else {
-            resultadoCañas = utils.GenerarLanzamiento();
+            resultadoCañas = utils.generarLanzamiento();
         }
         this.txtResultado.setText(String.valueOf(resultadoCañas));
 
@@ -931,7 +931,7 @@ public class DialogTablero extends JDialog {
             System.out.println("Ganador: " + jugadorGanador);
             podio.add(jugadorGanador);
             Collections.reverse(podio);
-            //parent.enviarJugadorSale(miJugador); TODO: Desconectarlo de la partida
+            parent.desconectar(this.codigoSala,miJugador);
             parent.PasarPantallaFinal(this, podio);
         }
     }

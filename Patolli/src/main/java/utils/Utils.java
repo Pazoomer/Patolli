@@ -12,7 +12,7 @@ import java.util.Random;
  * 
  * @author t1pas
  */
-public class Utils {
+public final class Utils {
 
     // Arreglo que contiene los resultados posibles basados en probabilidades
     int[] resultados = new int[32];
@@ -21,7 +21,7 @@ public class Utils {
      * Constructor de la clase Utils que inicializa el arreglo de resultados.
      */
     public Utils() {
-        Inicilizar();
+        inicilizar();
     }
 
     /**
@@ -35,7 +35,7 @@ public class Utils {
      * - 4: 5 veces
      * - 10: 1 vez
      */
-    public void Inicilizar() {
+    public void inicilizar() {
         int index = 0;
 
         // Llenar el arreglo de acuerdo a las probabilidades
@@ -64,7 +64,7 @@ public class Utils {
      * 
      * @return Un entero que representa el resultado del lanzamiento.
      */
-    public int GenerarLanzamiento() {
+    public int generarLanzamiento() {
         
         return resultados[new Random().nextInt(resultados.length)];
     }
@@ -74,7 +74,7 @@ public class Utils {
      * 
      * @return Un String que representa el código de sala generado.
      */
-    public static String GenerarCodigoSala() {
+    public static String generarCodigoSala() {
         String letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // Letras disponibles
         StringBuilder codigo = new StringBuilder();
         Random random = new Random();

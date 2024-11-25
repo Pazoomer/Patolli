@@ -1,7 +1,6 @@
 package negocio;
 
 import cliente.Mensaje;
-import presentation.FrameInicio;
 
 /**
  *
@@ -9,7 +8,7 @@ import presentation.FrameInicio;
  */
 public interface IControlJuego {
 
-    public void conectarse(FrameInicio frameInicio);
+    public void conectarse();
     public void desconectar(String codigoSala, int miJugador);
     public void enviarMensaje(Mensaje mensaje);
 }

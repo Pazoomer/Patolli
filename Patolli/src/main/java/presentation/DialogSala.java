@@ -53,7 +53,7 @@ public final class DialogSala extends JDialog {
         if (codigo != null) {
             this.codigo = codigo;
         } else {
-            this.codigo = Utils.GenerarCodigoSala();
+            this.codigo = Utils.generarCodigoSala();
         }
         this.lblCodigo.setText("CODIGO: " + this.codigo);
 

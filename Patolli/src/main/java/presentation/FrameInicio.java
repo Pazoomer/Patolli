@@ -38,7 +38,7 @@ public class FrameInicio extends javax.swing.JFrame {
      */
     public void conectarse(){
         volverInicio=false;
-        controlJuego.conectarse(this);
+        controlJuego.conectarse();
     }
     /**
      * El jugador se desconecta del servidor
