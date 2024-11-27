@@ -16,6 +16,10 @@ import javax.swing.JOptionPane;
 public class DialogUnirseCrear extends JDialog {
 
     FrameInicio parent;
+    //Fondo de la pantalla
+    private final String RUTAFONDO="/fondoPiramide.jpeg";
+    private final FondoPanel fondo=new FondoPanel(RUTAFONDO);
+    
     /**
      * Crea una nueva instancia de FrameUnirseCrear.
      * Inicializa los componentes de la interfaz gráfica.
@@ -24,9 +28,14 @@ public class DialogUnirseCrear extends JDialog {
     public DialogUnirseCrear(FrameInicio parent) {
         super(parent, true);
         this.parent = parent;
-        this.setResizable(false); 
+        this.setResizable(false);
+        if (fondo != null) {
+            this.setContentPane(fondo);
+        } else {
+            System.out.println("No cargo la imagen de fondo");
+        }
         initComponents();
-        
+
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -47,7 +56,7 @@ public class DialogUnirseCrear extends JDialog {
         parent.conectarse();
         
         CuerpoMensaje cuerpo = new CuerpoMensaje();
-        cuerpo.setCodigoSala(this.txtCodigo.getText());
+        cuerpo.setCodigoSala(this.txtCodigo.getText().toUpperCase());
         
         TipoMensaje tipo = TipoMensaje.UNIRSE_SALA; 
 
@@ -94,12 +103,11 @@ public class DialogUnirseCrear extends JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlUnirseCrear = new javax.swing.JPanel();
         pnlUnirse = new javax.swing.JPanel();
         lblUnirse = new javax.swing.JLabel();
         pnlCrear = new javax.swing.JPanel();
         lblCrear = new javax.swing.JLabel();
-        jPanel6 = new javax.swing.JPanel();
+        pnlCodigo = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         txtCodigo = new javax.swing.JTextArea();
         pnlComoJugar = new javax.swing.JPanel();
@@ -113,24 +121,14 @@ public class DialogUnirseCrear extends JDialog {
             }
         });
 
-        pnlUnirseCrear.setBackground(new java.awt.Color(102, 102, 0));
-
         pnlUnirse.setBackground(new java.awt.Color(192, 160, 123));
         pnlUnirse.setMaximumSize(new java.awt.Dimension(300, 75));
         pnlUnirse.setMinimumSize(new java.awt.Dimension(300, 75));
-        pnlUnirse.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                pnlUnirseMouseClicked(evt);
-            }
-        });
 
         lblUnirse.setFont(new java.awt.Font("Comic Sans MS", 1, 30)); // NOI18N
         lblUnirse.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblUnirse.setText("UNIRSE");
         lblUnirse.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblUnirseMouseClicked(evt);
-            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 lblUnirseMousePressed(evt);
             }
@@ -141,12 +139,16 @@ public class DialogUnirseCrear extends JDialog {
         pnlUnirseLayout.setHorizontalGroup(
             pnlUnirseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlUnirseLayout.createSequentialGroup()
-                .addComponent(lblUnirse, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
+                .addComponent(lblUnirse)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlUnirseLayout.setVerticalGroup(
             pnlUnirseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblUnirse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlUnirseLayout.createSequentialGroup()
+                .addContainerGap(18, Short.MAX_VALUE)
+                .addComponent(lblUnirse)
+                .addGap(14, 14, 14))
         );
 
         pnlCrear.setBackground(new java.awt.Color(192, 160, 123));
@@ -162,9 +164,6 @@ public class DialogUnirseCrear extends JDialog {
         lblCrear.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblCrear.setText("CREAR");
         lblCrear.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblCrearMouseClicked(evt);
-            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 lblCrearMousePressed(evt);
             }
@@ -181,12 +180,12 @@ public class DialogUnirseCrear extends JDialog {
         pnlCrearLayout.setVerticalGroup(
             pnlCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlCrearLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblCrear, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
+                .addComponent(lblCrear, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jPanel6.setBackground(new java.awt.Color(223, 207, 188));
+        pnlCodigo.setBackground(new java.awt.Color(223, 207, 188));
 
         jScrollPane4.setBorder(null);
         jScrollPane4.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -199,23 +198,28 @@ public class DialogUnirseCrear extends JDialog {
         txtCodigo.setRows(5);
         txtCodigo.setText("####");
         txtCodigo.setWrapStyleWord(true);
+        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCodigoKeyTyped(evt);
+            }
+        });
         jScrollPane4.setViewportView(txtCodigo);
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlCodigoLayout = new javax.swing.GroupLayout(pnlCodigo);
+        pnlCodigo.setLayout(pnlCodigoLayout);
+        pnlCodigoLayout.setHorizontalGroup(
+            pnlCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCodigoLayout.createSequentialGroup()
                 .addContainerGap(17, Short.MAX_VALUE)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+        pnlCodigoLayout.setVerticalGroup(
+            pnlCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCodigoLayout.createSequentialGroup()
+                .addContainerGap(16, Short.MAX_VALUE)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pnlComoJugar.setBackground(new java.awt.Color(192, 160, 123));
@@ -259,128 +263,102 @@ public class DialogUnirseCrear extends JDialog {
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout pnlUnirseCrearLayout = new javax.swing.GroupLayout(pnlUnirseCrear);
-        pnlUnirseCrear.setLayout(pnlUnirseCrearLayout);
-        pnlUnirseCrearLayout.setHorizontalGroup(
-            pnlUnirseCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlUnirseCrearLayout.createSequentialGroup()
-                .addGap(92, 92, 92)
-                .addComponent(pnlUnirse, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 190, Short.MAX_VALUE)
-                .addComponent(pnlCrear, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(152, 152, 152))
-            .addGroup(pnlUnirseCrearLayout.createSequentialGroup()
-                .addGroup(pnlUnirseCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlUnirseCrearLayout.createSequentialGroup()
-                        .addGap(115, 115, 115)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlUnirseCrearLayout.createSequentialGroup()
-                        .addGap(242, 242, 242)
-                        .addComponent(pnlComoJugar, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        pnlUnirseCrearLayout.setVerticalGroup(
-            pnlUnirseCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlUnirseCrearLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(pnlComoJugar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(170, 170, 170)
-                .addGroup(pnlUnirseCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pnlCrear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlUnirse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(179, 179, 179))
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlUnirseCrear, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(200, 200, 200)
+                        .addComponent(pnlUnirse, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(59, 59, 59)
+                        .addComponent(pnlCrear, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(227, 227, 227)
+                        .addComponent(pnlCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(247, 247, 247)
+                        .addComponent(pnlComoJugar, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(175, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlUnirseCrear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(pnlComoJugar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(203, 203, 203)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlCrear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(pnlUnirse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(pnlCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(145, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    /**
-     * Maneja el evento de clic del mouse en la etiqueta "Unirse".
-     * Llama al método Unirse para intentar unirse a una partida.
-     *
-     * @param evt el evento de clic del mouse generado al hacer clic en la etiqueta
-     */
-    private void lblUnirseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUnirseMouseClicked
-        
-    }//GEN-LAST:event_lblUnirseMouseClicked
-    /**
-     * Maneja el evento de clic del mouse en el panel "Unirse".
-     * Llama al método Unirse para intentar unirse a una partida.
-     *
-     * @param evt el evento de clic del mouse generado al hacer clic en el panel
-     */
-    private void pnlUnirseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlUnirseMouseClicked
-        
-    }//GEN-LAST:event_pnlUnirseMouseClicked
-    /**
-     * Maneja el evento de clic del mouse en la etiqueta "Crear".
-     * Llama al método Crear para iniciar una nueva partida.
-     *
-     * @param evt el evento de clic del mouse generado al hacer clic en la etiqueta
-     */
-    private void lblCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCrearMouseClicked
-        
-    }//GEN-LAST:event_lblCrearMouseClicked
-    /**
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+
+    }//GEN-LAST:event_formWindowClosed
+
+    private void pnlComoJugarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlComoJugarMousePressed
+
+    }//GEN-LAST:event_pnlComoJugarMousePressed
+
+    private void pnlComoJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlComoJugarMouseClicked
+
+    }//GEN-LAST:event_pnlComoJugarMouseClicked
+
+    private void lblComoJugarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblComoJugarMousePressed
+        ComoJugar();
+    }//GEN-LAST:event_lblComoJugarMousePressed
+
+    private void lblComoJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblComoJugarMouseClicked
+
+    }//GEN-LAST:event_lblComoJugarMouseClicked
+
+    private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
+        // Obtén el texto actual del campo
+        String texto = txtCodigo.getText().replaceAll("\\s+", ""); // Elimina espacios en blanco
+
+        // Verifica si tiene más de 4 caracteres
+        if (texto.length() >= 4) {
+            // Limita a los primeros 4 caracteres
+            txtCodigo.setText(texto.substring(0, 4));
+            evt.consume(); // Evita que se escriban más caracteres
+        }
+    }//GEN-LAST:event_txtCodigoKeyTyped
+
+   /**
      * Maneja el evento de clic del mouse en el panel "Crear".
      * Llama al método Crear para iniciar una nueva partida.
      *
      * @param evt el evento de clic del mouse generado al hacer clic en el panel
      */
     private void pnlCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlCrearMouseClicked
- 
+
     }//GEN-LAST:event_pnlCrearMouseClicked
-
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-
-    }//GEN-LAST:event_formWindowClosed
-
-    private void lblComoJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblComoJugarMouseClicked
-
-    }//GEN-LAST:event_lblComoJugarMouseClicked
-
-    private void pnlComoJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlComoJugarMouseClicked
-        
-    }//GEN-LAST:event_pnlComoJugarMouseClicked
-
-    private void lblUnirseMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUnirseMousePressed
-        Unirse();
-    }//GEN-LAST:event_lblUnirseMousePressed
 
     private void lblCrearMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCrearMousePressed
         Crear();
     }//GEN-LAST:event_lblCrearMousePressed
 
-    private void pnlComoJugarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlComoJugarMousePressed
-        
-    }//GEN-LAST:event_pnlComoJugarMousePressed
-
-    private void lblComoJugarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblComoJugarMousePressed
-        ComoJugar();
-    }//GEN-LAST:event_lblComoJugarMousePressed
+    private void lblUnirseMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUnirseMousePressed
+        Unirse();
+    }//GEN-LAST:event_lblUnirseMousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lblComoJugar;
     private javax.swing.JLabel lblCrear;
     private javax.swing.JLabel lblUnirse;
+    private javax.swing.JPanel pnlCodigo;
     private javax.swing.JPanel pnlComoJugar;
     private javax.swing.JPanel pnlCrear;
     private javax.swing.JPanel pnlUnirse;
-    private javax.swing.JPanel pnlUnirseCrear;
     private javax.swing.JTextArea txtCodigo;
     // End of variables declaration//GEN-END:variables
 }

@@ -252,8 +252,6 @@ public class ControladorMensajes extends Observable implements PlantillaConexion
                 }
             });
 
-            System.out.println("Mensaje enviado a los demás jugadores en la sala: " + codigoSala);
-
         } finally {
             lock.unlock();
         }
@@ -280,8 +278,6 @@ public class ControladorMensajes extends Observable implements PlantillaConexion
                 cliente.sendMessage(mensaje);
             }
         });
-
-        System.out.println("Mensaje enviado a los demás jugadores en la sala: " + codigoSala);
     }
 
     @Override
