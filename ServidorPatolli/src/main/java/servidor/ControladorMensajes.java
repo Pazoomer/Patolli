@@ -15,8 +15,8 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
-import logger.IChatLogger;
 import logger.LoggerFactory;
+import logger.IPatolliLogger;
 
 /**
  * Se ocupa de la conexión de los clientes y la comunicación entre ellos.
@@ -31,7 +31,7 @@ public class ControladorMensajes extends Observable implements PlantillaConexion
     private final Thread serverThread;
     private final ReentrantLock lock = new ReentrantLock();
     
-    private final IChatLogger logger = LoggerFactory.getLogger(ControladorMensajes.class);
+    private final IPatolliLogger logger = LoggerFactory.getLogger(ControladorMensajes.class);
     
     public ControladorMensajes() {
         serverThread = new Thread(this);

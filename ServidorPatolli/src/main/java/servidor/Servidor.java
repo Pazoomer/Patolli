@@ -5,8 +5,8 @@ import cliente.IObservador;
 import cliente.Mensaje;
 import cliente.PlantillaConexion;
 import java.util.concurrent.locks.ReentrantLock;
-import logger.IChatLogger;
 import logger.LoggerFactory;
+import logger.IPatolliLogger;
 /**
  * Maneja la lógica del servidor (iniciar, procesar mensajes)
  * @author t1pas
@@ -16,7 +16,7 @@ public class Servidor implements IConexion, IObservador, PlantillaConexion {
     private ControladorMensajes controladorMensajes;
     ReentrantLock lock = new ReentrantLock();
 
-    private final IChatLogger logger = LoggerFactory.getLogger(Servidor.class);
+    private final IPatolliLogger logger = LoggerFactory.getLogger(Servidor.class);
 
     @Override
     public void init() {

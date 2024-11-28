@@ -7,19 +7,19 @@ import javax.swing.JOptionPane;
  *
  * @author
  */
-class ChatLoggerProxy implements IChatLogger, Serializable {
+class PatolliLoggerProxy implements IPatolliLogger, Serializable {
 
-    private static IChatLogger instance;
-    private IChatLogger logger;
+    private static IPatolliLogger instance;
+    private IPatolliLogger logger;
     private Class clazz;
 
-    private ChatLoggerProxy(Class clazz) {
+    private PatolliLoggerProxy(Class clazz) {
         this.clazz = clazz;
-        this.logger = ChatLoggerImpl.getInstance(clazz);
+        this.logger = PatolliLoggerImpl.getInstance(clazz);
     }
 
-    public static IChatLogger getInstance(Class clazz) {
-        return instance != null ? instance : (instance = new ChatLoggerProxy(clazz));
+    public static IPatolliLogger getInstance(Class clazz) {
+        return instance != null ? instance : (instance = new PatolliLoggerProxy(clazz));
     }
 
     @Override

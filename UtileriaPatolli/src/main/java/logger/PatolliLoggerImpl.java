@@ -8,19 +8,19 @@ import java.util.logging.Level;
  *
  * @author 
  */
-class ChatLoggerImpl implements IChatLogger, Serializable {
+class PatolliLoggerImpl implements IPatolliLogger, Serializable {
 
-    private static IChatLogger instance;
+    private static IPatolliLogger instance;
     private final Class clazz;
     private final Logger logger;
 
-    private ChatLoggerImpl(Class clazz) {
+    private PatolliLoggerImpl(Class clazz) {
         this.clazz = clazz;
         this.logger = Logger.getLogger(clazz.getName());
     }
 
-    public static IChatLogger getInstance(Class clazz) {
-        return instance != null ? instance : (instance = new ChatLoggerImpl(clazz));
+    public static IPatolliLogger getInstance(Class clazz) {
+        return instance != null ? instance : (instance = new PatolliLoggerImpl(clazz));
     }
 
     @Override

@@ -9,7 +9,7 @@ import servidor.Cliente;
  *
  * @author t1pas
  */
-public class Juego {
+public class Partida {
    
     Cliente cliente;
 

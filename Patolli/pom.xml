@@ -34,7 +34,7 @@
         </dependency>
         <dependency>
             <groupId>itson.mx</groupId>
-            <artifactId>ClientePatolli</artifactId>
+            <artifactId>UtileriaPatolli</artifactId>
             <version>1.0</version>
         </dependency>
     </dependencies>

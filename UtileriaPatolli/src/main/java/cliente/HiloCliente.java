@@ -1,12 +1,12 @@
 package cliente;
 
 import java.io.IOException;
-import logger.IChatLogger;
 import logger.LoggerFactory;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
+import logger.IPatolliLogger;
 
 /**
  *
@@ -17,7 +17,7 @@ public class HiloCliente extends Observable implements Runnable, Serializable {
     private transient Socket clientSocket;
     private transient ObjectInputStream in;
     private transient ObjectOutputStream out;
-    private transient IChatLogger logger = LoggerFactory.getLogger(getClass());
+    private transient IPatolliLogger logger = LoggerFactory.getLogger(getClass());
     
     private Usuario usuario;
     

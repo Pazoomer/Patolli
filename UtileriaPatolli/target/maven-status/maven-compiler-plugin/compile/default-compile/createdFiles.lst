@@ -1,10 +1,9 @@
-logger\IChatLogger.class
 cliente\Observable.class
 cliente\CuerpoMensaje.class
-logger\ChatLoggerProxy.class
-logger\ChatLoggerImpl.class
 cliente\PlantillaConexion$1.class
 cliente\IObservador.class
+logger\PatolliLoggerProxy.class
+logger\IPatolliLogger.class
 logger\LoggerFactory.class
 cliente\PlantillaConexion.class
 usuarioUtils\UsuarioUtils.class
@@ -12,5 +11,6 @@ cliente\HiloCliente.class
 cliente\TipoMensaje.class
 cliente\Mensaje.class
 cliente\Usuario.class
+logger\PatolliLoggerImpl.class
 cliente\IConexion.class
 cliente\Mensaje$Builder.class

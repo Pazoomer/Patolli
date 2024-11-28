@@ -10,12 +10,12 @@ import presentation.FrameInicio;
  */
 public class ControlJuego implements IControlJuego {
 
-    Juego juego;
+    Partida juego;
     FrameInicio frameInicio;
 
     public ControlJuego(FrameInicio frameInicio) {
         this.frameInicio=frameInicio;
-        juego=new Juego();
+        juego=new Partida();
     }
     
     @Override

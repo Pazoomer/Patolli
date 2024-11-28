@@ -8,7 +8,6 @@ import cliente.Usuario;
 import java.io.Serializable;
 import java.net.Socket;
 import java.util.concurrent.locks.ReentrantLock;
-import logger.IChatLogger;
 import logger.LoggerFactory;
 import cliente.PlantillaConexion;
 import cliente.IConexion;
@@ -16,6 +15,7 @@ import cliente.IObservador;
 import java.io.IOException;
 import presentation.FrameInicio;
 import usuarioUtils.UsuarioUtils;
+import logger.IPatolliLogger;
 
 /**
  *
@@ -29,7 +29,7 @@ public class ConexionCliente implements PlantillaConexion, IObservador, IConexio
     private final String HOST="localhost";
     private final FrameInicio frameInicio;
 
-    private final IChatLogger logger = LoggerFactory.getLogger(ConexionCliente.class);
+    private final IPatolliLogger logger = LoggerFactory.getLogger(ConexionCliente.class);
     
     ReentrantLock lock = new ReentrantLock();
 
