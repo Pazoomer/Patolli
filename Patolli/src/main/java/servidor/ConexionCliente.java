@@ -7,7 +7,6 @@ import cliente.TipoMensaje;
 import cliente.Usuario;
 import java.io.Serializable;
 import java.net.Socket;
-import java.util.concurrent.locks.ReentrantLock;
 import logger.LoggerFactory;
 import cliente.PlantillaConexion;
 import cliente.IConexion;
@@ -31,8 +30,6 @@ public class ConexionCliente implements PlantillaConexion, IObservador, IConexio
 
     private final IPatolliLogger logger = LoggerFactory.getLogger(ConexionCliente.class);
     
-    ReentrantLock lock = new ReentrantLock();
-
     public ConexionCliente(FrameInicio frameInicio) {
         this.frameInicio=frameInicio;
         usuario = new Usuario();

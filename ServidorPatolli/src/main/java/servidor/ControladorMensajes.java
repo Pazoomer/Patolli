@@ -51,7 +51,7 @@ public class ControladorMensajes extends Observable implements PlantillaConexion
     @Override
     public void run() {
         try {
-            while (true) {                
+            while (true) {
                 Socket clientSocket = server.accept();
 
                 // Crear y configurar el cliente
@@ -69,11 +69,13 @@ public class ControladorMensajes extends Observable implements PlantillaConexion
         } catch (IOException ex) {
             logger.error(String.format("Error al iniciar la conexion al servidor: %s", ex.getMessage()));
         } //catch (ClassNotFoundException ex) {
-           // Logger.getLogger(ControladorMensajes.class.getName()).log(Level.SEVERE, null, ex);
+        // Logger.getLogger(ControladorMensajes.class.getName()).log(Level.SEVERE, null, ex);
         //}
     }
+
     /**
      * Le coloca el usuario en la sala de espera
+     *
      * @param mensaje Mensaje con el usuario
      */
     @Override
@@ -180,6 +182,7 @@ public class ControladorMensajes extends Observable implements PlantillaConexion
                 return;
             }
 
+            //Verificar si la sala existe
             if (codigoSala == null || !salas.containsKey(codigoSala)) {
                 System.out.println("La sala " + codigoSala + " no existe.");
                 //Mensaje para el jugador que no se pudo unir
@@ -193,6 +196,21 @@ public class ControladorMensajes extends Observable implements PlantillaConexion
                 salas.get(SALA_DE_ESPERA).remove(user);
                 user.sendMessage(mensajeNegativo);
                 user.disconnect();
+                return;
+            }
+            
+            // Verificar si la sala tiene espacio para más jugadores
+            if (salas.get(codigoSala).size() >= 4) {
+                System.out.println("La sala " + codigoSala + " está llena.");
+                // Mensaje para el jugador que no se pudo unir
+                CuerpoMensaje cuerpoSalaLlena = new CuerpoMensaje();
+                cuerpoSalaLlena.setRazonDesconexion("La sala " + codigoSala + " está llena.");
+                TipoMensaje tipoRespuesta = TipoMensaje.DESCONECTARSE;
+                Mensaje mensajeSalaLlena = new Mensaje.Builder()
+                        .body(cuerpoSalaLlena)
+                        .messageType(tipoRespuesta)
+                        .build();
+                user.sendMessage(mensajeSalaLlena);
                 return;
             }
 

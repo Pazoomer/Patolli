@@ -89,6 +89,8 @@ public class DialogTablero extends JDialog {
     //Monto de apuestas de jugadores 
     private List<Integer> montoJugadores;
     
+    //VARIABLES DE DISEÑO
+    
     //Fondo de la pantalla
     private final String RUTAFONDO="/fondoTierraFina.jpg";
     private final FondoPanel fondo=new FondoPanel(RUTAFONDO);
@@ -1102,6 +1104,7 @@ public class DialogTablero extends JDialog {
             revisarJugadorSale();
             revisarFinDelJuego();
         }
+        this.actualizarApuestas();
         this.actualizarSiguienteJugador(); //Actualiza la vista para el siguiente jugador 
 
         CuerpoMensaje cuerpo = new CuerpoMensaje();

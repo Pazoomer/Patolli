@@ -24,9 +24,9 @@ public final class DialogComoJugar extends JDialog {
      * @param parent
      */
     public DialogComoJugar(FrameInicio parent) {
-        super(parent, true); // Inicializa el JDialog con modal
+        super(parent, true);
         this.parent=parent;
-        this.setResizable(false); // Desactiva la opción de cambiar el tamaño de la ventana
+        this.setResizable(false);
         if(fondo!=null){
            this.setContentPane(fondo); 
         }else{
@@ -38,7 +38,7 @@ public final class DialogComoJugar extends JDialog {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                Cerrar(); // Llama a tu método Cerrar() cuando se intente cerrar la ventana
+                Cerrar();
             }
         });
     }
@@ -334,7 +334,6 @@ public final class DialogComoJugar extends JDialog {
     private void lblVolverMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblVolverMousePressed
         Volver();
     }//GEN-LAST:event_lblVolverMousePressed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
